@@ -1,0 +1,109 @@
+/* ---------- Design tokens ---------- */
+:root {
+  --color-bg: #fbf3e7;
+  --color-primary: #7a1f2b;
+  --color-accent: #d9a441;
+  --color-text: #2a1815;
+  --color-muted: #5a4038;
+
+  --font-heading: "Cormorant Garamond", serif;
+  --font-body: "Karla", sans-serif;
+
+  --radius-card: 16px;
+  --radius-btn: 8px;
+
+  --section-padding-desktop: 80px;
+  --section-padding-mobile: 40px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: var(--section-padding-desktop) 0;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: var(--section-padding-mobile) 0;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  border: none;
+  border-radius: var(--radius-btn);
+  padding: 14px 28px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-pill {
+  border-radius: 999px;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: #fff;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(42, 24, 21, 0.08);
+}

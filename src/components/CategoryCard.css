@@ -1,0 +1,21 @@
+.category-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140px;
+  background: linear-gradient(135deg, #f2e2c8, #fbf3e7);
+  border: 1px solid rgba(217, 164, 65, 0.3);
+  text-align: center;
+}
+
+.category-card span {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.category-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
+}
