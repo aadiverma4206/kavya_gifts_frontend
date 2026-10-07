@@ -4,10 +4,11 @@ import {
   getAllReviewsForOwner,
   updateReviewStatus,
   deleteReview,
-} from "../../services/reviewService";
+} from "../../services/reviewService.js";
 
 export default function ReviewManagement() {
   const [reviews, setReviews] = useState([]);
+  const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
   function loadReviews() {
@@ -21,19 +22,18 @@ export default function ReviewManagement() {
     loadReviews();
   }, []);
 
-  async function handleToggleStatus(rev) {
-    const nextStatus = rev.status === "approved" ? "hidden" : "approved";
+  async function handleSetStatus(rev, newStatus) {
     try {
-      await updateReviewStatus(rev.reviewId || rev.id, nextStatus);
+      await updateReviewStatus(rev.reviewId || rev.id, newStatus);
       setReviews((prev) =>
         prev.map((r) =>
           r.id === rev.id || r.reviewId === rev.reviewId
-            ? { ...r, status: nextStatus }
+            ? { ...r, status: newStatus }
             : r
         )
       );
     } catch (err) {
-      alert("Failed to update review status.");
+      alert("Failed to update review status: " + err.message);
     }
   }
 
@@ -43,21 +43,49 @@ export default function ReviewManagement() {
       await deleteReview(rev.reviewId || rev.id);
       setReviews((prev) => prev.filter((r) => r.id !== rev.id && r.reviewId !== rev.reviewId));
     } catch (err) {
-      alert("Failed to delete review.");
+      alert("Failed to delete review: " + err.message);
     }
   }
+
+  const filteredReviews = reviews.filter((r) => {
+    if (statusFilter === "all") return true;
+    return r.status === statusFilter;
+  });
 
   return (
     <OwnerLayout
       title="Product Review Moderation"
-      subtitle="Inspect customer ratings and feedback (REV-10001)"
+      subtitle="Inspect customer ratings, approve unboxing feedback, or hide inappropriate comments"
     >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+          <label style={{ fontSize: "14px", fontWeight: 600 }}>Filter by Status:</label>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            style={{ padding: "6px 12px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px" }}
+          >
+            <option value="all">All Reviews ({reviews.length})</option>
+            <option value="approved">Approved</option>
+            <option value="pending">Pending Moderation</option>
+            <option value="rejected">Rejected</option>
+            <option value="hidden">Hidden</option>
+          </select>
+        </div>
+
+        <button onClick={loadReviews} className="btn btn-secondary btn-sm">
+          🔄 Refresh
+        </button>
+      </div>
+
       {loading ? (
         <p className="muted">Loading reviews...</p>
       ) : (
         <div className="card owner-table-card">
-          {reviews.length === 0 ? (
-            <p className="muted">No reviews submitted yet.</p>
+          {filteredReviews.length === 0 ? (
+            <p className="muted" style={{ padding: "40px 0", textAlign: "center" }}>
+              No reviews match the selected filter.
+            </p>
           ) : (
             <div className="owner-table-wrapper">
               <table className="owner-table">
@@ -69,11 +97,11 @@ export default function ReviewManagement() {
                     <th>Rating</th>
                     <th>Feedback</th>
                     <th>Status</th>
-                    <th>Moderation</th>
+                    <th>Moderation Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {reviews.map((rev) => (
+                  {filteredReviews.map((rev) => (
                     <tr key={rev.id || rev.reviewId}>
                       <td><strong>{rev.reviewId}</strong></td>
                       <td><strong>{rev.productName}</strong></td>
@@ -100,26 +128,55 @@ export default function ReviewManagement() {
                       <td>
                         <span
                           className={`status-pill ${
-                            rev.status === "approved" ? "delivered" : "cancelled"
+                            rev.status === "approved"
+                              ? "delivered"
+                              : rev.status === "rejected" || rev.status === "hidden"
+                              ? "cancelled"
+                              : "packed"
                           }`}
                         >
                           {rev.status}
                         </span>
                       </td>
                       <td>
-                        <div style={{ display: "flex", gap: "8px" }}>
-                          <button
-                            onClick={() => handleToggleStatus(rev)}
-                            className="btn btn-secondary btn-sm"
-                          >
-                            {rev.status === "approved" ? "Hide" : "Approve"}
-                          </button>
+                        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                          {rev.status !== "approved" && (
+                            <button
+                              onClick={() => handleSetStatus(rev, "approved")}
+                              className="btn btn-secondary btn-sm"
+                              style={{ color: "#166534" }}
+                              title="Approve and show on product page"
+                            >
+                              ✓ Approve
+                            </button>
+                          )}
+                          {rev.status !== "rejected" && (
+                            <button
+                              onClick={() => handleSetStatus(rev, "rejected")}
+                              className="btn btn-secondary btn-sm"
+                              style={{ color: "#b91c1c" }}
+                              title="Reject review"
+                            >
+                              ✗ Reject
+                            </button>
+                          )}
+                          {rev.status !== "hidden" && (
+                            <button
+                              onClick={() => handleSetStatus(rev, "hidden")}
+                              className="btn btn-secondary btn-sm"
+                              style={{ color: "#d97706" }}
+                              title="Hide from public view"
+                            >
+                              Hide
+                            </button>
+                          )}
                           <button
                             onClick={() => handleDelete(rev)}
                             className="btn btn-secondary btn-sm"
                             style={{ color: "#991b1b" }}
+                            title="Delete review"
                           >
-                            Delete
+                            🗑
                           </button>
                         </div>
                       </td>

@@ -368,22 +368,36 @@ export default function Product() {
       <section className="section container reviews-section">
         <div className="reviews-section-header">
           <div>
-            <h3>Customer Reviews & Ratings</h3>
-            <p className="muted">
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "4px" }}>
+              <h3 style={{ margin: 0 }}>Customer Reviews & Ratings</h3>
+              {averageRating && (
+                <span className="product-rating-badge" style={{ fontSize: "14px", padding: "4px 10px" }}>
+                  ★ {averageRating} / 5.0 ({reviews.length} {reviews.length === 1 ? "review" : "reviews"})
+                </span>
+              )}
+            </div>
+            <p className="muted" style={{ margin: 0 }}>
               {reviews.length > 0
-                ? `${reviews.length} customers shared their unboxing experiences for this hamper`
-                : "No customer reviews yet. Be the first to review!"}
+                ? `${reviews.length} verified customer ${reviews.length === 1 ? "review" : "reviews"} for this handcrafted hamper`
+                : "No customer reviews yet. Be the first to review after purchasing!"}
             </p>
           </div>
-          {currentUser && (
-            <Link
-              to={`/review/${product.product_id}`}
-              state={{ productName: product.product_name }}
-              className="btn btn-secondary btn-sm"
-            >
-              ★ Write a Review
-            </Link>
-          )}
+
+          <div>
+            {currentUser ? (
+              <Link
+                to={`/review/${product.product_id || product.productId || id}`}
+                state={{ productName: product.product_name || product.productName }}
+                className="btn btn-secondary btn-sm"
+              >
+                ★ Review This Hamper
+              </Link>
+            ) : (
+              <Link to="/login" className="btn btn-secondary btn-sm">
+                Sign in to Review
+              </Link>
+            )}
+          </div>
         </div>
 
         {reviews.length > 0 && (
@@ -392,16 +406,34 @@ export default function Product() {
               <div key={rev.id || rev.reviewId} className="card review-card-item">
                 <div className="review-card-top">
                   <div>
-                    <strong>{rev.customerName}</strong>
-                    <span className="review-stars">{"★".repeat(rev.rating)}</span>
+                    <strong>{rev.customerName || "Verified Customer"}</strong>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "2px" }}>
+                      <span className="review-stars" style={{ color: "#f59e0b" }}>
+                        {"★".repeat(rev.rating)}{"☆".repeat(Math.max(0, 5 - rev.rating))}
+                      </span>
+                      <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--color-primary)" }}>
+                        {rev.rating}/5
+                      </span>
+                    </div>
                   </div>
-                  <span className="review-date muted">
+                  <span className="review-date muted" style={{ fontSize: "12px" }}>
                     {rev.createdAt?.toDate
-                      ? rev.createdAt.toDate().toLocaleDateString("en-IN")
-                      : "Verified Purchase"}
+                      ? rev.createdAt.toDate().toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : "Verified Buyer"}
                   </span>
                 </div>
-                <p className="review-text">"{rev.comment}"</p>
+                {rev.title && (
+                  <h4 style={{ fontSize: "15px", margin: "10px 0 4px", color: "var(--color-text)" }}>
+                    {rev.title}
+                  </h4>
+                )}
+                <p className="review-text" style={{ fontSize: "13.5px", color: "var(--color-muted)", lineHeight: 1.5 }}>
+                  "{rev.comment}"
+                </p>
               </div>
             ))}
           </div>

@@ -15,12 +15,14 @@ import OwnerLayout from "../../components/owner/OwnerLayout";
 import { getAllOrdersForOwner } from "../../services/orderService";
 import { getAllProductsForOwner } from "../../services/productService";
 import { getAllUsersForOwner } from "../../services/userService";
+import { getAllPaymentsForOwner } from "../../services/paymentService";
 import "./OwnerDashboard.css";
 
 export default function OwnerDashboard() {
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,19 +30,45 @@ export default function OwnerDashboard() {
       getAllOrdersForOwner(),
       getAllProductsForOwner(),
       getAllUsersForOwner(),
+      getAllPaymentsForOwner(),
     ])
-      .then(([ords, prods, usrs]) => {
+      .then(([ords, prods, usrs, pymts]) => {
         setOrders(ords);
         setProducts(prods);
-        setUsers(usrs.filter((u) => u.role === "customer"));
+        setUsers(usrs.filter((u) => u.role === "customer" || !u.role));
+        setPayments(pymts);
       })
       .catch((err) => console.error("Error loading owner stats:", err))
       .finally(() => setLoading(false));
   }, []);
 
-  const totalRevenue = orders.reduce((sum, ord) => sum + (ord.total || 0), 0);
-  const activeProductsCount = products.filter((p) => p.status === "active").length;
+  // Customer Metrics
+  const totalCustomers = users.length;
+  const activeCustomers = users.filter((u) => !u.isBlocked && u.status !== "blocked").length;
+  const blockedCustomers = users.filter((u) => u.isBlocked || u.status === "blocked").length;
+  const recentCustomers = users.slice(0, 5);
+
+  // Order Metrics
+  const totalOrders = orders.length;
+  const pendingOrders = orders.filter(
+    (o) => o.orderStatus === "pending" || o.orderStatus === "placed"
+  ).length;
+  const completedOrders = orders.filter(
+    (o) => o.orderStatus === "confirmed" || o.orderStatus === "delivered"
+  ).length;
   const recentOrders = orders.slice(0, 5);
+
+  // Payment Metrics
+  const totalPayments = payments.length;
+  const pendingPayments = payments.filter(
+    (p) => p.paymentStatus === "pending" || p.status === "pending"
+  ).length;
+  const totalRevenue = payments
+    .filter((p) => p.paymentStatus === "paid" || p.status === "completed")
+    .reduce((sum, p) => sum + (p.amount || 0), 0) ||
+    orders.reduce((sum, ord) => sum + (ord.totalAmount || ord.total || 0), 0);
+
+  const activeProductsCount = products.filter((p) => p.status === "active").length;
 
   // Group revenue by date or month for visual AreaChart
   const revenueChartData = [
@@ -74,34 +102,45 @@ export default function OwnerDashboard() {
         <p className="muted">Aggregating store metrics...</p>
       ) : (
         <>
-          {/* KPI Stat Cards */}
-          <div className="stats-grid">
+          {/* KPI Stat Cards conforming exactly to requirements */}
+          <div className="stats-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+            {/* Customer KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Total Gifting Revenue</span>
-              <strong className="stat-value">₹{totalRevenue.toLocaleString("en-IN")}</strong>
-              <span className="stat-sub muted">From {orders.length} total orders</span>
-            </div>
-
-            <div className="card stat-card">
-              <span className="stat-label">Total Hamper Bookings</span>
-              <strong className="stat-value">{orders.length}</strong>
+              <span className="stat-label">Total Customers</span>
+              <strong className="stat-value">{totalCustomers}</strong>
               <span className="stat-sub muted">
-                {orders.filter((o) => o.orderStatus === "placed").length} awaiting packing
+                <span style={{ color: "#166534", fontWeight: 600 }}>{activeCustomers} Active</span> •{" "}
+                <span style={{ color: blockedCustomers > 0 ? "#991b1b" : "#6b7280", fontWeight: 600 }}>
+                  {blockedCustomers} Blocked
+                </span>
               </span>
             </div>
 
+            {/* Order KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Active Hampers</span>
+              <span className="stat-label">Total Orders</span>
+              <strong className="stat-value">{totalOrders}</strong>
+              <span className="stat-sub muted">
+                <span style={{ color: "#854d0e", fontWeight: 600 }}>{pendingOrders} Pending</span> •{" "}
+                <span style={{ color: "#166534", fontWeight: 600 }}>{completedOrders} Completed</span>
+              </span>
+            </div>
+
+            {/* Payment KPIs */}
+            <div className="card stat-card">
+              <span className="stat-label">Total Payments</span>
+              <strong className="stat-value">{totalPayments}</strong>
+              <span className="stat-sub muted">
+                <span style={{ color: "#854d0e", fontWeight: 600 }}>{pendingPayments} Pending</span> •{" "}
+                <span style={{ color: "#166534", fontWeight: 600 }}>₹{totalRevenue.toLocaleString("en-IN")} Total</span>
+              </span>
+            </div>
+
+            {/* Catalog KPIs */}
+            <div className="card stat-card">
+              <span className="stat-label">Active Catalog Hampers</span>
               <strong className="stat-value">{activeProductsCount}</strong>
-              <span className="stat-sub muted">Out of {products.length} catalog items</span>
-            </div>
-
-            <div className="card stat-card">
-              <span className="stat-label">Registered Customers</span>
-              <strong className="stat-value">{users.length}</strong>
-              <span className="stat-sub muted">
-                {users.filter((u) => u.isBlocked).length} suspended accounts
-              </span>
+              <span className="stat-sub muted">Out of {products.length} total products</span>
             </div>
           </div>
 
@@ -156,7 +195,7 @@ export default function OwnerDashboard() {
             </div>
           </div>
 
-          {/* Quick Management Cards */}
+          {/* Quick Management Shortcuts */}
           <div className="owner-quick-actions">
             <Link to="/owner/products" className="card action-tile">
               <div className="action-tile-icon">🧺</div>
@@ -183,8 +222,8 @@ export default function OwnerDashboard() {
             </Link>
           </div>
 
-          {/* Recent Orders Table */}
-          <div className="card owner-table-card">
+          {/* 1. Recent Orders Table */}
+          <div className="card owner-table-card" style={{ marginBottom: "24px" }}>
             <div className="owner-table-header">
               <h3>Recent Hamper Orders</h3>
               <Link to="/owner/orders" className="view-link">
@@ -212,12 +251,12 @@ export default function OwnerDashboard() {
                       <tr key={ord.id}>
                         <td><strong>{ord.orderId}</strong></td>
                         <td>
-                          <div>{ord.customer?.name}</div>
+                          <div>{ord.customerSnapshot?.name || ord.customer?.name}</div>
                           <span className="muted" style={{ fontSize: "12px" }}>
-                            {ord.customer?.phone}
+                            {ord.customerSnapshot?.mobile || ord.customer?.phone}
                           </span>
                         </td>
-                        <td>{ord.items?.map((i) => i.product_name).join(", ")}</td>
+                        <td>{ord.items?.map((i) => i.product_name || i.productName).join(", ")}</td>
                         <td>
                           {ord.giftWrap?.enabled ? (
                             <span className="wrap-tag-sm">🎁 {ord.giftWrap.optionName}</span>
@@ -225,10 +264,57 @@ export default function OwnerDashboard() {
                             <span className="muted">None</span>
                           )}
                         </td>
-                        <td>₹{ord.total?.toLocaleString("en-IN")}</td>
+                        <td>₹{(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}</td>
                         <td>
-                          <span className={`status-pill ${ord.orderStatus || "placed"}`}>
-                            {ord.orderStatus || "placed"}
+                          <span className={`status-pill ${ord.orderStatus || "pending"}`}>
+                            {ord.orderStatus || "pending"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          {/* 2. Recent Customers Table */}
+          <div className="card owner-table-card">
+            <div className="owner-table-header">
+              <h3>Recent Registered Customers</h3>
+              <Link to="/owner/users" className="view-link">
+                Manage All Customers →
+              </Link>
+            </div>
+
+            {recentCustomers.length === 0 ? (
+              <p className="muted">No customer accounts registered yet.</p>
+            ) : (
+              <div className="owner-table-wrapper">
+                <table className="owner-table">
+                  <thead>
+                    <tr>
+                      <th>Customer ID</th>
+                      <th>Full Name</th>
+                      <th>Email Address</th>
+                      <th>Contact Phone</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recentCustomers.map((cust) => (
+                      <tr key={cust.id || cust.uid}>
+                        <td><strong>{cust.customerId || "CUS-10001"}</strong></td>
+                        <td>{cust.fullName || cust.name || "Customer"}</td>
+                        <td>{cust.email}</td>
+                        <td>{cust.mobile || "—"}</td>
+                        <td>
+                          <span
+                            className={`status-pill ${
+                              cust.isBlocked || cust.status === "blocked" ? "cancelled" : "delivered"
+                            }`}
+                          >
+                            {cust.isBlocked || cust.status === "blocked" ? "Blocked" : "Active"}
                           </span>
                         </td>
                       </tr>

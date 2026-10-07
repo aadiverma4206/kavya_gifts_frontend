@@ -73,6 +73,18 @@ export function AuthProvider({ children }) {
           (docSnap) => {
             if (docSnap.exists()) {
               const data = docSnap.data();
+              // Check if customer account was blocked by owner
+              if ((data.isBlocked === true || data.status === "blocked") && data.role === "customer") {
+                if (typeof localStorage !== "undefined") {
+                  localStorage.removeItem("kavya_customer_session");
+                }
+                logoutUser().catch(() => {});
+                setCurrentUser(null);
+                setUserProfile(data);
+                setLoading(false);
+                return;
+              }
+
               setUserProfile(data);
               if (typeof localStorage !== "undefined" && data.role === "customer") {
                 localStorage.setItem("kavya_customer_session", JSON.stringify(data));

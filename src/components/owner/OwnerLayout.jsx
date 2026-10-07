@@ -44,6 +44,9 @@ export default function OwnerLayout({ children, title, subtitle, actionButton })
             <NavLink to="/owner/reviews" className={({ isActive }) => (isActive ? "active" : "")}>
               Reviews
             </NavLink>
+            <NavLink to="/owner/settings" className={({ isActive }) => (isActive ? "active" : "")}>
+              Settings
+            </NavLink>
           </nav>
 
           <div className="owner-user-actions">

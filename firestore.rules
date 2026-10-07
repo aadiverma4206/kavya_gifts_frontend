@@ -100,9 +100,25 @@ service cloud.firestore {
 
     // 7. reviews: Product ratings & reviews
     match /reviews/{reviewId} {
-      allow read: if resource.data.status == 'approved' || isOwner();
-      allow create: if isAuthenticated() && isNotBlocked();
-      allow update, delete: if isOwner();
+      allow read: if resource.data.status == 'approved' ||
+                     (isAuthenticated() && (
+                       resource.data.customerId == getUserData().customerId ||
+                       resource.data.userId == request.auth.uid
+                     )) ||
+                     isOwner();
+      allow create: if isAuthenticated() && isNotBlocked() &&
+                       (request.resource.data.customerId == getUserData().customerId || request.resource.data.userId == request.auth.uid) &&
+                       request.resource.data.rating >= 1 && request.resource.data.rating <= 5;
+      // Customer can edit own review (title, comment, rating), but CANNOT modify another customer's review or change review status!
+      allow update: if (
+        isAuthenticated() &&
+        isNotBlocked() &&
+        (resource.data.customerId == getUserData().customerId || resource.data.userId == request.auth.uid) &&
+        request.resource.data.customerId == resource.data.customerId &&
+        request.resource.data.productId == resource.data.productId &&
+        request.resource.data.status == resource.data.status
+      ) || isOwner();
+      allow delete: if isOwner();
     }
 
     // 8. user_activity: Audit logging for user events
