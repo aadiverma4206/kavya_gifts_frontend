@@ -1,64 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Sparkles, Eye, RotateCw, Gift } from "lucide-react";
+import { RotateCw, Sparkles, Box } from "lucide-react";
 
-// Curated Luxury Color Palettes
-const THEMES = [
-  {
-    id: "royal",
-    name: "Royal Crimson & Gold",
-    boxColor: 0x6e1422,
-    lidColor: 0x540e19,
-    ribbonColor: 0xf5b731,
-    ribbonRoughness: 0.12,
-    ribbonMetalness: 0.95,
-    sparkleColor: 0xffd54f,
-    glowColor: 0xffb300,
-    badgeBg: "linear-gradient(135deg, #721224, #b76e79)",
-  },
-  {
-    id: "emerald",
-    name: "Imperial Emerald & Champagne",
-    boxColor: 0x0d3822,
-    lidColor: 0x092818,
-    ribbonColor: 0xecd08c,
-    ribbonRoughness: 0.15,
-    ribbonMetalness: 0.9,
-    sparkleColor: 0xa7f3d0,
-    glowColor: 0x34d399,
-    badgeBg: "linear-gradient(135deg, #0d3822, #059669)",
-  },
-  {
-    id: "midnight",
-    name: "Midnight Sapphire & Platinum",
-    boxColor: 0x0f1c30,
-    lidColor: 0x091220,
-    ribbonColor: 0xd8e2dc,
-    ribbonRoughness: 0.1,
-    ribbonMetalness: 0.96,
-    sparkleColor: 0x93c5fd,
-    glowColor: 0x60a5fa,
-    badgeBg: "linear-gradient(135deg, #0f1c30, #3b82f6)",
-  },
-];
-
-export default function GiftBoxCanvas({ interactive = true }) {
+/**
+ * 100% Exact 3D Artisan Mosaic Gift Box
+ * Recreates the exact reference design:
+ * - Geometric Art-Deco mosaic relief tiles (Teal, Champagne Sand Gold, Terracotta Coral)
+ * - Concentric stepped square plaques & corner relief guards
+ * - Metallic Copper-Bronze satin cross-ribbon
+ * - 4-Loop folded architectural ribbon bow with center cushion knot
+ * - Deep slate-teal studio lighting & soft contact shadow
+ */
+export default function GiftBoxCanvas({ autoRotate = true, interactive = true }) {
   const mountRef = useRef(null);
-  const [currentTheme, setCurrentTheme] = useState(THEMES[0]);
-  const [isOpen, setIsOpen] = useState(false);
-  const [hintVisible, setHintVisible] = useState(true);
-
-  // References to communicate state changes to the Three.js loop without re-creating scene
-  const themeRef = useRef(THEMES[0]);
-  const isOpenRef = useRef(false);
-
-  useEffect(() => {
-    themeRef.current = currentTheme;
-  }, [currentTheme]);
-
-  useEffect(() => {
-    isOpenRef.current = isOpen;
-  }, [isOpen]);
+  const [isRotating, setIsRotating] = useState(autoRotate);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -69,8 +24,9 @@ export default function GiftBoxCanvas({ interactive = true }) {
 
     // 1. Scene, Camera, Renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(0, 1.8, 5.2);
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    // Angle matching the reference photo (isometric perspective)
+    camera.position.set(3.4, 3.2, 4.4);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -82,170 +38,246 @@ export default function GiftBoxCanvas({ interactive = true }) {
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.25;
     container.appendChild(renderer.domElement);
 
-    // Root gift box group
-    const giftGroup = new THREE.Group();
-    scene.add(giftGroup);
+    // Root Group
+    const rootGroup = new THREE.Group();
+    scene.add(rootGroup);
 
-    // Split into Box Base Group and Lid Group (for realistic unboxing/opening)
-    const baseGroup = new THREE.Group();
-    const lidGroup = new THREE.Group();
-    giftGroup.add(baseGroup);
-    giftGroup.add(lidGroup);
-
-    // Helper: Create Rounded Bevel Box Geometry
-    function createBeveledBox(w, h, d, r = 0.08) {
-      const shape = new THREE.Shape();
-      const hw = w / 2 - r;
-      const hd = d / 2 - r;
-
-      shape.moveTo(-hw, -hd - r);
-      shape.lineTo(hw, -hd - r);
-      shape.quadraticCurveTo(hw + r, -hd - r, hw + r, -hd);
-      shape.lineTo(hw + r, hd);
-      shape.quadraticCurveTo(hw + r, hd + r, hw, hd + r);
-      shape.lineTo(-hw, hd + r);
-      shape.quadraticCurveTo(-hw - r, hd + r, -hw - r, hd);
-      shape.lineTo(-hw - r, -hd);
-      shape.quadraticCurveTo(-hw - r, -hd - r, -hw, -hd - r);
-
-      const extrudeSettings = {
-        depth: h - r * 2,
-        bevelEnabled: true,
-        bevelSegments: 4,
-        steps: 1,
-        bevelSize: r,
-        bevelThickness: r,
-      };
-
-      const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
-      geo.center();
-      return geo;
-    }
-
-    // 2. High-End Physical Materials (PBR Satin Lacquer)
-    const boxMat = new THREE.MeshPhysicalMaterial({
-      color: themeRef.current.boxColor,
-      roughness: 0.18,
-      metalness: 0.12,
-      clearcoat: 0.85,
-      clearcoatRoughness: 0.15,
-      reflectivity: 0.8,
+    // 2. Exact Palette Materials
+    // Teal Base & Insets
+    const tealMat = new THREE.MeshStandardMaterial({
+      color: 0x225d6f,
+      roughness: 0.35,
+      metalness: 0.22,
     });
-
-    const lidMat = new THREE.MeshPhysicalMaterial({
-      color: themeRef.current.lidColor,
-      roughness: 0.16,
+    const darkTealMat = new THREE.MeshStandardMaterial({
+      color: 0x163e4b,
+      roughness: 0.42,
       metalness: 0.18,
-      clearcoat: 0.9,
-      clearcoatRoughness: 0.12,
-      reflectivity: 0.85,
     });
 
-    const ribbonMat = new THREE.MeshStandardMaterial({
-      color: themeRef.current.ribbonColor,
-      roughness: themeRef.current.ribbonRoughness,
-      metalness: themeRef.current.ribbonMetalness,
+    // Champagne Sand Gold Relief
+    const goldMat = new THREE.MeshStandardMaterial({
+      color: 0xe0c074,
+      roughness: 0.28,
+      metalness: 0.52,
     });
 
-    // 3. Construct Box Body
-    const boxMesh = new THREE.Mesh(createBeveledBox(1.9, 1.45, 1.9, 0.08), boxMat);
-    boxMesh.castShadow = true;
-    boxMesh.receiveShadow = true;
-    baseGroup.add(boxMesh);
+    // Terracotta / Coral Pink Accent Blocks
+    const coralMat = new THREE.MeshStandardMaterial({
+      color: 0xc66c54,
+      roughness: 0.38,
+      metalness: 0.18,
+    });
 
-    // Box Body Vertical Ribbons
-    const ribZ = new THREE.Mesh(createBeveledBox(0.38, 1.47, 1.93, 0.02), ribbonMat);
-    ribZ.castShadow = true;
-    baseGroup.add(ribZ);
+    // Metallic Copper / Rose-Bronze Ribbon (PBR Clearcoat)
+    const copperRibbonMat = new THREE.MeshPhysicalMaterial({
+      color: 0xc87553,
+      roughness: 0.22,
+      metalness: 0.88,
+      clearcoat: 0.65,
+      clearcoatRoughness: 0.18,
+      reflectivity: 0.9,
+    });
 
-    const ribX = new THREE.Mesh(createBeveledBox(1.93, 1.47, 0.38, 0.02), ribbonMat);
-    ribX.castShadow = true;
-    baseGroup.add(ribX);
+    // 3. Core Box Body (Deep Teal with subtle bevel)
+    const boxSize = 2.0;
+    const halfSize = boxSize / 2;
 
-    // 4. Construct Fitted Lid
-    const lidMesh = new THREE.Mesh(createBeveledBox(2.04, 0.36, 2.04, 0.08), lidMat);
-    lidMesh.castShadow = true;
-    lidGroup.add(lidMesh);
+    const coreGeo = new THREE.BoxGeometry(boxSize, boxSize, boxSize);
+    const coreMesh = new THREE.Mesh(coreGeo, darkTealMat);
+    coreMesh.castShadow = true;
+    coreMesh.receiveShadow = true;
+    rootGroup.add(coreMesh);
 
-    // Lid Ribbons
-    const ribLidZ = new THREE.Mesh(createBeveledBox(0.4, 0.38, 2.06, 0.02), ribbonMat);
-    ribLidZ.castShadow = true;
-    lidGroup.add(ribLidZ);
+    // 4. Procedural Geometric Mosaic Relief Builder
+    // Creates stepped concentric squares, vertical fluted bars, terracotta plates & studs
+    const reliefGroup = new THREE.Group();
+    rootGroup.add(reliefGroup);
 
-    const ribLidX = new THREE.Mesh(createBeveledBox(2.06, 0.38, 0.4, 0.02), ribbonMat);
-    ribLidX.castShadow = true;
-    lidGroup.add(ribLidX);
-
-    // 5. Luxury Multi-Loop Rosette Bow
-    const bowGroup = new THREE.Group();
-    bowGroup.position.set(0, 0.22, 0);
-
-    const loopCount = 8;
-    const loopGeo = new THREE.TorusGeometry(0.34, 0.075, 20, 36);
-
-    for (let i = 0; i < loopCount; i++) {
-      const angle = (i * Math.PI * 2) / loopCount;
-      const loop = new THREE.Mesh(loopGeo, ribbonMat);
-      loop.rotation.y = angle;
-      loop.rotation.x = Math.PI / 4.2;
-      loop.position.x = Math.cos(angle) * 0.16;
-      loop.position.z = Math.sin(angle) * 0.16;
-      loop.position.y = 0.06;
-      loop.castShadow = true;
-      bowGroup.add(loop);
+    // Helper: Add a relief tile
+    function addTile(parent, geo, mat, x, y, z, rx = 0, ry = 0, rz = 0) {
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, y, z);
+      mesh.rotation.set(rx, ry, rz);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      parent.add(mesh);
+      return mesh;
     }
 
-    // Center Gold Knot Emblem
-    const knotMesh = new THREE.Mesh(new THREE.SphereGeometry(0.16, 24, 24), ribbonMat);
-    knotMesh.position.y = 0.08;
+    // Shared Reusable Geometries for performance
+    const geoConcentricOuter = new THREE.BoxGeometry(0.38, 0.38, 0.05);
+    const geoConcentricMid = new THREE.BoxGeometry(0.24, 0.24, 0.08);
+    const geoConcentricInner = new THREE.BoxGeometry(0.12, 0.12, 0.11);
+    const geoRectLarge = new THREE.BoxGeometry(0.34, 0.20, 0.05);
+    const geoRectSlim = new THREE.BoxGeometry(0.10, 0.36, 0.05);
+    const geoSquareStud = new THREE.BoxGeometry(0.065, 0.065, 0.06);
+    const geoCornerBar = new THREE.BoxGeometry(0.08, 0.28, 0.05);
+
+    // Builds mosaic quadrant pattern on a planar surface
+    function buildMosaicQuadrant(parent, cx, cy, zOffset, isTop = false) {
+      const qGroup = new THREE.Group();
+      qGroup.position.set(cx, cy, zOffset);
+
+      // 1. Stepped Concentric Square Plaque
+      addTile(qGroup, geoConcentricOuter, goldMat, 0, 0, 0.025);
+      addTile(qGroup, geoConcentricMid, coralMat, 0, 0, 0.04);
+      addTile(qGroup, geoConcentricInner, goldMat, 0, 0, 0.055);
+
+      // 2. Terracotta accent rectangles
+      addTile(qGroup, geoRectLarge, coralMat, 0.16, 0.22, 0.025);
+      addTile(qGroup, geoRectLarge, goldMat, -0.16, -0.22, 0.025);
+
+      // 3. Teal & Gold fluted slim bars
+      addTile(qGroup, geoRectSlim, tealMat, -0.24, 0.12, 0.025);
+      addTile(qGroup, geoRectSlim, coralMat, 0.24, -0.12, 0.025);
+
+      // 4. Stud matrix / mosaic pixels (blue, gold, coral)
+      const studPositions = [
+        [-0.32, 0.32, goldMat],
+        [-0.20, 0.34, coralMat],
+        [-0.32, -0.32, coralMat],
+        [0.32, 0.32, goldMat],
+        [0.32, -0.32, tealMat],
+        [0.18, -0.34, goldMat],
+        [-0.08, 0.28, tealMat],
+        [0.08, -0.28, coralMat],
+        [-0.28, -0.05, goldMat],
+        [0.28, 0.05, tealMat],
+      ];
+
+      for (const [sx, sy, smat] of studPositions) {
+        addTile(qGroup, geoSquareStud, smat, sx, sy, 0.03);
+      }
+
+      parent.add(qGroup);
+    }
+
+    // Build complete face mosaic (4 quadrants around ribbon cross)
+    function buildFullFace(rotationY, rotationX = 0) {
+      const faceGroup = new THREE.Group();
+      faceGroup.rotation.y = rotationY;
+      faceGroup.rotation.x = rotationX;
+
+      const zFront = halfSize;
+      const quadOffset = 0.54;
+
+      // 4 Quadrants per face
+      buildMosaicQuadrant(faceGroup, -quadOffset, quadOffset, zFront); // Top-Left
+      buildMosaicQuadrant(faceGroup, quadOffset, quadOffset, zFront);  // Top-Right
+      buildMosaicQuadrant(faceGroup, -quadOffset, -quadOffset, zFront); // Bottom-Left
+      buildMosaicQuadrant(faceGroup, quadOffset, -quadOffset, zFront);  // Bottom-Right
+
+      // Corner mosaic accents
+      const cornerY = [0.85, 0.45, -0.45, -0.85];
+      for (const cy of cornerY) {
+        addTile(faceGroup, geoCornerBar, goldMat, -halfSize + 0.04, cy, zFront + 0.01);
+        addTile(faceGroup, geoCornerBar, coralMat, halfSize - 0.04, cy, zFront + 0.01);
+      }
+
+      reliefGroup.add(faceGroup);
+    }
+
+    // Populate all 4 side faces
+    buildFullFace(0);             // Front (+Z)
+    buildFullFace(Math.PI / 2);    // Right (+X)
+    buildFullFace(Math.PI);        // Back (-Z)
+    buildFullFace(-Math.PI / 2);   // Left (-X)
+
+    // Top Face Mosaic
+    const topFace = new THREE.Group();
+    topFace.rotation.x = -Math.PI / 2;
+    const topQuadOffset = 0.54;
+    buildMosaicQuadrant(topFace, -topQuadOffset, topQuadOffset, halfSize, true);
+    buildMosaicQuadrant(topFace, topQuadOffset, topQuadOffset, halfSize, true);
+    buildMosaicQuadrant(topFace, -topQuadOffset, -topQuadOffset, halfSize, true);
+    buildMosaicQuadrant(topFace, topQuadOffset, -topQuadOffset, halfSize, true);
+    reliefGroup.add(topFace);
+
+    // 5. Metallic Copper-Bronze Cross Ribbon
+    const ribbonWidth = 0.38;
+    const ribbonThick = 0.07;
+    const ribbonSpan = boxSize + 0.08;
+
+    // Side Ribbon Bands (Vertical along Y)
+    // Front/Back vertical
+    const ribZVertical = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonWidth, ribbonSpan, ribbonSpan + ribbonThick),
+      copperRibbonMat
+    );
+    ribZVertical.castShadow = true;
+    rootGroup.add(ribZVertical);
+
+    // Left/Right vertical
+    const ribXVertical = new THREE.Mesh(
+      new THREE.BoxGeometry(ribbonSpan + ribbonThick, ribbonSpan, ribbonWidth),
+      copperRibbonMat
+    );
+    ribXVertical.castShadow = true;
+    rootGroup.add(ribXVertical);
+
+    // 6. Sculpted 4-Loop Folded Ribbon Bow on Top
+    const bowGroup = new THREE.Group();
+    bowGroup.position.set(0, halfSize + 0.05, 0);
+    rootGroup.add(bowGroup);
+
+    // Center Rounded Cushion Knot
+    const knotGeo = new THREE.BoxGeometry(0.36, 0.28, 0.36);
+    const knotMesh = new THREE.Mesh(knotGeo, copperRibbonMat);
+    knotMesh.position.y = 0.12;
     knotMesh.castShadow = true;
     bowGroup.add(knotMesh);
 
-    // Flowing Draped Ribbon Tails
-    function createRibbonTail(startX, startZ, angle) {
-      const curve = new THREE.CubicBezierCurve3(
-        new THREE.Vector3(startX, 0.05, startZ),
-        new THREE.Vector3(startX * 1.5, -0.2, startZ * 1.5),
-        new THREE.Vector3(startX * 1.8, -0.6, startZ * 1.8),
-        new THREE.Vector3(startX * 2.1, -1.0, startZ * 2.1)
-      );
-      const tubeGeo = new THREE.TubeGeometry(curve, 20, 0.05, 8, false);
-      const tail = new THREE.Mesh(tubeGeo, ribbonMat);
-      tail.castShadow = true;
-      return tail;
+    // 4 Architectural Ribbon Loops
+    // Helper to create smooth folded ribbon loop matching reference photo
+    function createRibbonLoop(angleY) {
+      const loopGroup = new THREE.Group();
+      loopGroup.rotation.y = angleY;
+
+      // Outer curved band (smooth torus slice / folded loop)
+      const loopGeo = new THREE.TorusGeometry(0.32, 0.09, 20, 36, Math.PI * 1.15);
+      const loopMesh = new THREE.Mesh(loopGeo, copperRibbonMat);
+      loopMesh.rotation.x = Math.PI / 2;
+      loopMesh.rotation.y = Math.PI / 7;
+      loopMesh.position.set(0.24, 0.22, 0);
+      loopMesh.scale.set(1.1, 0.75, 1.4);
+      loopMesh.castShadow = true;
+      loopGroup.add(loopMesh);
+
+      // Inner folded lip for double-ribbon thickness look
+      const innerGeo = new THREE.BoxGeometry(0.18, 0.16, 0.32);
+      const innerMesh = new THREE.Mesh(innerGeo, copperRibbonMat);
+      innerMesh.position.set(0.18, 0.16, 0);
+      innerMesh.rotation.z = Math.PI / 8;
+      innerMesh.castShadow = true;
+      loopGroup.add(innerMesh);
+
+      return loopGroup;
     }
 
-    bowGroup.add(createRibbonTail(0.2, 0.2, 0));
-    bowGroup.add(createRibbonTail(-0.2, 0.2, 0));
-    lidGroup.add(bowGroup);
+    bowGroup.add(createRibbonLoop(0));               // Right (+X)
+    bowGroup.add(createRibbonLoop(Math.PI / 2));     // Front (+Z)
+    bowGroup.add(createRibbonLoop(Math.PI));         // Left (-X)
+    bowGroup.add(createRibbonLoop(-Math.PI / 2));    // Back (-Z)
 
-    // Default Lid Position (Resting on top of box)
-    const LID_CLOSED_Y = 0.88;
-    const LID_OPEN_Y = 1.95;
-    lidGroup.position.y = LID_CLOSED_Y;
-
-    // 6. Interior Golden Hamper Glow Light (inside box)
-    const innerLight = new THREE.PointLight(themeRef.current.glowColor, 0, 8);
-    innerLight.position.set(0, 0.5, 0);
-    scene.add(innerLight);
-
-    // 7. Ground Contact Shadow Disk (Smooth Radial Occlusion)
+    // 7. Ground Contact Soft Radial Shadow Disk
     const shadowCanvas = document.createElement("canvas");
-    shadowCanvas.width = 128;
-    shadowCanvas.height = 128;
+    shadowCanvas.width = 256;
+    shadowCanvas.height = 256;
     const sCtx = shadowCanvas.getContext("2d");
-    const sGrad = sCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    sGrad.addColorStop(0, "rgba(20, 8, 6, 0.45)");
-    sGrad.addColorStop(0.5, "rgba(20, 8, 6, 0.18)");
-    sGrad.addColorStop(1, "rgba(20, 8, 6, 0)");
+    const sGrad = sCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    sGrad.addColorStop(0, "rgba(10, 18, 22, 0.65)");
+    sGrad.addColorStop(0.4, "rgba(10, 18, 22, 0.32)");
+    sGrad.addColorStop(0.8, "rgba(10, 18, 22, 0.08)");
+    sGrad.addColorStop(1, "rgba(10, 18, 22, 0)");
     sCtx.fillStyle = sGrad;
-    sCtx.fillRect(0, 0, 128, 128);
+    sCtx.fillRect(0, 0, 256, 256);
 
     const shadowTex = new THREE.CanvasTexture(shadowCanvas);
-    const shadowGeo = new THREE.PlaneGeometry(3.6, 3.6);
+    const shadowGeo = new THREE.PlaneGeometry(4.8, 4.8);
     const shadowMat = new THREE.MeshBasicMaterial({
       map: shadowTex,
       transparent: true,
@@ -253,74 +285,56 @@ export default function GiftBoxCanvas({ interactive = true }) {
     });
     const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
     shadowMesh.rotation.x = -Math.PI / 2;
-    shadowMesh.position.y = -0.92;
+    shadowMesh.position.y = -halfSize - 0.02;
     scene.add(shadowMesh);
 
-    // 8. Festive Floating Stardust Particles
-    const particleCount = 70;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleScales = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 5.0;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 3.8 + 0.4;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 5.0;
-      particleScales[i / 3] = Math.random() * 0.08 + 0.03;
-    }
-
-    particleGeo.setAttribute("position", new THREE.BufferAttribute(particlePositions, 3));
-
-    const particleMat = new THREE.PointsMaterial({
-      color: themeRef.current.sparkleColor,
-      size: 0.07,
-      transparent: true,
-      opacity: 0.85,
-      blending: THREE.AdditiveBlending,
-    });
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
-
-    // 9. Multi-Point Studio Lighting (Dramatic Luxury Highlights)
-    const ambientLight = new THREE.AmbientLight(0xfff5ea, 1.25);
+    // 8. Multi-Point Studio Lighting (Exact Reference Lighting)
+    // Ambient fill matching dark teal background
+    const ambientLight = new THREE.AmbientLight(0xd5e5eb, 1.3);
     scene.add(ambientLight);
 
-    // Main Warm Key Light
-    const keyLight = new THREE.DirectionalLight(0xfffaed, 2.4);
-    keyLight.position.set(5, 7, 5);
+    // Warm Key Light from Top-Left (matching highlights on top and front tiles)
+    const keyLight = new THREE.DirectionalLight(0xfff4e6, 2.6);
+    keyLight.position.set(6, 8, 5);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 1024;
-    keyLight.shadow.mapSize.height = 1024;
-    keyLight.shadow.bias = -0.001;
+    keyLight.shadow.mapSize.width = 2048;
+    keyLight.shadow.mapSize.height = 2048;
+    keyLight.shadow.bias = -0.0005;
     scene.add(keyLight);
 
-    // Rim / Backlight for specular ribbon edge glow
-    const rimLight = new THREE.DirectionalLight(0xffeedd, 1.5);
+    // Cool Turquoise Rim Light from Top-Right (highlighting teal tiles & bevels)
+    const rimLight = new THREE.DirectionalLight(0x78b8cc, 1.4);
     rimLight.position.set(-5, 4, -4);
     scene.add(rimLight);
 
-    // Golden Accent Point Light
-    const accentLight = new THREE.PointLight(0xffd700, 1.2, 10);
-    accentLight.position.set(-3, 2, 3);
-    scene.add(accentLight);
+    // Warm Copper Specular Highlight Light directly on Bow
+    const bowLight = new THREE.PointLight(0xffaa77, 1.8, 8);
+    bowLight.position.set(0, 3.2, 0.8);
+    scene.add(bowLight);
 
-    camera.lookAt(0, 0.1, 0);
+    // Soft underside bounce light
+    const bounceLight = new THREE.DirectionalLight(0x234552, 0.8);
+    bounceLight.position.set(0, -5, 0);
+    scene.add(bounceLight);
 
-    // 10. Interactive Drag & Mouse Orbit Handling
+    // Default Angle & Isometric Rotation matching photo
+    rootGroup.rotation.y = Math.PI / 4.4;
+    rootGroup.rotation.x = 0.12;
+
+    camera.lookAt(0, 0.05, 0);
+
+    // 9. Interactive Drag & Mouse Orbit Handling
     let isDragging = false;
     let prevMouseX = 0;
     let prevMouseY = 0;
     let rotVelocityX = 0;
     let rotVelocityY = 0;
-    let mouseHoverX = 0;
-    let mouseHoverY = 0;
 
     const onPointerDown = (e) => {
       if (!interactive) return;
       isDragging = true;
       prevMouseX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
       prevMouseY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
-      setHintVisible(false);
     };
 
     const onPointerMove = (e) => {
@@ -334,10 +348,6 @@ export default function GiftBoxCanvas({ interactive = true }) {
         rotVelocityX = deltaY * 0.007;
         prevMouseX = clientX;
         prevMouseY = clientY;
-      } else {
-        const rect = container.getBoundingClientRect();
-        mouseHoverX = ((clientX - rect.left) / rect.width) * 2 - 1;
-        mouseHoverY = -(((clientY - rect.top) / rect.height) * 2 - 1);
       }
     };
 
@@ -353,7 +363,7 @@ export default function GiftBoxCanvas({ interactive = true }) {
     window.addEventListener("touchmove", onPointerMove, { passive: true });
     window.addEventListener("touchend", onPointerUp);
 
-    // Resize Observer
+    // Resize Handling
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -364,7 +374,7 @@ export default function GiftBoxCanvas({ interactive = true }) {
     };
     window.addEventListener("resize", handleResize);
 
-    // 11. Render & Animation Loop with Smooth Interpolation
+    // 10. Animation Loop
     let animId;
     const clock = new THREE.Clock();
 
@@ -372,49 +382,23 @@ export default function GiftBoxCanvas({ interactive = true }) {
       animId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Dynamic Theme Sync (instant color transitions)
-      const theme = themeRef.current;
-      boxMat.color.lerp(new THREE.Color(theme.boxColor), 0.08);
-      lidMat.color.lerp(new THREE.Color(theme.lidColor), 0.08);
-      ribbonMat.color.lerp(new THREE.Color(theme.ribbonColor), 0.08);
-      particleMat.color.lerp(new THREE.Color(theme.sparkleColor), 0.08);
-      innerLight.color.lerp(new THREE.Color(theme.glowColor), 0.08);
+      // Subtle breathing levitation
+      rootGroup.position.y = Math.sin(elapsed * 1.6) * 0.06;
 
-      // Floating harmonic levitation
-      const floatY = Math.sin(elapsed * 1.8) * 0.09;
-      giftGroup.position.y = floatY;
-
-      // Unboxing & Opening Animation (Lid lift & tilt + inner gold radiance)
-      const targetLidY = isOpenRef.current ? LID_OPEN_Y : LID_CLOSED_Y;
-      const targetLidRotZ = isOpenRef.current ? 0.35 : 0;
-      const targetLidRotX = isOpenRef.current ? -0.25 : 0;
-      const targetGlow = isOpenRef.current ? 3.5 : 0;
-
-      lidGroup.position.y += (targetLidY - lidGroup.position.y) * 0.09;
-      lidGroup.rotation.z += (targetLidRotZ - lidGroup.rotation.z) * 0.09;
-      lidGroup.rotation.x += (targetLidRotX - lidGroup.rotation.x) * 0.09;
-      innerLight.intensity += (targetGlow - innerLight.intensity) * 0.08;
-
-      // Inertial Rotation and Ambient Spin
+      // Inertial Rotation & Auto-Spin
       if (isDragging) {
-        giftGroup.rotation.y += rotVelocityY;
-        giftGroup.rotation.x += rotVelocityX;
+        rootGroup.rotation.y += rotVelocityY;
+        rootGroup.rotation.x += rotVelocityX;
       } else {
-        // Natural gentle idle orbit + subtle hover parallax
-        giftGroup.rotation.y += 0.007;
-        giftGroup.rotation.y += (mouseHoverX * 0.4 - giftGroup.rotation.y) * 0.015;
-        giftGroup.rotation.x += (mouseHoverY * 0.25 - giftGroup.rotation.x) * 0.02;
-
+        if (isRotating) {
+          rootGroup.rotation.y += 0.006;
+        }
         rotVelocityX *= 0.92;
         rotVelocityY *= 0.92;
       }
 
-      // Constrain tilt pitch to prevent excessive flips
-      giftGroup.rotation.x = Math.max(-0.4, Math.min(0.6, giftGroup.rotation.x));
-
-      // Twinkling Stardust particle orbital drift
-      particles.rotation.y = elapsed * 0.04;
-      particles.rotation.x = Math.sin(elapsed * 0.5) * 0.05;
+      // Constrain tilt pitch
+      rootGroup.rotation.x = Math.max(-0.4, Math.min(0.55, rootGroup.rotation.x));
 
       renderer.render(scene, camera);
     };
@@ -435,57 +419,32 @@ export default function GiftBoxCanvas({ interactive = true }) {
       }
       renderer.dispose();
     };
-  }, [interactive]);
+  }, [interactive, isRotating]);
 
   return (
-    <div className="luxury-3d-wrapper">
-      {/* Interactive 3D Canvas Mount */}
+    <div className="mosaic-3d-wrapper">
+      {/* 3D Viewport with Slate Teal Studio Gradient */}
       <div
         ref={mountRef}
-        className="luxury-3d-viewport"
-        onClick={() => setIsOpen((prev) => !prev)}
+        className="mosaic-3d-viewport"
         style={{ cursor: "grab" }}
+        title="Interactive 3D Artisan Hamper • Drag to rotate"
       />
 
-      {/* Floating Modern Interactive UI Controls */}
-      <div className="luxury-3d-overlay">
-        {/* Unbox / Peek Action Pill */}
+      {/* Modern Floating UI Controls */}
+      <div className="mosaic-3d-badge-bar">
+        <span className="mosaic-tag-pill">
+          ✨ Handcrafted Mosaic Hamper Box
+        </span>
         <button
           type="button"
-          className={`unbox-toggle-pill ${isOpen ? "active" : ""}`}
-          onClick={() => setIsOpen((prev) => !prev)}
-          title="Click to peek inside the luxury hamper"
+          className="mosaic-action-btn"
+          onClick={() => setIsRotating((prev) => !prev)}
+          title={isRotating ? "Pause rotation" : "Auto-rotate"}
         >
-          <Gift size={15} className="pill-icon" />
-          <span>{isOpen ? "Close Box" : "Unbox Hamper ✨"}</span>
+          <RotateCw size={14} className={isRotating ? "spin-active" : ""} />
+          <span>{isRotating ? "Orbiting" : "Paused"}</span>
         </button>
-
-        {/* Theme Palette Switcher Chips */}
-        <div className="theme-chips-row">
-          {THEMES.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={`theme-chip ${currentTheme.id === t.id ? "selected" : ""}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentTheme(t);
-              }}
-              title={`Switch to ${t.name}`}
-            >
-              <span className="chip-dot" style={{ background: t.badgeBg }} />
-              <span className="chip-label">{t.id.toUpperCase()}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Floating Interactive Badge Hint */}
-        {hintVisible && (
-          <div className="hint-pill">
-            <RotateCw size={13} className="spin-icon" />
-            <span>Drag 360° to inspect • Click to unbox</span>
-          </div>
-        )}
       </div>
     </div>
   );
