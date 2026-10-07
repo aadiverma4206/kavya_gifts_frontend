@@ -1,5 +1,14 @@
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
+import { logUserActivity } from "./activityService";
 
 const USERS_COLLECTION = "users";
 
@@ -15,18 +24,65 @@ export async function getUserProfile(uid) {
 }
 
 /**
- * Creates or updates a user profile in Firestore.
+ * Updates an authenticated customer's profile.
  */
 export async function saveUserProfile(uid, userData) {
   if (!uid) throw new Error("User ID is required.");
   const userRef = doc(db, USERS_COLLECTION, uid);
-  await setDoc(
-    userRef,
-    {
-      ...userData,
-      updatedAt: serverTimestamp(),
-    },
-    { merge: true }
-  );
-  return { uid, ...userData };
+
+  const payload = {
+    ...userData,
+    updatedAt: serverTimestamp(),
+  };
+
+  await setDoc(userRef, payload, { merge: true });
+
+  if (userData.customerId) {
+    await logUserActivity({
+      customerId: userData.customerId,
+      action: "PROFILE_UPDATED",
+      description: "User profile details updated",
+    });
+  }
+
+  return { uid, ...payload };
+}
+
+/**
+ * Owner portal: Retrieves all registered users/customers.
+ */
+export async function getAllUsersForOwner() {
+  const snapshot = await getDocs(collection(db, USERS_COLLECTION));
+  return snapshot.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+  }));
+}
+
+/**
+ * Owner portal: Blocks or unblocks a customer.
+ * Updates both `status` ("active" | "blocked") and `isBlocked` (boolean).
+ */
+export async function toggleBlockUser(uid, isBlocked) {
+  if (!uid) throw new Error("User ID is required.");
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  const nextStatus = isBlocked ? "blocked" : "active";
+
+  await updateDoc(userRef, {
+    status: nextStatus,
+    isBlocked: Boolean(isBlocked),
+    updatedAt: serverTimestamp(),
+  });
+
+  const snap = await getDoc(userRef);
+  const customerId = snap.exists() ? snap.data().customerId : null;
+  if (customerId) {
+    await logUserActivity({
+      customerId,
+      action: isBlocked ? "USER_BLOCKED" : "USER_UNBLOCKED",
+      description: `Customer account ${isBlocked ? "suspended" : "restored"} by administrator`,
+    });
+  }
+
+  return { uid, status: nextStatus, isBlocked: Boolean(isBlocked) };
 }

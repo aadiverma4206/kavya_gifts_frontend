@@ -1,0 +1,155 @@
+.gift-wrap-selector {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.gift-wrap-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.gift-wrap-badge {
+  display: inline-block;
+  background: rgba(217, 164, 65, 0.15);
+  color: #7a1f2b;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 8px;
+}
+
+.gift-wrap-title-wrap h3 {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.btn-sm {
+  padding: 10px 18px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.gift-wrap-body {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(122, 31, 43, 0.2);
+}
+
+.gift-wrap-label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+}
+
+.gift-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.gift-option-card {
+  border: 1.5px solid rgba(122, 31, 43, 0.15);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: #fdfaf6;
+  transition: all 0.2s ease;
+}
+
+.gift-option-card:hover {
+  border-color: var(--color-accent);
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+.gift-option-card.selected {
+  border-color: var(--color-primary);
+  background: #fff8f5;
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.gift-option-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.gift-option-top h4 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.gift-option-price {
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 14px;
+}
+
+.gift-option-desc {
+  font-size: 12.5px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.gift-message-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.gift-message-section .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gift-message-section label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.gift-message-section input,
+.gift-message-section textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(122, 31, 43, 0.25);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  background: #ffffff;
+  outline: none;
+}
+
+.gift-message-section input:focus,
+.gift-message-section textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(122, 31, 43, 0.1);
+}
+
+.char-count {
+  font-size: 11px;
+  text-align: right;
+}
+
+@media (max-width: 650px) {
+  .gift-wrap-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .gift-options-grid {
+    grid-template-columns: 1fr;
+  }
+}

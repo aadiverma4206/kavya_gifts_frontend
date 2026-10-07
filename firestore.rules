@@ -3,17 +3,146 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // This rule allows anyone with your Firestore database reference to view, edit,
-    // and delete all data in your Firestore database. It is useful for getting
-    // started, but it is configured to expire after 30 days because it
-    // leaves your app open to attackers. At that time, all client
-    // requests to your Firestore database will be denied.
-    //
-    // Make sure to write security rules for your app before that time, or else
-    // all client requests to your Firestore database will be denied until you Update
-    // your rules
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    function isOwner() {
+      return isAuthenticated() && getUserData().role == 'owner';
+    }
+
+    function isNotBlocked() {
+      return isAuthenticated() &&
+             getUserData().isBlocked != true &&
+             getUserData().status != 'blocked';
+    }
+
+    // 1. users: Customer profile & administrative accounts
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isOwner());
+      // Customers can create their own initial profile during registration
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      // Customers can update personal details, but CANNOT escalate role or unblock themselves
+      allow update: if isAuthenticated() && (
+        (
+          request.auth.uid == userId &&
+          isNotBlocked() &&
+          request.resource.data.role == resource.data.role &&
+          request.resource.data.isBlocked == resource.data.isBlocked &&
+          request.resource.data.status == resource.data.status
+        ) ||
+        isOwner()
+      );
+      allow delete: if isOwner();
+    }
+
+    // 2. products: Catalog hampers (Only Owner can create/update/delete)
+    match /products/{productId} {
+      allow read: if resource.data.status == 'active' || isOwner();
+      allow write: if isOwner();
+    }
+
+    // 3. categories: Festive occasions (Only Owner can write)
+    match /categories/{categoryId} {
+      allow read: if resource.data.status == 'active' || isOwner();
+      allow write: if isOwner();
+    }
+
+    // 4. carts: Cloud shopping carts
+    match /carts/{cartId} {
+      allow read: if isAuthenticated() && (
+        request.auth.uid == cartId ||
+        resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+      allow create, update: if isAuthenticated() && isNotBlocked() && (
+        request.auth.uid == cartId ||
+        request.resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+      allow delete: if isAuthenticated() && (
+        request.auth.uid == cartId ||
+        resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+    }
+
+    // 5. orders: Customer booking orders (Customers cannot edit once placed)
+    match /orders/{orderId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+      allow create: if (
+        isAuthenticated() &&
+        isNotBlocked() &&
+        (request.resource.data.userId == request.auth.uid || request.resource.data.customerId == getUserData().customerId)
+      ) || isOwner();
+      allow update, delete: if isOwner();
+    }
+
+    // 6. payments: Payment transaction ledger (Customers cannot edit or delete)
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+      allow create: if isAuthenticated() && isNotBlocked();
+      allow update, delete: if isOwner();
+    }
+
+    // 7. reviews: Product ratings & reviews
+    match /reviews/{reviewId} {
+      allow read: if resource.data.status == 'approved' || isOwner();
+      allow create: if isAuthenticated() && isNotBlocked();
+      allow update, delete: if isOwner();
+    }
+
+    // 8. user_activity: Audit logging for user events
+    match /user_activity/{activityId} {
+      allow read: if isAuthenticated() && (
+        resource.data.customerId == getUserData().customerId ||
+        isOwner()
+      );
+      allow create: if isAuthenticated() && isNotBlocked();
+      allow update, delete: if isOwner();
+    }
+
+    // 9. owner_settings: General store contact information
+    match /owner_settings/{settingId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
+    // 10. newsletter_subscribers: Email subscriptions
+    match /newsletter_subscribers/{subscriberId} {
+      allow create, update: if request.resource.data.email is string &&
+                            request.resource.data.email.size() >= 5;
+      allow read, delete: if isOwner();
+    }
+
+    // 11. contact_messages: Customer contact inquiries
+    match /contact_messages/{messageId} {
+      allow create: if request.resource.data.name is string &&
+                    request.resource.data.email is string;
+      allow read, update, delete: if isOwner();
+    }
+
+    // 12. counters: Atomic sequential ID counters
+    match /counters/{counterId} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Default deny for everything else
     match /{document=**} {
-      allow read, write: if request.time < timestamp.date(2026, 11, 6);
+      allow read, write: if false;
     }
   }
 }

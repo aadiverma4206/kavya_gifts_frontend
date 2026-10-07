@@ -1,0 +1,183 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(80vh - 120px);
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 36px 32px;
+  background: #ffffff;
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 30px rgba(42, 24, 21, 0.08);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-tag {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--color-accent);
+  margin-bottom: 6px;
+}
+
+.auth-header h2 {
+  font-size: 32px;
+  margin-bottom: 6px;
+}
+
+.auth-steps-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.step-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.step-badge span {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(122, 31, 43, 0.1);
+  color: var(--color-primary);
+  font-size: 12px;
+}
+
+.step-badge.active {
+  color: var(--color-primary);
+}
+
+.step-badge.active span {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.step-line {
+  width: 40px;
+  height: 2px;
+  background: rgba(122, 31, 43, 0.15);
+}
+
+.auth-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+
+.auth-alert.error {
+  background: #fdf2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.auth-alert.success {
+  background: #f0fdf4;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid rgba(122, 31, 43, 0.2);
+  border-radius: var(--radius-btn);
+  font-family: inherit;
+  font-size: 14.5px;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(122, 31, 43, 0.1);
+}
+
+.btn-block {
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.form-actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.captcha-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.captcha-display {
+  background: #2a1815;
+  color: #fbf3e7;
+  letter-spacing: 8px;
+  font-family: monospace;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  user-select: none;
+  text-decoration: line-through;
+  text-decoration-color: var(--color-accent);
+}
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 13.5px;
+}
+
+.auth-footer a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}

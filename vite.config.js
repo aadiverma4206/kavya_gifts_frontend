@@ -6,4 +6,17 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+          firebase: ["firebase/app", "firebase/firestore", "firebase/auth", "firebase/storage"],
+          three: ["three"],
+          charts: ["recharts"],
+          ui: ["lucide-react", "sonner"],
+        },
+      },
+    },
+  },
 });

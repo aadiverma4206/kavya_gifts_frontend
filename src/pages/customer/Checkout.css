@@ -1,0 +1,146 @@
+.checkout-container {
+  padding-top: 30px;
+}
+
+.checkout-header {
+  margin-bottom: 28px;
+}
+
+.checkout-header h2 {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.checkout-card {
+  padding: 28px;
+  background: #ffffff;
+}
+
+.checkout-card h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.summary-card {
+  padding: 28px;
+  background: #ffffff;
+  position: sticky;
+  top: 90px;
+}
+
+.summary-card h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(122, 31, 43, 0.1);
+  padding-bottom: 12px;
+}
+
+.summary-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding-right: 6px;
+}
+
+.summary-line-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.summary-line-item img {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.summary-item-info {
+  flex: 1;
+}
+
+.summary-item-info h4 {
+  font-size: 15px;
+  margin: 0 0 2px;
+}
+
+.summary-item-info p {
+  font-size: 12.5px;
+  margin: 0;
+}
+
+.summary-item-subtotal {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-primary);
+}
+
+.summary-calc-breakdown {
+  border-top: 1px dashed rgba(122, 31, 43, 0.2);
+  padding-top: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.total-row {
+  border-top: 1px solid rgba(122, 31, 43, 0.15);
+  padding-top: 12px;
+  margin-top: 4px;
+  font-size: 18px;
+}
+
+.grand-total-amount {
+  font-size: 22px;
+  color: var(--color-primary);
+}
+
+.security-guarantee {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 14px;
+}
+
+.checkout-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.checkout-alert.error {
+  background: #fdf2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 900px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

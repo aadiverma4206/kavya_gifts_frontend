@@ -3,11 +3,11 @@
   grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
   align-items: center;
-  padding: 80px 24px;
+  padding: 60px 24px;
 }
 
 .hero-text h1 {
-  font-size: 48px;
+  font-size: 52px;
   line-height: 1.15;
   margin-bottom: 20px;
 }
@@ -24,10 +24,37 @@
   gap: 16px;
 }
 
-.hero-image-placeholder {
+.hero-3d-box {
+  position: relative;
   aspect-ratio: 1 / 1;
   border-radius: var(--radius-card);
-  background: linear-gradient(135deg, #d9a441, #f2e2c8 70%);
+  background: radial-gradient(circle at center, #ffffff 0%, #fbf3e7 75%, #f4e3c9 100%);
+  border: 1px solid rgba(217, 164, 65, 0.3);
+  box-shadow: 0 16px 40px rgba(42, 24, 21, 0.1);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-3d-caption {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+
+.hero-3d-caption span {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 31, 43, 0.1);
 }
 
 .section h2 {

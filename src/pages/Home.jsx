@@ -3,6 +3,7 @@ import { getActiveProducts } from "../services/productService.js";
 import { getActiveCategories } from "../services/categoryService.js";
 import ProductCard from "../components/ProductCard.jsx";
 import CategoryCard from "../components/CategoryCard.jsx";
+import GiftBoxCanvas from "../components/three/GiftBoxCanvas.jsx";
 import "./Home.css";
 
 export default function Home() {
@@ -38,9 +39,10 @@ export default function Home() {
 
   return (
     <>
-      {/* ---------- Hero ---------- */}
+      {/* ---------- Hero with 3D Three.js Animated Gift Box ---------- */}
       <section className="hero container">
         <div className="hero-text">
+          <span className="auth-tag">Artisan Handcrafted Hampers</span>
           <h1>Gifts that feel like a warm hug</h1>
           <p className="muted">
             Handpicked hampers for Diwali, weddings, birthdays, and every occasion worth
@@ -55,7 +57,14 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="hero-image-placeholder" />
+
+        {/* 3D Three.js Interactive Gift Box */}
+        <div className="hero-3d-box card">
+          <GiftBoxCanvas autoRotate={true} interactive={true} />
+          <div className="hero-3d-caption">
+            <span>✨ Interactive 3D Hamper Box • Move cursor to inspect</span>
+          </div>
+        </div>
       </section>
 
       {/* ---------- Shop by Occasion ---------- */}

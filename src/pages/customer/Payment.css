@@ -1,0 +1,161 @@
+.payment-container {
+  padding-top: 30px;
+}
+
+.payment-header {
+  margin-bottom: 28px;
+}
+
+.payment-header h2 {
+  font-size: 36px;
+  margin-bottom: 6px;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.payment-methods-card {
+  padding: 32px;
+  background: #ffffff;
+}
+
+.payment-option-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid rgba(122, 31, 43, 0.15);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  background: #fdfaf6;
+  transition: all 0.2s ease;
+}
+
+.payment-option-row:hover {
+  border-color: var(--color-accent);
+  background: #ffffff;
+}
+
+.payment-option-row.active {
+  border-color: var(--color-primary);
+  background: #fff8f5;
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.payment-option-info {
+  flex: 1;
+}
+
+.payment-option-info strong {
+  display: block;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.payment-option-info p {
+  font-size: 12.5px;
+  margin: 2px 0 0;
+}
+
+.fast-badge {
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.payment-subform {
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px dashed rgba(122, 31, 43, 0.25);
+  border-radius: 8px;
+  margin: -4px 0 16px 0;
+}
+
+.payment-subform label {
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.payment-subform input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgba(122, 31, 43, 0.25);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.payment-summary-card {
+  padding: 24px;
+  background: #ffffff;
+}
+
+.payment-summary-card h4 {
+  font-size: 16px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.recipient-name {
+  font-size: 18px;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.gift-wrap-recap {
+  background: #fdf6ec;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.wrap-tag {
+  font-size: 12px;
+  font-weight: 700;
+  color: #92400e;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.recap-message {
+  font-style: italic;
+  font-size: 12.5px;
+  color: #78350f;
+  margin: 0;
+}
+
+.recap-pricing {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recap-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13.5px;
+}
+
+.recap-row.total {
+  font-size: 16px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(122, 31, 43, 0.1);
+}
+
+@media (max-width: 850px) {
+  .payment-grid {
+    grid-template-columns: 1fr;
+  }
+}
