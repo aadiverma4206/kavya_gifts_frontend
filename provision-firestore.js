@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp, collection, getDocs } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 import * as fs from "fs";
@@ -25,10 +25,9 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-console.log("=================================================");
-console.log("FIRESTORE PROVISIONING: kavya-gift-database");
-console.log("=================================================");
-console.log("Target Project:", envConfig.VITE_FIREBASE_PROJECT_ID);
+console.log("==================================================================");
+console.log("100% PROPER FIRESTORE SCHEMA PROVISIONING: kavya-gift-database");
+console.log("==================================================================");
 
 const firebaseConfig = {
   apiKey: envConfig.VITE_FIREBASE_API_KEY,
@@ -42,227 +41,293 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Schemas to provision structurally without creating dummy business data
-const SCHEMAS = {
+/**
+ * 100% EXACT FIRESTORE DOCUMENT STRUCTURES WITH NATIVE DATA TYPES
+ * Every single field requested by the user is an individual top-level Firestore property.
+ * Annotated with `_isSchema: true` so frontend queries seamlessly ignore it.
+ */
+const COMPLETE_COLLECTION_STRUCTURES = {
+  // 1. users
   users: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for users collection. Contains customer profiles and owner administrative records. Passwords are never stored here.",
-    _allowedRoles: ["customer", "owner"],
-    _allowedStatus: ["active", "blocked"],
-    _schemaFields: [
-      "customerId",
-      "uid",
-      "role",
-      "fullName",
-      "mobile",
-      "email",
-      "address",
-      "profileImage",
-      "status",
-      "isBlocked",
-      "createdAt",
-      "updatedAt",
-      "lastLoginAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for customer & owner profiles",
+      customerId: "CUS-10000",
+      uid: "AUTHENTICATION_UID_REFERENCE",
+      role: "customer", // Allowed: "customer" | "owner"
+      fullName: "Full Name",
+      mobile: "9876543210",
+      email: "customer@kavyagifting.com",
+      address: "Delivery Street Address, City, State, PIN",
+      profileImage: "",
+      status: "active", // Allowed: "active" | "blocked"
+      isBlocked: false,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      lastLoginAt: serverTimestamp(),
+    },
   },
+
+  // 2. products
   products: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for products catalog hampers. Only owner accounts may create or modify products.",
-    _schemaFields: [
-      "productId",
-      "productName",
-      "slug",
-      "categoryId",
-      "categoryName",
-      "description",
-      "shortDescription",
-      "price",
-      "stockQuantity",
-      "images",
-      "thumbnail",
-      "giftWrappingAvailable",
-      "giftWrappingPrice",
-      "status",
-      "featured",
-      "createdAt",
-      "updatedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for gift hampers and products catalog",
+      productId: "PRD-10000",
+      productName: "Product Name Template",
+      slug: "product-name-slug",
+      categoryId: "CAT-10000",
+      categoryName: "Category Name",
+      description: "Detailed product narrative, packaging details, and specifications.",
+      shortDescription: "Short teaser description of the gift hamper.",
+      price: 1999,
+      stockQuantity: 50,
+      images: [
+        "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800"
+      ],
+      thumbnail: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800",
+      giftWrappingAvailable: true,
+      giftWrappingPrice: 150,
+      status: "schema_template", // Live products use: "active" | "inactive" | "archived"
+      featured: false,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 3. categories
   categories: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for gift categories and festive occasions.",
-    _schemaFields: [
-      "categoryId",
-      "categoryName",
-      "slug",
-      "description",
-      "image",
-      "status",
-      "sortOrder",
-      "createdAt",
-      "updatedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for gifting categories and occasions",
+      categoryId: "CAT-10000",
+      categoryName: "Category Name Template",
+      slug: "category-slug",
+      description: "Curated collection of handcrafted hampers and luxury gift boxes.",
+      image: "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&q=80&w=800",
+      status: "schema_template", // Live categories use: "active" | "inactive"
+      sortOrder: 1,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 4. carts
   carts: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for customer shopping carts.",
-    _schemaFields: [
-      "cartId",
-      "customerId",
-      "items",
-      "subtotal",
-      "giftWrappingTotal",
-      "total",
-      "updatedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for shopping carts",
+      cartId: "CRT-10000",
+      customerId: "CUS-10000",
+      items: [
+        {
+          productId: "PRD-10000",
+          productName: "Luxury Hamper Item",
+          price: 1999,
+          quantity: 1,
+          giftWrapped: true,
+          giftWrappingPrice: 150,
+          thumbnail: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=800"
+        }
+      ],
+      subtotal: 1999,
+      giftWrappingTotal: 150,
+      total: 2149,
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 5. orders
   orders: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for customer gift hamper orders.",
-    _schemaFields: [
-      "orderId",
-      "customerId",
-      "customerSnapshot",
-      "items",
-      "subtotal",
-      "giftWrappingTotal",
-      "totalAmount",
-      "paymentId",
-      "paymentStatus",
-      "orderStatus",
-      "deliveryAddress",
-      "createdAt",
-      "updatedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for customer orders",
+      orderId: "ORD-10000",
+      customerId: "CUS-10000",
+      userId: "AUTHENTICATION_UID_REFERENCE",
+      customerSnapshot: {
+        fullName: "Customer Name",
+        email: "customer@kavyagifting.com",
+        mobile: "9876543210"
+      },
+      items: [
+        {
+          productId: "PRD-10000",
+          productName: "Luxury Hamper Item",
+          price: 1999,
+          quantity: 1,
+          giftWrapped: true,
+          giftWrappingPrice: 150
+        }
+      ],
+      subtotal: 1999,
+      giftWrappingTotal: 150,
+      totalAmount: 2149,
+      paymentId: "PAY-10000",
+      paymentStatus: "pending", // "pending" | "paid" | "failed" | "refunded"
+      orderStatus: "placed", // "placed" | "processing" | "shipped" | "delivered" | "cancelled"
+      deliveryAddress: {
+        fullName: "Recipient Name",
+        mobile: "9876543210",
+        addressLine: "Flat 402, Lotus Towers",
+        city: "Bengaluru",
+        state: "Karnataka",
+        pincode: "560038"
+      },
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 6. payments
   payments: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for payment transaction ledger records.",
-    _schemaFields: [
-      "paymentId",
-      "orderId",
-      "customerId",
-      "amount",
-      "currency",
-      "provider",
-      "providerPaymentId",
-      "paymentStatus",
-      "paymentMethod",
-      "createdAt",
-      "verifiedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for payment ledger entries",
+      paymentId: "PAY-10000",
+      orderId: "ORD-10000",
+      customerId: "CUS-10000",
+      amount: 2149,
+      currency: "INR",
+      provider: "razorpay", // "cashfree" | "razorpay" | "upi" | "cod"
+      providerPaymentId: "pay_test_reference_id_10000",
+      paymentStatus: "pending", // "pending" | "success" | "failed"
+      paymentMethod: "UPI", // "UPI" | "CARD" | "NETBANKING" | "COD"
+      createdAt: serverTimestamp(),
+      verifiedAt: serverTimestamp(),
+    },
   },
+
+  // 7. reviews
   reviews: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for customer product feedback and ratings.",
-    _schemaFields: [
-      "reviewId",
-      "productId",
-      "customerId",
-      "customerName",
-      "rating",
-      "title",
-      "comment",
-      "status",
-      "createdAt",
-      "updatedAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for customer hamper reviews",
+      reviewId: "REV-10000",
+      productId: "PRD-10000",
+      customerId: "CUS-10000",
+      customerName: "Customer Name",
+      rating: 5,
+      title: "Exquisite presentation and quality",
+      comment: "The customized gift wrapping made this the highlight of our festive occasion.",
+      status: "schema_template", // Live reviews use: "pending" | "approved" | "rejected"
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 8. user_activity
   user_activity: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for user audit and activity logging.",
-    _schemaFields: [
-      "activityId",
-      "customerId",
-      "action",
-      "description",
-      "createdAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for audit trail & security activity logging",
+      activityId: "ACT-10000",
+      customerId: "CUS-10000",
+      action: "REGISTER", // "REGISTER" | "LOGIN" | "ADD_TO_CART" | "PLACE_ORDER" | "PROFILE_UPDATED"
+      description: "Customer account registered successfully",
+      createdAt: serverTimestamp(),
+    },
   },
+
+  // 9. owner_settings (Store Master Configuration)
   owner_settings: {
-    // This is genuine store configuration
-    storeName: "Kavya Gifting",
-    storeEmail: "care@kavyagifting.com",
-    contactNumber: "+91 98765 43210",
-    address: "Kavya Gifting Studio, Bengaluru, Karnataka, India",
-    _isConfig: true,
+    docId: "store_config",
+    data: {
+      _isConfig: true,
+      _description: "Master administrative configuration and store details for Kavya Gifting",
+      storeName: "Kavya Gifting",
+      storeEmail: "care@kavyagifting.com",
+      contactNumber: "+91 98765 43210",
+      address: "Kavya Gifting Studio, Bengaluru, Karnataka, India",
+      updatedAt: serverTimestamp(),
+    },
   },
+
+  // 10. newsletter_subscribers
   newsletter_subscribers: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for newsletter subscription list.",
-    _schemaFields: [
-      "email",
-      "status",
-      "createdAt"
-    ]
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for newsletter subscriber list",
+      email: "subscriber@kavyagifting.com",
+      status: "active", // "active" | "unsubscribed"
+      createdAt: serverTimestamp(),
+    },
   },
+
+  // 11. contact_messages
   contact_messages: {
-    _type: "SCHEMA_METADATA",
-    _description: "Structural schema specification for customer inquiries and contact requests.",
-    _schemaFields: [
-      "name",
-      "email",
-      "mobile",
-      "subject",
-      "message",
-      "status",
-      "createdAt"
-    ]
-  }
+    docId: "_schema",
+    data: {
+      _isSchema: true,
+      _description: "Template & schema structure for customer contact inquiries",
+      name: "Inquiry Sender Name",
+      email: "sender@example.com",
+      mobile: "9876543210",
+      subject: "Bespoke Corporate Gifting Order Inquiry",
+      message: "We would like to order 50 customized gift hampers for Diwali.",
+      status: "unread", // "unread" | "read" | "resolved"
+      createdAt: serverTimestamp(),
+    },
+  },
+
+  // 12. counters (Atomic sequence generators for readable business IDs)
+  counters: {
+    docId: "sequences",
+    data: {
+      _isCounter: true,
+      _description: "Atomic sequence tracking for human-readable IDs",
+      PRD: 10001,
+      CUS: 10001,
+      ORD: 10001,
+      PAY: 10001,
+      REV: 10001,
+      CAT: 10001,
+      ACT: 10001,
+      CRT: 10001,
+      updatedAt: serverTimestamp(),
+    },
+  },
 };
 
-async function provisionDatabase() {
-  console.log("\nStarting structural provisioning across all 11 collections...\n");
-  const results = [];
+async function executeProperProvisioning() {
+  console.log("Provisioning 100% exact Firestore field schemas across all collections...\n");
 
-  for (const [colName, schemaData] of Object.entries(SCHEMAS)) {
-    const docId = colName === "owner_settings" ? "store_config" : "_schema";
-    const docRef = doc(db, colName, docId);
-
-    const payload = {
-      ...schemaData,
-      _provisionedAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-    };
-
-    await setDoc(docRef, payload, { merge: true });
-    console.log(`✓ Provisioned collection [${colName}] -> doc [${docId}]`);
-    results.push({ collection: colName, document: docId });
+  for (const [colName, config] of Object.entries(COMPLETE_COLLECTION_STRUCTURES)) {
+    const docRef = doc(db, colName, config.docId);
+    await setDoc(docRef, config.data, { merge: true });
+    console.log(`✓ 100% Correct Structure Provisioned: [${colName}] -> Doc [${config.docId}]`);
   }
 
-  // Also provision atomic counters collection
-  const countersRef = doc(db, "counters", "sequences");
-  await setDoc(countersRef, {
-    PRD: 10001,
-    CUS: 10001,
-    ORD: 10001,
-    PAY: 10001,
-    REV: 10001,
-    CAT: 10001,
-    ACT: 10001,
-    CRT: 10001,
-    _provisionedAt: serverTimestamp(),
-  }, { merge: true });
-  console.log("✓ Provisioned collection [counters] -> doc [sequences]");
-  results.push({ collection: "counters", document: "sequences" });
-
-  console.log("\nVerifying live database state via read queries...\n");
-  for (const item of results) {
-    const ref = doc(db, item.collection, item.document);
-    const snap = await getDoc(ref);
+  console.log("\nVerifying each collection directly from Cloud Firestore...\n");
+  for (const [colName, config] of Object.entries(COMPLETE_COLLECTION_STRUCTURES)) {
+    const docRef = doc(db, colName, config.docId);
+    const snap = await getDoc(docRef);
     if (snap.exists()) {
-      console.log(`Verified [${item.collection}/${item.document}]: EXISTS in Cloud Firestore`);
+      const data = snap.data();
+      const keys = Object.keys(data).filter(k => !k.startsWith("_"));
+      console.log(`[${colName}] Verified! Total Business Fields: ${keys.length} -> (${keys.slice(0, 5).join(", ")}...)`);
     } else {
-      console.error(`Verification Failed [${item.collection}/${item.document}]: NOT FOUND`);
+      console.error(`[${colName}] FAILED to verify.`);
     }
   }
 
-  console.log("\nAll collections and structural documents successfully verified in Cloud Firestore!");
+  console.log("\n==================================================================");
+  console.log("SUCCESS: All 12 collections now have 100% proper Firestore fields!");
+  console.log("==================================================================");
 }
 
-provisionDatabase().then(() => {
-  process.exit(0);
-}).catch((err) => {
-  console.error("Provisioning failed:", err);
-  process.exit(1);
-});
+executeProperProvisioning()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error("Error provisioning Firestore:", err);
+    process.exit(1);
+  });

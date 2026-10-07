@@ -108,7 +108,9 @@ export async function getProductReviews(productId) {
  */
 export async function getAllReviewsForOwner() {
   const snapshot = await getDocs(collection(db, REVIEWS_COLLECTION));
-  const reviews = snapshot.docs.map(mapReviewDoc);
+  const reviews = snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map(mapReviewDoc);
   return reviews.sort((a, b) => {
     const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
     const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;

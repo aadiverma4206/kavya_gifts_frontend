@@ -211,7 +211,9 @@ export async function getOrderById(orderId) {
  */
 export async function getAllOrdersForOwner() {
   const snapshot = await getDocs(collection(db, ORDERS_COLLECTION));
-  const orders = snapshot.docs.map(mapOrderDoc);
+  const orders = snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map(mapOrderDoc);
   return orders.sort((a, b) => {
     const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
     const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;

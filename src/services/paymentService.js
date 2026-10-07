@@ -94,7 +94,9 @@ export async function recordPayment({
  */
 export async function getAllPaymentsForOwner() {
   const snapshot = await getDocs(collection(db, PAYMENTS_COLLECTION));
-  const payments = snapshot.docs.map(mapPaymentDoc);
+  const payments = snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map(mapPaymentDoc);
   return payments.sort((a, b) => {
     const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
     const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;

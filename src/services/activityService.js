@@ -73,7 +73,9 @@ export async function getCustomerActivity(customerId) {
 export async function getAllActivitiesForOwner() {
   try {
     const snapshot = await getDocs(collection(db, ACTIVITY_COLLECTION));
-    const logs = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+    const logs = snapshot.docs
+      .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+      .map((d) => ({ id: d.id, ...d.data() }));
     return logs.sort((a, b) => {
       const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
       const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;

@@ -99,7 +99,9 @@ export async function getAllCategoriesForOwner() {
     }));
   }
 
-  const list = snapshot.docs.map(mapCategoryDoc);
+  const list = snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map(mapCategoryDoc);
   return list.sort((a, b) => a.sortOrder - b.sortOrder);
 }
 

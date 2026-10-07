@@ -53,10 +53,12 @@ export async function saveUserProfile(uid, userData) {
  */
 export async function getAllUsersForOwner() {
   const snapshot = await getDocs(collection(db, USERS_COLLECTION));
-  return snapshot.docs.map((d) => ({
-    id: d.id,
-    ...d.data(),
-  }));
+  return snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map((d) => ({
+      id: d.id,
+      ...d.data(),
+    }));
 }
 
 /**

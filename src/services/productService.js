@@ -198,7 +198,9 @@ export async function getProductById(productId) {
  */
 export async function getAllProductsForOwner() {
   const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
-  const products = snapshot.docs.map(mapProductDoc);
+  const products = snapshot.docs
+    .filter((d) => d.id !== "_schema" && !d.data()?._isSchema)
+    .map(mapProductDoc);
   return products.sort((a, b) => {
     const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
     const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
