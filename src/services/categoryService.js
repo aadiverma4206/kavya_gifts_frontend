@@ -1,6 +1,7 @@
 import {
   collection,
   getDocs,
+  getDoc,
   doc,
   setDoc,
   updateDoc,
@@ -10,9 +11,9 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { getNextBusinessId } from "./sequenceService";
-import { getActiveProducts } from "./productService";
+import { db } from "../firebase/firebase.js";
+import { getNextBusinessId } from "./sequenceService.js";
+import { getActiveProducts } from "./productService.js";
 
 const CATEGORIES_COLLECTION = "categories";
 
@@ -143,12 +144,23 @@ export async function createCategory({
  * Owner portal: Updates category details.
  */
 export async function updateCategory(id, updates) {
-  const docRef = doc(db, CATEGORIES_COLLECTION, id);
+  let docRef = doc(db, CATEGORIES_COLLECTION, id);
+  let snap = await getDoc(docRef);
+  if (!snap.exists()) {
+    const q = query(collection(db, CATEGORIES_COLLECTION), where("categoryId", "==", id));
+    const querySnap = await getDocs(q);
+    if (!querySnap.empty) {
+      docRef = querySnap.docs[0].ref;
+    }
+  }
+
   const payload = {
     ...updates,
     updatedAt: serverTimestamp(),
   };
-  if (updates.name && !updates.categoryName) {
+  if (updates.categoryName) {
+    payload.slug = generateSlug(updates.categoryName);
+  } else if (updates.name && !updates.categoryName) {
     payload.categoryName = updates.name;
     payload.slug = generateSlug(updates.name);
   }
@@ -157,14 +169,23 @@ export async function updateCategory(id, updates) {
   }
 
   await updateDoc(docRef, payload);
-  return { id, ...payload };
+  return { id: docRef.id, ...payload };
 }
 
 /**
  * Owner portal: Deletes a category.
  */
 export async function deleteCategory(id) {
-  const docRef = doc(db, CATEGORIES_COLLECTION, id);
+  let docRef = doc(db, CATEGORIES_COLLECTION, id);
+  let snap = await getDoc(docRef);
+  if (!snap.exists()) {
+    const q = query(collection(db, CATEGORIES_COLLECTION), where("categoryId", "==", id));
+    const querySnap = await getDocs(q);
+    if (!querySnap.empty) {
+      docRef = querySnap.docs[0].ref;
+    }
+  }
+
   await deleteDoc(docRef);
   return { id, deleted: true };
 }

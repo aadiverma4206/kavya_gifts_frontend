@@ -131,8 +131,19 @@ export function AuthProvider({ children }) {
             unsubscribeProfile = onSnapshot(userDocRef, (snap) => {
               if (snap.exists()) {
                 const updated = snap.data();
+                if ((updated.isBlocked === true || updated.status === "blocked") && updated.role === "customer") {
+                  if (typeof localStorage !== "undefined") {
+                    localStorage.removeItem("kavya_customer_session");
+                  }
+                  logoutUser().catch(() => {});
+                  setCurrentUser(null);
+                  setUserProfile(updated);
+                  return;
+                }
                 setUserProfile(updated);
-                localStorage.setItem("kavya_customer_session", JSON.stringify(updated));
+                if (typeof localStorage !== "undefined") {
+                  localStorage.setItem("kavya_customer_session", JSON.stringify(updated));
+                }
               }
             });
           } catch (e) {

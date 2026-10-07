@@ -16,6 +16,14 @@ export default function CategoryManagement() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState("");
 
+  // Edit Modal State
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editSortOrder, setEditSortOrder] = useState("1");
+  const [editStatus, setEditStatus] = useState("active");
+  const [savingEdit, setSavingEdit] = useState(false);
+
   function loadCats() {
     setLoading(true);
     getAllCategoriesForOwner()
@@ -48,6 +56,37 @@ export default function CategoryManagement() {
       alert(err.message || "Could not add category.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  function handleOpenEdit(cat) {
+    setEditingCategory(cat);
+    setEditName(cat.categoryName || cat.name || "");
+    setEditDescription(cat.description || "");
+    setEditSortOrder(String(cat.sortOrder ?? 1));
+    setEditStatus(cat.status || "active");
+  }
+
+  async function handleSaveEdit(e) {
+    e.preventDefault();
+    if (!editingCategory || !editName.trim()) return;
+
+    setSavingEdit(true);
+    try {
+      await updateCategory(editingCategory.id, {
+        categoryName: editName.trim(),
+        name: editName.trim(),
+        description: editDescription.trim(),
+        sortOrder: Number(editSortOrder) || 0,
+        status: editStatus,
+      });
+      setMsg(`Updated category "${editName.trim()}" successfully!`);
+      setEditingCategory(null);
+      loadCats();
+    } catch (err) {
+      alert(err.message || "Could not update category.");
+    } finally {
+      setSavingEdit(false);
     }
   }
 
@@ -158,6 +197,9 @@ export default function CategoryManagement() {
                     </td>
                     <td>
                       <div style={{ display: "flex", gap: "8px" }}>
+                        <button onClick={() => handleOpenEdit(c)} className="btn btn-secondary btn-sm">
+                          Edit
+                        </button>
                         <button onClick={() => handleToggle(c)} className="btn btn-secondary btn-sm">
                           {c.status === "active" ? "Deactivate" : "Activate"}
                         </button>
@@ -173,6 +215,86 @@ export default function CategoryManagement() {
           </div>
         </div>
       )}
+
+      {/* Edit Category Modal */}
+      {editingCategory && (
+        <div className="modal-backdrop">
+          <div className="card modal-card" style={{ maxWidth: "520px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3>Edit Category: {editingCategory.categoryId || editingCategory.id}</h3>
+              <button
+                type="button"
+                onClick={() => setEditingCategory(null)}
+                style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="auth-form" style={{ marginTop: "16px" }}>
+              <div className="form-group">
+                <label>Category Name *</label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Display Sort Order</label>
+                  <input
+                    type="number"
+                    value={editSortOrder}
+                    onChange={(e) => setEditSortOrder(e.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Status</label>
+                  <select
+                    value={editStatus}
+                    onChange={(e) => setEditStatus(e.target.value)}
+                  >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <input
+                  type="text"
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setEditingCategory(null)}
+                  disabled={savingEdit}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{ flex: 1 }}
+                  disabled={savingEdit}
+                >
+                  {savingEdit ? "Saving..." : "Save Category"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </OwnerLayout>
   );
 }
+

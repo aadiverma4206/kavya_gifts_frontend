@@ -68,6 +68,8 @@ function mapOrderDoc(docSnap) {
  */
 export async function createOrder({
   customer,
+  customerSnapshot: inputCustomerSnapshot,
+  deliveryAddress = "",
   items,
   subtotal,
   giftWrap = null,
@@ -82,7 +84,8 @@ export async function createOrder({
   orderStatus = "pending",
   paymentMethod = "Online",
 }) {
-  if (!customer || !items || !Array.isArray(items) || items.length === 0) {
+  const cust = customer || inputCustomerSnapshot;
+  if (!cust || !items || !Array.isArray(items) || items.length === 0) {
     throw new Error("Invalid order data: customer and items are required.");
   }
 
@@ -93,10 +96,10 @@ export async function createOrder({
   const finalTotalAmount = Number(totalAmount || total) || (finalSubtotal + finalGiftWrapTotal);
 
   const customerSnapshot = {
-    name: customer.name || "",
-    email: customer.email || "",
-    mobile: customer.mobile || customer.phone || "",
-    address: customer.address || "",
+    name: cust.name || "",
+    email: cust.email || "",
+    mobile: cust.mobile || cust.phone || "",
+    address: cust.address || deliveryAddress || "",
   };
 
   const sanitizedItems = items.map((item) => {

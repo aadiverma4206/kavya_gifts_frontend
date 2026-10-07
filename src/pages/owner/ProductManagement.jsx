@@ -15,6 +15,10 @@ export default function ProductManagement() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Search & Filter state
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterCategory, setFilterCategory] = useState("all");
+
   // Modal State
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -25,6 +29,7 @@ export default function ProductManagement() {
   const [price, setPrice] = useState("");
   const [stockQuantity, setStockQuantity] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [additionalImages, setAdditionalImages] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [description, setDescription] = useState("");
   const [giftWrappingAvailable, setGiftWrappingAvailable] = useState(true);
@@ -55,6 +60,7 @@ export default function ProductManagement() {
     setPrice("");
     setStockQuantity("25");
     setThumbnail("");
+    setAdditionalImages("");
     setShortDescription("");
     setDescription("");
     setGiftWrappingAvailable(true);
@@ -70,7 +76,10 @@ export default function ProductManagement() {
     setCategoryName(prod.categoryName || prod.category);
     setPrice(String(prod.price));
     setStockQuantity(String(prod.stockQuantity || prod.stock_qty));
-    setThumbnail(prod.thumbnail || prod.image_url);
+    const mainThumb = prod.thumbnail || prod.image_url || "";
+    setThumbnail(mainThumb);
+    const extra = (prod.images || []).filter((img) => img !== mainThumb).join("\n");
+    setAdditionalImages(extra);
     setShortDescription(prod.shortDescription || "");
     setDescription(prod.description);
     setGiftWrappingAvailable(prod.giftWrappingAvailable !== undefined ? prod.giftWrappingAvailable : true);
@@ -86,13 +95,19 @@ export default function ProductManagement() {
     setFeedbackMsg("");
 
     try {
+      const extraUrls = additionalImages
+        .split(/[\n,]/)
+        .map((u) => u.trim())
+        .filter(Boolean);
+      const allImages = [thumbnail.trim(), ...extraUrls.filter((u) => u !== thumbnail.trim())];
+
       const payload = {
         productName: productName.trim(),
         categoryName: categoryName.trim(),
         price: Number(price),
         stockQuantity: Number(stockQuantity),
         thumbnail: thumbnail.trim(),
-        images: [thumbnail.trim()],
+        images: allImages,
         shortDescription: shortDescription.trim(),
         description: description.trim(),
         giftWrappingAvailable: Boolean(giftWrappingAvailable),
@@ -143,6 +158,19 @@ export default function ProductManagement() {
     }
   }
 
+  const filteredProducts = products.filter((p) => {
+    if (filterCategory !== "all") {
+      const cat = (p.categoryName || p.category || "").toLowerCase();
+      if (cat !== filterCategory.toLowerCase()) return false;
+    }
+    if (!searchTerm.trim()) return true;
+    const term = searchTerm.toLowerCase();
+    const pid = (p.productId || p.product_id || "").toLowerCase();
+    const name = (p.productName || p.product_name || "").toLowerCase();
+    const cat = (p.categoryName || p.category || "").toLowerCase();
+    return pid.includes(term) || name.includes(term) || cat.includes(term);
+  });
+
   return (
     <OwnerLayout
       title="Product Catalog Management"
@@ -154,6 +182,35 @@ export default function ProductManagement() {
       }
     >
       {feedbackMsg && <div className="auth-alert success">{feedbackMsg}</div>}
+
+      {/* Search & Filter Header Bar */}
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <div style={{ display: "flex", gap: "12px", flex: 1, maxWidth: "580px" }}>
+          <input
+            type="text"
+            placeholder="Search by Hamper Name, ID (HAM-...), or Category..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ flex: 1, padding: "8px 14px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px" }}
+          />
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px" }}
+          >
+            <option value="all">All Occasions ({products.length})</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button onClick={loadData} className="btn btn-secondary btn-sm">
+          🔄 Refresh Catalog
+        </button>
+      </div>
 
       {loading ? (
         <p className="muted">Loading catalog hampers...</p>
@@ -175,7 +232,7 @@ export default function ProductManagement() {
                 </tr>
               </thead>
               <tbody>
-                {products.map((p) => (
+                {filteredProducts.map((p) => (
                   <tr key={p.id}>
                     <td><strong>{p.productId || p.product_id}</strong></td>
                     <td>
@@ -260,11 +317,17 @@ export default function ProductManagement() {
                   <label>Occasion Category *</label>
                   <input
                     type="text"
+                    list="categoryList"
                     placeholder="Diwali, Wedding, Corporate"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
                     required
                   />
+                  <datalist id="categoryList">
+                    {categories.map((c) => (
+                      <option key={c} value={c} />
+                    ))}
+                  </datalist>
                 </div>
                 <div className="form-group">
                   <label>Price (₹ INR) *</label>
@@ -306,6 +369,16 @@ export default function ProductManagement() {
                   value={thumbnail}
                   onChange={(e) => setThumbnail(e.target.value)}
                   required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Additional Gallery Images (one URL per line)</label>
+                <textarea
+                  rows="2"
+                  placeholder="https://images.unsplash.com/...&#10;https://drive.google.com/..."
+                  value={additionalImages}
+                  onChange={(e) => setAdditionalImages(e.target.value)}
                 />
               </div>
 

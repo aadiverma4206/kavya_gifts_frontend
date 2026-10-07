@@ -7,8 +7,8 @@ import {
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { logUserActivity } from "./activityService";
+import { db } from "../firebase/firebase.js";
+import { logUserActivity } from "./activityService.js";
 
 const USERS_COLLECTION = "users";
 

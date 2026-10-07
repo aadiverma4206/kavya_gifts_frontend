@@ -31,6 +31,7 @@ import OrderManagement from "./pages/owner/OrderManagement.jsx";
 import PaymentHistory from "./pages/owner/PaymentHistory.jsx";
 import UserManagement from "./pages/owner/UserManagement.jsx";
 import ReviewManagement from "./pages/owner/ReviewManagement.jsx";
+import SettingsManagement from "./pages/owner/SettingsManagement.jsx";
 
 export default function App() {
   const location = useLocation();
@@ -171,6 +172,14 @@ export default function App() {
             element={
               <ProtectedRoute roleRequired="owner">
                 <ReviewManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/owner/settings"
+            element={
+              <ProtectedRoute roleRequired="owner">
+                <SettingsManagement />
               </ProtectedRoute>
             }
           />
