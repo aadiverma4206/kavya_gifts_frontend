@@ -4,6 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { toDirectImageUrl } from "../../utils/driveImage";
 import GiftWrapSelector from "../../components/customer/GiftWrapSelector";
+import { initializeCheckoutOrder } from "../../controllers/orderController";
 import "./Checkout.css";
 
 export default function Checkout() {
@@ -18,6 +19,7 @@ export default function Checkout() {
   const [address, setAddress] = useState(userProfile?.address || "");
   const [deliveryDate, setDeliveryDate] = useState("");
   const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   if (items.length === 0) {
@@ -43,7 +45,7 @@ export default function Checkout() {
     );
   }
 
-  function handleProceedToPayment(e) {
+  async function handleProceedToPayment(e) {
     e.preventDefault();
     setError("");
 
@@ -60,10 +62,11 @@ export default function Checkout() {
       return;
     }
 
-    // Pass checkout state to payment page
-    navigate("/payment", {
-      state: {
-        customerInfo: {
+    setSubmitting(true);
+    try {
+      const existingOrderId = sessionStorage.getItem("kavya_pending_order_id");
+      const order = await initializeCheckoutOrder({
+        customer: {
           name: recipientName.trim(),
           phone: phone.trim(),
           email: email.trim(),
@@ -71,8 +74,40 @@ export default function Checkout() {
           deliveryDate,
           notes,
         },
-      },
-    });
+        items,
+        subtotal,
+        giftWrap,
+        giftWrapFee,
+        grandTotal,
+        userId: currentUser?.uid,
+        customerId: userProfile?.customerId,
+        existingOrderId,
+      });
+
+      if (order?.orderId) {
+        sessionStorage.setItem("kavya_pending_order_id", order.orderId);
+      }
+
+      // Pass checkout state & order to payment page
+      navigate("/payment", {
+        state: {
+          order,
+          customerInfo: {
+            name: recipientName.trim(),
+            phone: phone.trim(),
+            email: email.trim(),
+            address: address.trim(),
+            deliveryDate,
+            notes,
+          },
+        },
+      });
+    } catch (err) {
+      console.error("Order initialization error:", err);
+      setError(err.message || "Failed to initialize order. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -209,8 +244,9 @@ export default function Checkout() {
               type="submit"
               form="checkout-form"
               className="btn btn-primary btn-block btn-pill"
+              disabled={submitting}
             >
-              Continue to Payment →
+              {submitting ? "Preparing Order..." : "Continue to Payment →"}
             </button>
 
             <p className="security-guarantee muted">

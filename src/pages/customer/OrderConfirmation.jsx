@@ -55,13 +55,15 @@ export default function OrderConfirmation() {
           </div>
           {order.paymentId && (
             <div className="reference-box">
-              <span className="ref-label">Payment ID</span>
+              <span className="ref-label">Payment Reference</span>
               <strong className="ref-val">{order.paymentId}</strong>
             </div>
           )}
           <div className="reference-box">
             <span className="ref-label">Order Status</span>
-            <span className="status-pill placed">{order.orderStatus || "placed"}</span>
+            <span className={`status-pill ${order.orderStatus || "confirmed"}`}>
+              {order.orderStatus === "confirmed" ? "✓ Confirmed" : order.orderStatus}
+            </span>
           </div>
         </div>
 
@@ -82,16 +84,23 @@ export default function OrderConfirmation() {
         <div className="confirmation-details-grid">
           <div className="detail-col">
             <h4>Delivery Address</h4>
-            <p><strong>{order.customer?.name}</strong></p>
-            <p className="muted">{order.customer?.address}</p>
-            <p className="muted">📞 {order.customer?.phone}</p>
+            <p><strong>{order.customerSnapshot?.name || order.customer?.name}</strong></p>
+            <p className="muted">{order.deliveryAddress || order.customer?.address}</p>
+            <p className="muted">📞 {order.customerSnapshot?.mobile || order.customer?.phone}</p>
           </div>
 
           <div className="detail-col">
-            <h4>Payment Details</h4>
+            <h4>Payment Verification</h4>
             <p>Method: <strong>{order.paymentMethod || "Online"}</strong></p>
-            <p>Status: <strong style={{ color: "#166534" }}>{order.paymentStatus}</strong></p>
-            <p className="total-highlight">Total Paid: ₹{order.total?.toLocaleString("en-IN")}</p>
+            <p>
+              Status:{" "}
+              <strong style={{ color: order.paymentStatus === "paid" ? "#166534" : "#92400e" }}>
+                {order.paymentStatus === "paid" ? "✓ Verified & Paid" : order.paymentStatus}
+              </strong>
+            </p>
+            <p className="total-highlight">
+              Total Paid: ₹{(order.totalAmount || order.total || 0).toLocaleString("en-IN")}
+            </p>
           </div>
         </div>
 

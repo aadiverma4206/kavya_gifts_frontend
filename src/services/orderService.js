@@ -9,9 +9,9 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { getNextBusinessId } from "./sequenceService";
-import { logUserActivity } from "./activityService";
+import { db } from "../firebase/firebase.js";
+import { getNextBusinessId } from "./sequenceService.js";
+import { logUserActivity } from "./activityService.js";
 
 const ORDERS_COLLECTION = "orders";
 
@@ -62,6 +62,9 @@ function mapOrderDoc(docSnap) {
 
 /**
  * Creates a new order conforming to the schema and logs customer activity.
+ * Initial order is strictly:
+ * paymentStatus = "pending"
+ * orderStatus = "pending"
  */
 export async function createOrder({
   customer,
@@ -76,7 +79,8 @@ export async function createOrder({
   customerId = null,
   paymentId = null,
   paymentStatus = "pending",
-  paymentMethod = "COD",
+  orderStatus = "pending",
+  paymentMethod = "Online",
 }) {
   if (!customer || !items || !Array.isArray(items) || items.length === 0) {
     throw new Error("Invalid order data: customer and items are required.");
@@ -95,15 +99,33 @@ export async function createOrder({
     address: customer.address || "",
   };
 
-  const sanitizedItems = items.map((item) => ({
-    productId: item.productId || item.product_id || item.id,
-    productName: item.productName || item.product_name,
-    price: Number(item.price),
-    quantity: Number(item.quantity),
-    subtotal: Number(item.price) * Number(item.quantity),
-    thumbnail: item.thumbnail || item.image_url || "",
-    image_url: item.thumbnail || item.image_url || "",
-  }));
+  const sanitizedItems = items.map((item) => {
+    const price = Number(item.price) || 0;
+    const quantity = Number(item.quantity) || 1;
+    const giftWrappingSelected = Boolean(item.giftWrappingSelected);
+    const giftWrappingPrice = Number(item.giftWrappingPrice) || 0;
+    const itemSubtotal = price * quantity;
+    const itemTotal = itemSubtotal + (giftWrappingSelected ? giftWrappingPrice * quantity : 0);
+    const img = item.image || item.image_url || item.thumbnail || "";
+
+    return {
+      productId: item.productId || item.product_id || item.id,
+      productName: item.productName || item.product_name || "Gift Hamper",
+      price,
+      quantity,
+      image: img,
+      giftWrappingSelected,
+      giftWrappingPrice,
+      itemSubtotal,
+      total: itemTotal,
+      // Backward compatibility aliases
+      thumbnail: img,
+      image_url: img,
+      product_id: item.productId || item.product_id || item.id,
+      product_name: item.productName || item.product_name || "Gift Hamper",
+      subtotal: itemSubtotal,
+    };
+  });
 
   const orderData = {
     orderId,
@@ -115,8 +137,8 @@ export async function createOrder({
     giftWrappingTotal: finalGiftWrapTotal,
     totalAmount: finalTotalAmount,
     paymentId: paymentId || null,
-    paymentStatus, // 'pending' | 'completed' | 'failed'
-    orderStatus: "placed", // 'placed' | 'packed' | 'shipped' | 'delivered' | 'cancelled'
+    paymentStatus: paymentStatus || "pending", // strictly 'pending' initially
+    orderStatus: orderStatus || "pending",     // strictly 'pending' initially
     deliveryAddress: customerSnapshot.address,
     giftWrap: giftWrap
       ? {
@@ -141,7 +163,7 @@ export async function createOrder({
     await logUserActivity({
       customerId,
       action: "ORDER_CREATED",
-      description: `Order ${orderId} created for ₹${finalTotalAmount}`,
+      description: `Order ${orderId} created for ₹${finalTotalAmount} (Status: pending)`,
     });
   }
 
@@ -222,13 +244,56 @@ export async function getAllOrdersForOwner() {
 }
 
 /**
+ * Finds an active pending order for a customer within the last 30 minutes to prevent duplicate orders.
+ */
+export async function findPendingOrderForCustomer(customerIdOrUid) {
+  if (!customerIdOrUid) return null;
+  try {
+    const qCust = query(
+      collection(db, ORDERS_COLLECTION),
+      where("customerId", "==", customerIdOrUid),
+      where("orderStatus", "==", "pending")
+    );
+    const snap = await getDocs(qCust);
+    if (!snap.empty) {
+      const orders = snap.docs.map(mapOrderDoc);
+      // Return the most recent pending order
+      orders.sort((a, b) => {
+        const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return bTime - aTime;
+      });
+      return orders[0];
+    }
+    return null;
+  } catch (error) {
+    console.warn("Could not check pending order:", error);
+    return null;
+  }
+}
+
+/**
+ * Updates an order's delivery details or total (e.g. when reusing pending order).
+ */
+export async function updateOrderDetails(orderId, updates) {
+  const docRef = doc(db, ORDERS_COLLECTION, orderId);
+  const patch = {
+    ...updates,
+    updatedAt: serverTimestamp(),
+  };
+  await updateDoc(docRef, patch);
+  return { orderId, ...patch };
+}
+
+/**
  * Owner portal: Updates order fulfillment status or payment status.
  */
-export async function updateOrderStatus(orderId, { orderStatus, paymentStatus }) {
+export async function updateOrderStatus(orderId, { orderStatus, paymentStatus, paymentId }) {
   const docRef = doc(db, ORDERS_COLLECTION, orderId);
   const updates = { updatedAt: serverTimestamp() };
   if (orderStatus) updates.orderStatus = orderStatus;
   if (paymentStatus) updates.paymentStatus = paymentStatus;
+  if (paymentId) updates.paymentId = paymentId;
 
   await updateDoc(docRef, updates);
   return { orderId, ...updates };

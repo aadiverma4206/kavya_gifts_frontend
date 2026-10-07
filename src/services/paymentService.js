@@ -7,9 +7,9 @@ import {
   where,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { getNextBusinessId } from "./sequenceService";
-import { logUserActivity } from "./activityService";
+import { db } from "../firebase/firebase.js";
+import { getNextBusinessId } from "./sequenceService.js";
+import { logUserActivity } from "./activityService.js";
 
 const PAYMENTS_COLLECTION = "payments";
 
@@ -36,7 +36,10 @@ function mapPaymentDoc(docSnap) {
 }
 
 /**
- * Creates and records a payment transaction with exact schema fields.
+ * Creates and records an initial payment transaction with exact schema fields.
+ * Payment initially starts with:
+ * paymentStatus = "pending"
+ * verifiedAt = null
  */
 export async function recordPayment({
   orderId,
@@ -47,26 +50,25 @@ export async function recordPayment({
   providerPaymentId = null,
   userId = null,
   customerId = null,
-  paymentStatus = "completed",
+  paymentStatus = "pending",
   status,
 }) {
   const paymentId = await getNextBusinessId("PAY");
 
   const finalMethod = paymentMethod || method || "Online";
-  const finalStatus = paymentStatus || status || "completed";
+  const finalStatus = paymentStatus || status || "pending";
 
   const paymentData = {
     paymentId,
     orderId,
     customerId: customerId || null,
     amount: Number(amount),
-    currency: "INR",
-    provider: provider || "Manual",
+    provider: provider || "UPI",
     providerPaymentId: providerPaymentId || null,
-    paymentStatus: finalStatus, // 'pending' | 'completed' | 'failed'
     paymentMethod: finalMethod,
+    paymentStatus: finalStatus,
     createdAt: serverTimestamp(),
-    verifiedAt: finalStatus === "completed" ? serverTimestamp() : null,
+    verifiedAt: finalStatus === "paid" ? serverTimestamp() : null,
   };
 
   const docRef = doc(db, PAYMENTS_COLLECTION, paymentId);
@@ -77,7 +79,7 @@ export async function recordPayment({
     await logUserActivity({
       customerId,
       action: "PAYMENT_RECORDED",
-      description: `Payment ${paymentId} for ₹${amount} recorded with status ${finalStatus}`,
+      description: `Payment ${paymentId} for ₹${amount} initiated with status ${finalStatus}`,
     });
   }
 
@@ -87,6 +89,98 @@ export async function recordPayment({
     status: finalStatus,
     method: finalMethod,
   };
+}
+
+/**
+ * Communicates with secure server to generate payment intent signature.
+ */
+export async function createPaymentIntent({ orderId, amount, paymentId }) {
+  try {
+    const res = await fetch("/api/payments/create-intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId, amount, paymentId }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || "Failed to create payment intent");
+    }
+    const data = await res.json();
+    return data.signature;
+  } catch (err) {
+    console.warn("Server payment intent warning:", err.message);
+    return null;
+  }
+}
+
+/**
+ * Communicates with secure server endpoint to verify payment and atomically confirm order.
+ * NEVER trusts frontend success status. Server validates order total, payment signature,
+ * updates Firestore atomically, and clears cart.
+ */
+export async function verifyPaymentOnServer({
+  orderId,
+  paymentId,
+  amount,
+  customerId,
+  provider,
+  providerPaymentId,
+  paymentMethod,
+  signature,
+}) {
+  const res = await fetch("/api/payments/verify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      orderId,
+      paymentId,
+      amount,
+      customerId,
+      provider,
+      providerPaymentId,
+      paymentMethod,
+      signature,
+    }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.success) {
+    throw new Error(data.error || "Payment verification failed on secure server.");
+  }
+
+  return data.result;
+}
+
+/**
+ * Informs server of payment failure.
+ */
+export async function reportPaymentFailure({ orderId, paymentId, reason }) {
+  try {
+    const res = await fetch("/api/payments/fail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId, paymentId, reason }),
+    });
+    return await res.json();
+  } catch (err) {
+    console.error("Failed to report payment failure to server:", err);
+  }
+}
+
+/**
+ * Informs server of payment cancellation.
+ */
+export async function reportPaymentCancellation({ orderId, paymentId }) {
+  try {
+    const res = await fetch("/api/payments/cancel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ orderId, paymentId }),
+    });
+    return await res.json();
+  } catch (err) {
+    console.error("Failed to report payment cancellation to server:", err);
+  }
 }
 
 /**

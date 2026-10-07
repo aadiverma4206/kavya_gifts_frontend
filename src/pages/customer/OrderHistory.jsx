@@ -11,12 +11,13 @@ export default function OrderHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (currentUser?.uid) {
-      getOrdersByCustomer(currentUser.uid)
+    const idToQuery = userProfile?.customerId || currentUser?.uid;
+    if (idToQuery) {
+      getOrdersByCustomer(idToQuery)
         .then((data) => setOrders(data))
         .finally(() => setLoading(false));
     }
-  }, [currentUser]);
+  }, [currentUser, userProfile]);
 
   return (
     <div className="orders-container container section">
@@ -64,11 +65,19 @@ export default function OrderHistory() {
                   </span>
                 </div>
                 <div className="order-status-group">
-                  <span className={`status-pill ${ord.orderStatus || "placed"}`}>
-                    Status: {ord.orderStatus || "placed"}
+                  <span className={`status-pill ${ord.orderStatus || "pending"}`}>
+                    {ord.orderStatus === "confirmed" ? "✓ Confirmed" : `Status: ${ord.orderStatus || "pending"}`}
                   </span>
-                  <span className="payment-pill">
-                    {ord.paymentStatus === "completed" ? "Paid" : "Pay on Delivery"}
+                  <span className={`payment-pill ${ord.paymentStatus || "pending"}`}>
+                    {ord.paymentStatus === "paid" || ord.paymentStatus === "completed"
+                      ? "✓ Paid"
+                      : ord.paymentStatus === "pending"
+                      ? "Pending"
+                      : ord.paymentStatus === "failed"
+                      ? "Failed"
+                      : ord.paymentStatus === "cancelled"
+                      ? "Cancelled"
+                      : ord.paymentStatus}
                   </span>
                 </div>
               </div>

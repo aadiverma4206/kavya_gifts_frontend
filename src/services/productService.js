@@ -11,8 +11,8 @@ import {
   orderBy,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
-import { getNextBusinessId } from "./sequenceService";
+import { db } from "../firebase/firebase.js";
+import { getNextBusinessId } from "./sequenceService.js";
 
 const PRODUCTS_COLLECTION = "products";
 
