@@ -58,12 +58,9 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 3D Three.js Interactive Gift Box */}
+        {/* Ultra-Modern 3D Interactive Luxury Gift Hamper */}
         <div className="hero-3d-box card">
           <GiftBoxCanvas autoRotate={true} interactive={true} />
-          <div className="hero-3d-caption">
-            <span>✨ Interactive 3D Hamper Box • Move cursor to inspect</span>
-          </div>
         </div>
       </section>
 
