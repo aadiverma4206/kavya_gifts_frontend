@@ -17,23 +17,40 @@ export function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 1. Restore persistent Admin Session if present
+  useEffect(() => {
+    try {
+      if (typeof localStorage !== "undefined") {
+        const savedAdmin = localStorage.getItem("kavya_admin_session");
+        if (savedAdmin) {
+          const parsed = JSON.parse(savedAdmin);
+          if (parsed && parsed.role === "owner") {
+            setCurrentUser({ uid: parsed.uid, email: parsed.email });
+            setUserProfile(parsed);
+            setLoading(false);
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Could not restore saved admin session:", e);
+    }
+  }, []);
+
+  // 2. Firebase Auth listener for customer sessions
   useEffect(() => {
     let unsubscribeProfile = null;
 
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      setCurrentUser(user);
-
       if (user) {
+        setCurrentUser(user);
         // Real-time listener on user profile document users/{uid}
         const userDocRef = doc(db, "users", user.uid);
         unsubscribeProfile = onSnapshot(
           userDocRef,
           (docSnap) => {
             if (docSnap.exists()) {
-              const data = docSnap.data();
-              setUserProfile(data);
+              setUserProfile(docSnap.data());
             } else {
-              // Fallback if profile document is being created
               setUserProfile({
                 uid: user.uid,
                 email: user.email,
@@ -47,7 +64,7 @@ export function AuthProvider({ children }) {
           (err) => {
             console.warn("Real-time profile listener error:", err);
             getUserProfile(user.uid).then((prof) => {
-              setUserProfile(prof);
+              if (prof) setUserProfile(prof);
               setLoading(false);
             });
           }
@@ -57,7 +74,11 @@ export function AuthProvider({ children }) {
           unsubscribeProfile();
           unsubscribeProfile = null;
         }
-        setUserProfile(null);
+        // If not in a local admin session, clear profile
+        if (typeof localStorage !== "undefined" && !localStorage.getItem("kavya_admin_session")) {
+          setCurrentUser(null);
+          setUserProfile(null);
+        }
         setLoading(false);
       }
     });
@@ -82,11 +103,18 @@ export function AuthProvider({ children }) {
   };
 
   const handleOwnerLogin = async (email, password) => {
-    return await executeOwnerLogin(email, password);
+    const res = await executeOwnerLogin(email, password);
+    setCurrentUser(res.user);
+    setUserProfile(res.profile);
+    return res;
   };
 
   const handleLogout = async () => {
+    if (typeof localStorage !== "undefined") {
+      localStorage.removeItem("kavya_admin_session");
+    }
     await logoutUser();
+    setCurrentUser(null);
     setUserProfile(null);
   };
 

@@ -133,6 +133,92 @@ export async function resetCustomerPassword(email) {
 }
 
 /**
+ * Computes SHA-256 hash using the Web Crypto API.
+ */
+export async function computeSHA256(text) {
+  const clean = (text || "").trim();
+  if (typeof crypto !== "undefined" && crypto.subtle) {
+    const msgBuffer = new TextEncoder().encode(clean);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  return clean;
+}
+
+/**
+ * Dedicated Owner Login:
+ * Authenticates against the dedicated `admins` collection in Cloud Firestore.
+ * Supports kavyachakradhari711@gmail.com with secure SHA-256 credential verification.
+ */
+export async function loginOwnerAccount(email, password) {
+  const cleanEmail = (email || "").trim().toLowerCase();
+  const docId = cleanEmail.replace(/[^a-zA-Z0-9_-]/g, "_");
+
+  // 1. Verify credentials against dedicated `admins` collection in Firestore
+  const adminRef = doc(db, "admins", docId);
+  const snap = await getDoc(adminRef);
+
+  if (snap.exists()) {
+    const adminData = snap.data();
+    const inputHash = await computeSHA256(password);
+
+    if (adminData.passwordHash && adminData.passwordHash !== inputHash) {
+      throw new Error("Invalid administrative password.");
+    }
+
+    if (adminData.role !== "owner") {
+      throw new Error("Access Denied: Account does not have owner permissions.");
+    }
+
+    // Update lastLoginAt in Firestore
+    try {
+      await updateDoc(adminRef, {
+        lastLoginAt: serverTimestamp(),
+      });
+      await logUserActivity({
+        customerId: adminData.adminId || "ADM-10001",
+        action: "OWNER_LOGIN",
+        description: `Owner ${cleanEmail} authenticated via admin portal`,
+      });
+    } catch (e) {
+      console.warn("Could not record admin activity:", e);
+    }
+
+    const sessionData = {
+      uid: adminData.adminId || docId,
+      email: cleanEmail,
+      role: "owner",
+      fullName: adminData.fullName || "Kavya Chakradhari (Owner)",
+      status: "active",
+      customerId: adminData.adminId || "ADM-10001",
+    };
+
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("kavya_admin_session", JSON.stringify(sessionData));
+    }
+
+    return {
+      user: { uid: sessionData.uid, email: cleanEmail },
+      profile: sessionData,
+    };
+  }
+
+  // 2. Fallback to Firebase Authentication
+  try {
+    const res = await loginUser(cleanEmail, password);
+    return res;
+  } catch (err) {
+    if (err.code === "auth/configuration-not-found") {
+      throw new Error(
+        "Admin not found in 'admins' collection and Firebase Auth Email/Password is not enabled in Firebase Console. Please verify credentials."
+      );
+    }
+    throw err;
+  }
+}
+
+/**
  * Retrieves the profile of a given user UID from Firestore.
  */
 export async function getUserProfile(uid) {

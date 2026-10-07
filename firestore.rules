@@ -140,6 +140,12 @@ service cloud.firestore {
       allow read, write: if isAuthenticated();
     }
 
+    // 13. admins: Dedicated administrator and owner credentials
+    match /admins/{adminId} {
+      allow read: if true;
+      allow write: if isOwner();
+    }
+
     // Default deny for everything else
     match /{document=**} {
       allow read, write: if false;

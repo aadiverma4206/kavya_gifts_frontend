@@ -4,6 +4,7 @@ import {
   logoutUser,
   resetCustomerPassword,
   getUserProfile,
+  loginOwnerAccount,
 } from "../services/authService.js";
 import { validateCaptcha } from "../utils/captcha.js";
 
@@ -143,7 +144,7 @@ export async function executeCustomerLogin(email, password) {
 
 /**
  * Orchestrates Owner Login with strict role verification.
- * Rejects any non-owner account and signs them out immediately.
+ * Authenticates against dedicated `admins` collection in Firestore, with fallback to Firebase Auth.
  */
 export async function executeOwnerLogin(email, password) {
   if (!email || !email.trim()) {
@@ -153,18 +154,10 @@ export async function executeOwnerLogin(email, password) {
     throw new Error("Please enter your password.");
   }
 
-  // 1. Authenticate with Firebase
-  const { user, profile } = await loginUser(email, password);
+  // Authenticate owner via dedicated admin service
+  const { user, profile } = await loginOwnerAccount(email, password);
 
-  // 2. Retrieve Firestore document to verify role
-  let latestProfile = profile;
-  if (!latestProfile) {
-    latestProfile = await getUserProfile(user.uid);
-  }
-
-  // 3. Enforce Owner Role Check
-  if (latestProfile?.role !== "owner") {
-    // Immediately log out unauthorized user
+  if (profile?.role !== "owner") {
     await logoutUser();
     const forbiddenErr = new Error(
       "Access Restricted: This account does not possess Owner permissions."
@@ -175,7 +168,7 @@ export async function executeOwnerLogin(email, password) {
 
   return {
     user,
-    profile: latestProfile,
+    profile,
     redirectPath: "/owner/dashboard",
   };
 }
