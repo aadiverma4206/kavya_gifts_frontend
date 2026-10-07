@@ -1,22 +1,40 @@
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../api.js";
+import { getActiveProducts } from "../services/productService.js";
+import { getActiveCategories } from "../services/categoryService.js";
 import ProductCard from "../components/ProductCard.jsx";
 import CategoryCard from "../components/CategoryCard.jsx";
 import "./Home.css";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getAllProducts()
-      .then(setProducts)
-      .catch(() => setError("Could not load products right now."))
-      .finally(() => setLoading(false));
-  }, []);
+    let isMounted = true;
+    Promise.all([getActiveProducts(), getActiveCategories()])
+      .then(([prods, cats]) => {
+        if (!isMounted) return;
+        setProducts(prods);
+        setCategories(
+          cats && cats.length > 0
+            ? cats
+            : [...new Set(prods.map((p) => p.category))].filter(Boolean)
+        );
+      })
+      .catch((err) => {
+        console.error("Error loading home page data:", err);
+        if (isMounted) setError("Could not load products right now.");
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
 
-  const categories = [...new Set(products.map((p) => p.category))].filter(Boolean);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <>
@@ -55,9 +73,12 @@ export default function Home() {
         <h2>Best Selling Hampers</h2>
         {loading && <p className="muted">Loading hampers...</p>}
         {error && <p className="muted">{error}</p>}
+        {!loading && !error && products.length === 0 && (
+          <p className="muted">No hampers available at the moment.</p>
+        )}
         <div className="product-grid">
           {products.map((product) => (
-            <ProductCard key={product.product_id} product={product} />
+            <ProductCard key={product.product_id || product.id} product={product} />
           ))}
         </div>
       </section>

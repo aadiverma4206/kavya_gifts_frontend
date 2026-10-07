@@ -1,16 +1,30 @@
 import { useState } from "react";
+import { subscribeNewsletter } from "../services/newsletterService.js";
 import "./Footer.css";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
 
-  function handleSubscribe(e) {
+  async function handleSubscribe(e) {
     e.preventDefault();
     if (!email) return;
-    // No backend endpoint for newsletter signups yet — just acknowledge for now.
-    setSubscribed(true);
-    setEmail("");
+
+    setLoading(true);
+    setStatusMessage("");
+    try {
+      await subscribeNewsletter(email);
+      setSubscribed(true);
+      setStatusMessage("Thanks for subscribing!");
+      setEmail("");
+    } catch (err) {
+      console.error("Newsletter subscription error:", err);
+      setStatusMessage(err.message || "Unable to subscribe. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -47,13 +61,14 @@ export default function Footer() {
               placeholder="Your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               required
             />
-            <button type="submit" className="btn btn-primary">
-              Subscribe
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? "..." : "Subscribe"}
             </button>
           </form>
-          {subscribed && <p className="muted">Thanks for subscribing!</p>}
+          {statusMessage && <p className="muted">{statusMessage}</p>}
         </div>
       </div>
       <p className="footer-bottom">© {new Date().getFullYear()} Kavya Gifting. All rights reserved.</p>

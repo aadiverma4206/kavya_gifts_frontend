@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getProductById } from "../api.js";
+import { getProductById } from "../services/productService.js";
 import { useCart } from "../context/CartContext.jsx";
 import { toDirectImageUrl } from "../utils/driveImage.js";
 import "./Product.css";
@@ -17,12 +17,30 @@ export default function Product() {
   const [added, setAdded] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     setLoading(true);
     setError(null);
+
     getProductById(id)
-      .then(setProduct)
-      .catch(() => setError("This product could not be found."))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (!isMounted) return;
+        if (!data) {
+          setError("This product could not be found.");
+        } else {
+          setProduct(data);
+        }
+      })
+      .catch((err) => {
+        console.error("Error loading product:", err);
+        if (isMounted) setError("This product could not be found.");
+      })
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [id]);
 
   if (loading) return <p className="container muted">Loading...</p>;
@@ -42,7 +60,7 @@ export default function Product() {
 
       <div className="product-detail-info">
         <h1>{product.product_name}</h1>
-        <p className="product-detail-price">₹{product.price.toLocaleString("en-IN")}</p>
+        <p className="product-detail-price">₹{Number(product.price).toLocaleString("en-IN")}</p>
         <p className="muted product-detail-desc">{product.description}</p>
 
         <div className="quantity-selector">

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-// The cart lives entirely in the browser (localStorage) since Google Sheets
-// is not a safe place to store order/transaction data.
+// The cart lives entirely in the browser (localStorage)
 const CART_STORAGE_KEY = "kavya_cart";
 const CartContext = createContext(null);
 
@@ -18,15 +17,22 @@ export function CartProvider({ children }) {
   const [items, setItems] = useState(loadCart);
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    try {
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    } catch (err) {
+      console.warn("Unable to save cart to localStorage:", err);
+    }
   }, [items]);
 
   function addToCart(product, quantity = 1) {
+    const productId = product.product_id || product.id;
+    const price = typeof product.price === "number" ? product.price : Number(product.price) || 0;
+
     setItems((prev) => {
-      const existing = prev.find((item) => item.product_id === product.product_id);
+      const existing = prev.find((item) => (item.product_id || item.id) === productId);
       if (existing) {
         return prev.map((item) =>
-          item.product_id === product.product_id
+          (item.product_id || item.id) === productId
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
@@ -34,9 +40,9 @@ export function CartProvider({ children }) {
       return [
         ...prev,
         {
-          product_id: product.product_id,
+          product_id: productId,
           product_name: product.product_name,
-          price: product.price,
+          price,
           image_url: product.image_url,
           quantity,
         },
@@ -44,16 +50,20 @@ export function CartProvider({ children }) {
     });
   }
 
-  function updateQuantity(product_id, quantity) {
+  function updateQuantity(productId, quantity) {
     setItems((prev) =>
       prev
-        .map((item) => (item.product_id === product_id ? { ...item, quantity } : item))
+        .map((item) =>
+          (item.product_id || item.id) === productId ? { ...item, quantity } : item
+        )
         .filter((item) => item.quantity > 0)
     );
   }
 
-  function removeFromCart(product_id) {
-    setItems((prev) => prev.filter((item) => item.product_id !== product_id));
+  function removeFromCart(productId) {
+    setItems((prev) =>
+      prev.filter((item) => (item.product_id || item.id) !== productId)
+    );
   }
 
   function clearCart() {

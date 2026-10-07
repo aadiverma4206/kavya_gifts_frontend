@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllProducts } from "../api.js";
+import { getActiveCategories } from "../services/categoryService.js";
 import { useCart } from "../context/CartContext.jsx";
 import "./Header.css";
 
@@ -9,12 +9,18 @@ export default function Header() {
   const { totalItems } = useCart();
 
   useEffect(() => {
-    getAllProducts()
-      .then((products) => {
-        const unique = [...new Set(products.map((p) => p.category))].filter(Boolean);
-        setCategories(unique);
+    let isMounted = true;
+    getActiveCategories()
+      .then((unique) => {
+        if (isMounted) setCategories(unique);
       })
-      .catch(() => setCategories([]));
+      .catch(() => {
+        if (isMounted) setCategories([]);
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
