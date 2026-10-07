@@ -105,20 +105,20 @@ export async function executeCustomerRegistration(step1Data, step2Data) {
  * Orchestrates Customer Login with role & blocked-status verification.
  * Automatically signs out and throws if user is blocked or suspended.
  */
-export async function executeCustomerLogin(email, password) {
-  if (!email || !email.trim()) {
-    throw new Error("Please enter your registered email address.");
+export async function executeCustomerLogin(identifier, password) {
+  if (!identifier || !identifier.trim()) {
+    throw new Error("Please enter your registered Email address or Customer ID.");
   }
   if (!password) {
     throw new Error("Please enter your password.");
   }
 
-  // 1. Authenticate with Firebase
-  const { user, profile } = await loginUser(email, password);
+  // 1. Authenticate with Firebase or Firestore fallback
+  const { user, profile } = await loginUser(identifier, password);
 
   // 2. Fetch or verify latest Firestore profile
   let latestProfile = profile;
-  if (!latestProfile) {
+  if (!latestProfile && user?.uid) {
     latestProfile = await getUserProfile(user.uid);
   }
 

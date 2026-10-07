@@ -27,7 +27,7 @@ export default function Login() {
     setError("");
 
     if (!email.trim() || !password) {
-      setError("Please enter both email and password.");
+      setError("Please enter your Email or Customer ID and password.");
       return;
     }
 
@@ -108,10 +108,10 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label>Email Address</label>
+            <label>Email Address or Customer ID</label>
             <input
-              type="email"
-              placeholder="e.g. priya@example.com"
+              type="text"
+              placeholder="e.g. priya@example.com or CUS-10001"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required

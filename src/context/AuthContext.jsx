@@ -17,26 +17,49 @@ export function AuthProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 1. Restore persistent Admin Session if present
-  useEffect(() => {
+  // Helper to get stored customer session
+  const getStoredCustomerSession = () => {
     try {
       if (typeof localStorage !== "undefined") {
-        const savedAdmin = localStorage.getItem("kavya_admin_session");
-        if (savedAdmin) {
-          const parsed = JSON.parse(savedAdmin);
-          if (parsed && parsed.role === "owner") {
-            setCurrentUser({ uid: parsed.uid, email: parsed.email });
-            setUserProfile(parsed);
-            setLoading(false);
-          }
-        }
+        const saved = localStorage.getItem("kavya_customer_session");
+        return saved ? JSON.parse(saved) : null;
       }
     } catch (e) {
-      console.warn("Could not restore saved admin session:", e);
+      console.warn("Could not parse saved customer session:", e);
+    }
+    return null;
+  };
+
+  // Helper to get stored admin session
+  const getStoredAdminSession = () => {
+    try {
+      if (typeof localStorage !== "undefined") {
+        const saved = localStorage.getItem("kavya_admin_session");
+        return saved ? JSON.parse(saved) : null;
+      }
+    } catch (e) {
+      console.warn("Could not parse saved admin session:", e);
+    }
+    return null;
+  };
+
+  // 1. Initial restoration of session from localStorage
+  useEffect(() => {
+    const adminSession = getStoredAdminSession();
+    const customerSession = getStoredCustomerSession();
+
+    if (adminSession && adminSession.role === "owner") {
+      setCurrentUser({ uid: adminSession.uid, email: adminSession.email });
+      setUserProfile(adminSession);
+      setLoading(false);
+    } else if (customerSession && customerSession.customerId) {
+      setCurrentUser({ uid: customerSession.uid, email: customerSession.email });
+      setUserProfile(customerSession);
+      setLoading(false);
     }
   }, []);
 
-  // 2. Firebase Auth listener for customer sessions
+  // 2. Firebase Auth and Firestore real-time profile listener
   useEffect(() => {
     let unsubscribeProfile = null;
 
@@ -49,9 +72,13 @@ export function AuthProvider({ children }) {
           userDocRef,
           (docSnap) => {
             if (docSnap.exists()) {
-              setUserProfile(docSnap.data());
+              const data = docSnap.data();
+              setUserProfile(data);
+              if (typeof localStorage !== "undefined" && data.role === "customer") {
+                localStorage.setItem("kavya_customer_session", JSON.stringify(data));
+              }
             } else {
-              setUserProfile({
+              setUserProfile((prev) => prev || {
                 uid: user.uid,
                 email: user.email,
                 role: "customer",
@@ -74,8 +101,32 @@ export function AuthProvider({ children }) {
           unsubscribeProfile();
           unsubscribeProfile = null;
         }
-        // If not in a local admin session, clear profile
-        if (typeof localStorage !== "undefined" && !localStorage.getItem("kavya_admin_session")) {
+
+        // Check if customer or admin has active persistent local session
+        const adminSession = getStoredAdminSession();
+        const customerSession = getStoredCustomerSession();
+
+        if (adminSession && adminSession.role === "owner") {
+          setCurrentUser({ uid: adminSession.uid, email: adminSession.email });
+          setUserProfile(adminSession);
+        } else if (customerSession && customerSession.customerId) {
+          setCurrentUser({ uid: customerSession.uid, email: customerSession.email });
+          setUserProfile(customerSession);
+
+          // Keep customer profile live with Firestore snapshot
+          try {
+            const userDocRef = doc(db, "users", customerSession.uid);
+            unsubscribeProfile = onSnapshot(userDocRef, (snap) => {
+              if (snap.exists()) {
+                const updated = snap.data();
+                setUserProfile(updated);
+                localStorage.setItem("kavya_customer_session", JSON.stringify(updated));
+              }
+            });
+          } catch (e) {
+            console.warn("Could not sync customer profile snapshot:", e);
+          }
+        } else {
           setCurrentUser(null);
           setUserProfile(null);
         }
@@ -95,11 +146,21 @@ export function AuthProvider({ children }) {
 
   // Actions dispatched via Controller
   const handleRegister = async (step1Data, step2Data) => {
-    return await executeCustomerRegistration(step1Data, step2Data);
+    const res = await executeCustomerRegistration(step1Data, step2Data);
+    if (res?.user && res?.profile) {
+      setCurrentUser(res.user);
+      setUserProfile(res.profile);
+    }
+    return res;
   };
 
-  const handleCustomerLogin = async (email, password) => {
-    return await executeCustomerLogin(email, password);
+  const handleCustomerLogin = async (identifier, password) => {
+    const res = await executeCustomerLogin(identifier, password);
+    if (res?.user && res?.profile) {
+      setCurrentUser(res.user);
+      setUserProfile(res.profile);
+    }
+    return res;
   };
 
   const handleOwnerLogin = async (email, password) => {
@@ -112,6 +173,7 @@ export function AuthProvider({ children }) {
   const handleLogout = async () => {
     if (typeof localStorage !== "undefined") {
       localStorage.removeItem("kavya_admin_session");
+      localStorage.removeItem("kavya_customer_session");
     }
     await logoutUser();
     setCurrentUser(null);
@@ -134,8 +196,8 @@ export function AuthProvider({ children }) {
     loginCustomer: handleCustomerLogin,
     loginOwner: handleOwnerLogin,
     // Aliased login for backward compatibility
-    login: async (email, password) => {
-      return await executeCustomerLogin(email, password);
+    login: async (identifier, password) => {
+      return await handleCustomerLogin(identifier, password);
     },
     logout: handleLogout,
     resetPassword: handlePasswordReset,

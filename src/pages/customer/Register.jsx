@@ -90,10 +90,11 @@ export default function Register() {
         actualCaptcha: captchaCode,
       };
 
-      // Account is created in Firebase Auth and Firestore only after all fields are valid
-      await register(step1Payload, step2Payload);
+      // Account is created in Firebase Auth and Firestore with sequential Customer ID
+      const res = await register(step1Payload, step2Payload);
+      const assignedId = res?.profile?.customerId || "CUS-10001";
 
-      toast.success("Welcome to Kavya Gifting! Your customer account is ready.");
+      toast.success(`Registration Successful! Your Customer ID is ${assignedId}.`);
       navigate("/dashboard");
     } catch (err) {
       console.error("Registration error:", err);
