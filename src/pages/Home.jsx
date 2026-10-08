@@ -4,9 +4,11 @@ import { getActiveCategories } from "../services/categoryService.js";
 import ProductCard from "../components/ProductCard.jsx";
 import CategoryCard from "../components/CategoryCard.jsx";
 import GiftBoxCanvas from "../components/three/GiftBoxCanvas.jsx";
+import useDocumentTitle from "../hooks/useDocumentTitle.js";
 import "./Home.css";
 
 export default function Home() {
+  useDocumentTitle("Home - Handcrafted Luxury Gifts");
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);

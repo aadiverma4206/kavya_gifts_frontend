@@ -3,9 +3,11 @@ import { toast } from "sonner";
 import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toDirectImageUrl } from "../utils/driveImage.js";
+import useDocumentTitle from "../hooks/useDocumentTitle.js";
 import "./Cart.css";
 
 export default function Cart() {
+  useDocumentTitle("Shopping Cart");
   const navigate = useNavigate();
   const {
     items,
