@@ -1,0 +1,54 @@
+@keyframes skeletonShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-box {
+  background: linear-gradient(
+    90deg,
+    rgba(230, 222, 212, 0.6) 25%,
+    rgba(245, 240, 235, 0.9) 37%,
+    rgba(230, 222, 212, 0.6) 63%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+  display: block;
+}
+
+.skeleton-rectangular {
+  border-radius: var(--radius-btn, 8px);
+}
+
+.skeleton-circular {
+  border-radius: 50%;
+}
+
+.skeleton-text {
+  border-radius: 4px;
+  height: 16px;
+}
+
+.skeleton-pill {
+  border-radius: 999px;
+}
+
+.skeleton-card {
+  background: #ffffff;
+  border-radius: var(--radius-card, 16px);
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(42, 24, 21, 0.05);
+  border: 1px solid rgba(122, 31, 43, 0.05);
+}
+
+.skeleton-card-image {
+  width: 100%;
+  height: 220px;
+}
+
+.skeleton-card-body {
+  padding: 18px;
+}
