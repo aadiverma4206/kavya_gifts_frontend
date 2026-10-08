@@ -1,0 +1,70 @@
+/**
+ * Utility functions for consistent formatting across Kavya Gifts
+ */
+
+/**
+ * Formats a numeric value into standard Indian Rupee currency format (₹).
+ * @param {number|string} amount
+ * @returns {string} Formatted currency string, e.g. "₹1,299"
+ */
+export function formatCurrency(amount) {
+  const numeric = Number(amount) || 0;
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(numeric);
+}
+
+/**
+ * Formats a timestamp / date into readable Indian localized format.
+ * @param {string|number|Date|object} dateInput
+ * @returns {string} Formatted date string, e.g. "08 Oct 2026, 04:30 PM"
+ */
+export function formatDate(dateInput) {
+  if (!dateInput) return "N/A";
+
+  let dateObj;
+  // Support Firestore Timestamp objects with .toDate() or seconds
+  if (typeof dateInput === "object" && typeof dateInput.toDate === "function") {
+    dateObj = dateInput.toDate();
+  } else if (typeof dateInput === "object" && dateInput.seconds) {
+    dateObj = new Date(dateInput.seconds * 1000);
+  } else {
+    dateObj = new Date(dateInput);
+  }
+
+  if (isNaN(dateObj.getTime())) return "Invalid date";
+
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(dateObj);
+}
+
+/**
+ * Truncates long text gracefully with an ellipsis.
+ * @param {string} text
+ * @param {number} maxLen
+ * @returns {string}
+ */
+export function truncateText(text, maxLen = 60) {
+  if (!text || typeof text !== "string") return "";
+  if (text.length <= maxLen) return text;
+  return text.slice(0, maxLen).trim() + "...";
+}
+
+/**
+ * Standardizes order ID for display (e.g., #KG-1024)
+ * @param {string|number} orderId
+ * @returns {string}
+ */
+export function formatOrderId(orderId) {
+  if (!orderId) return "#KG-0000";
+  const str = String(orderId).replace(/^#/, "");
+  return `#${str.toUpperCase()}`;
+}
