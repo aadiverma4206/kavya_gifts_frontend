@@ -11,6 +11,7 @@ import Home from "./pages/Home.jsx";
 import Category from "./pages/Category.jsx";
 import Product from "./pages/Product.jsx";
 import Cart from "./pages/Cart.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 // Customer Auth & Portal Pages
 import Register from "./pages/customer/Register.jsx";
@@ -185,6 +186,9 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Fallback 404 Route */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
