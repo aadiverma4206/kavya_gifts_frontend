@@ -4,6 +4,7 @@ import { getActiveCategories } from "../services/categoryService.js";
 import ProductCard from "../components/ProductCard.jsx";
 import CategoryCard from "../components/CategoryCard.jsx";
 import GiftBoxCanvas from "../components/three/GiftBoxCanvas.jsx";
+import LoadingSkeleton from "../components/common/LoadingSkeleton.jsx";
 import useDocumentTitle from "../hooks/useDocumentTitle.js";
 import "./Home.css";
 
@@ -79,16 +80,24 @@ export default function Home() {
       {/* ---------- Best Selling Hampers ---------- */}
       <section className="section container" id="best-selling">
         <h2>Best Selling Hampers</h2>
-        {loading && <p className="muted">Loading hampers...</p>}
+        {loading && (
+          <div className="product-grid" aria-label="Loading hampers">
+            {[1, 2, 3, 4].map((i) => (
+              <LoadingSkeleton key={i} variant="card" />
+            ))}
+          </div>
+        )}
         {error && <p className="muted">{error}</p>}
         {!loading && !error && products.length === 0 && (
           <p className="muted">No hampers available at the moment.</p>
         )}
-        <div className="product-grid">
-          {products.map((product) => (
-            <ProductCard key={product.product_id || product.id} product={product} />
-          ))}
-        </div>
+        {!loading && !error && products.length > 0 && (
+          <div className="product-grid">
+            {products.map((product) => (
+              <ProductCard key={product.product_id || product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
     </>
   );
