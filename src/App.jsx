@@ -5,6 +5,7 @@ import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
+import ErrorBoundary from "./components/common/ErrorBoundary.jsx";
 
 // Public Storefront Pages
 import Home from "./pages/Home.jsx";
@@ -53,7 +54,8 @@ export default function App() {
       )}
 
       <main>
-        <Routes>
+        <ErrorBoundary>
+          <Routes>
           {/* Public Storefront */}
           <Route path="/" element={<Home />} />
           <Route path="/category/:name" element={<Category />} />
@@ -190,6 +192,7 @@ export default function App() {
           {/* Fallback 404 Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </ErrorBoundary>
       </main>
 
       {!isOwnerRoute && <Footer />}
