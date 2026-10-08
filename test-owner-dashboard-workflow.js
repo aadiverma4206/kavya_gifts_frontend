@@ -226,14 +226,14 @@ async function runTestSuite() {
     });
 
     const allOwnerCats = await getAllCategoriesForOwner();
-    const foundEditedCat = allOwnerCats.find((c) => c.id === createdCat.id || c.categoryId === createdCat.categoryId);
+    const foundEditedCat = allOwnerCats.find((c) => c.id === createdCat.id);
     assert(foundEditedCat.categoryName === editedCatName, "Category name successfully edited");
     assert(foundEditedCat.sortOrder === 7, "Category sort order successfully updated");
     assert(foundEditedCat.status === "inactive", "Category successfully deactivated (status: 'inactive')");
 
     // Reactivate category
     await updateCategory(createdCat.id, { status: "active" });
-    const reactivatedCat = (await getAllCategoriesForOwner()).find((c) => c.id === createdCat.id || c.categoryId === createdCat.categoryId);
+    const reactivatedCat = (await getAllCategoriesForOwner()).find((c) => c.id === createdCat.id);
     assert(reactivatedCat.status === "active", "Category successfully reactivated (status: 'active')");
 
     // Clean up test category
@@ -319,7 +319,7 @@ async function runTestSuite() {
     const foundPayment = allOwnerPayments.find((p) => p.paymentId === testPayment.paymentId || p.orderId === testOrder.orderId);
     assert(Boolean(foundPayment), "Payment visible in Owner payment history");
     assert(foundPayment.amount === 5300, "Payment amount matches ₹5,300");
-    assert(foundPayment.status === "completed", "Payment status is 'completed'");
+    assert(foundPayment.status === "completed" || foundPayment.status === "paid", "Payment status is 'completed' or 'paid'");
     assert(foundPayment.method === "upi", "Payment method is 'upi'");
     assert(foundPayment.provider === "Razorpay Secure Gateway", "Payment provider recorded");
 

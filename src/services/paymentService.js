@@ -49,9 +49,8 @@ export async function recordPayment({
   provider = "UPI",
   providerPaymentId = null,
   userId = null,
-  customerId = null,
-  paymentStatus = "pending",
-  status,
+  paymentStatus = null,
+  status = null,
 }) {
   const paymentId = await getNextBusinessId("PAY");
 
