@@ -3,6 +3,8 @@ import { toast } from "sonner";
 import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toDirectImageUrl } from "../utils/driveImage.js";
+import { formatCurrency } from "../utils/formatters.js";
+import { notify } from "../utils/notify.js";
 import useDocumentTitle from "../hooks/useDocumentTitle.js";
 import "./Cart.css";
 
@@ -173,11 +175,11 @@ export default function Cart() {
               {/* Line Totals Breakdown */}
               <div style={{ textAlign: "right" }}>
                 <div className="cart-line-total" style={{ fontSize: "16px" }}>
-                  ₹{lineTotal.toLocaleString("en-IN")}
+                  {formatCurrency(lineTotal)}
                 </div>
                 {isWrapSelected && (
                   <div className="muted" style={{ fontSize: "11px", color: "var(--color-primary)" }}>
-                    Includes ₹{wrapFeeTotal} wrap fee
+                    Includes {formatCurrency(wrapFeeTotal)} wrap fee
                   </div>
                 )}
               </div>
@@ -188,7 +190,7 @@ export default function Cart() {
                 className="remove-btn"
                 onClick={() => {
                   removeFromCart(item.productId, item.giftWrappingSelected);
-                  toast.info(`${item.productName || 'Hamper'} removed from cart.`);
+                  notify.info(`${item.productName || 'Hamper'} removed from cart.`);
                 }}
               >
                 Remove
@@ -203,13 +205,13 @@ export default function Cart() {
         <div className="cart-summary-breakdown">
           <div className="summary-row">
             <span>Product Subtotal:</span>
-            <span>₹{productSubtotal.toLocaleString("en-IN")}</span>
+            <span>{formatCurrency(productSubtotal)}</span>
           </div>
 
           <div className="summary-row">
             <span>Gift Wrapping Total:</span>
             <span style={{ color: giftWrappingTotal > 0 ? "var(--color-primary)" : "#6b7280" }}>
-              {giftWrappingTotal > 0 ? `+₹${giftWrappingTotal.toLocaleString("en-IN")}` : "₹0 (None selected)"}
+              {giftWrappingTotal > 0 ? `+${formatCurrency(giftWrappingTotal)}` : "₹0 (None selected)"}
             </span>
           </div>
 
@@ -221,7 +223,7 @@ export default function Cart() {
           <div className="summary-row total-row">
             <strong>Grand Total:</strong>
             <strong style={{ fontSize: "24px", color: "var(--color-primary)" }}>
-              ₹{grandTotal.toLocaleString("en-IN")}
+              {formatCurrency(grandTotal)}
             </strong>
           </div>
         </div>
