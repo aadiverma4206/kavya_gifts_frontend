@@ -4,6 +4,7 @@ import AnnouncementBar from "./components/AnnouncementBar.jsx";
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import ProtectedRoute from "./components/common/ProtectedRoute.jsx";
+import ScrollToTop from "./components/common/ScrollToTop.jsx";
 
 // Public Storefront Pages
 import Home from "./pages/Home.jsx";
@@ -39,6 +40,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Toaster position="top-right" richColors closeButton />
 
       {/* Customer Storefront Chrome: only visible outside Owner portal */}
