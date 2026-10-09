@@ -4,6 +4,7 @@ import {
   getFeaturedProducts,
   getProductsByCategory,
 } from "../services/productService.js";
+import { filterAndSortProducts } from "../utils/searchFilter.js";
 
 /**
  * Product Controller: Orchestrates business rules, stock validations,
@@ -17,6 +18,38 @@ import {
 export async function fetchActiveCatalog() {
   const products = await getActiveProducts();
   return products.filter((p) => p.status === "active");
+}
+
+/**
+ * Retrieves featured active hampers.
+ * @returns {Promise<Array>}
+ */
+export async function fetchFeaturedCatalog() {
+  const products = await getFeaturedProducts();
+  return products.filter((p) => p.status === "active");
+}
+
+/**
+ * Retrieves active products for a specific category.
+ * @param {string} category
+ * @returns {Promise<Array>}
+ */
+export async function fetchCategoryCatalog(category) {
+  if (!category) return [];
+  const products = await getProductsByCategory(category);
+  return products.filter((p) => p.status === "active");
+}
+
+/**
+ * Filters and sorts active catalog based on search query, category, and sort parameters.
+ */
+export async function searchAndFilterCatalog({ searchQuery = "", category = "all", sortBy = "default" } = {}) {
+  const all = await fetchActiveCatalog();
+  return filterAndSortProducts(all, {
+    searchQuery,
+    selectedCategory: category,
+    sortBy,
+  });
 }
 
 /**
