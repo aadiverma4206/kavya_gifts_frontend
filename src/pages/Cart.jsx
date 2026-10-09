@@ -6,6 +6,8 @@ import { toDirectImageUrl } from "../utils/driveImage.js";
 import { formatCurrency } from "../utils/formatters.js";
 import { notify } from "../utils/notify.js";
 import useDocumentTitle from "../hooks/useDocumentTitle.js";
+import ProductCard from "../components/ProductCard.jsx";
+import { getDummyFeaturedProducts } from "../data/dummyProducts.js";
 import "./Cart.css";
 
 export default function Cart() {
@@ -21,18 +23,30 @@ export default function Cart() {
     grandTotal,
   } = useCart();
   const { currentUser, isBlocked } = useAuth();
+  const recommendedHampers = getDummyFeaturedProducts().slice(0, 4);
 
   if (items.length === 0) {
     return (
-      <section className="section container" style={{ textAlign: "center", padding: "80px 0" }}>
+      <section className="section container" style={{ textAlign: "center", padding: "60px 0" }}>
         <div style={{ fontSize: "56px", marginBottom: "16px" }}>🎁</div>
         <h2>Your Gifting Cart is Empty</h2>
         <p className="muted" style={{ margin: "16px 0 24px", maxWidth: "480px", marginLeft: "auto", marginRight: "auto" }}>
           You haven't selected any artisan hampers yet. Explore our handcrafted festival and wedding collections to find the perfect gift.
         </p>
-        <Link to="/" className="btn btn-primary">
-          Explore Hampers Collection
+        <Link to="/" className="btn btn-primary" style={{ marginBottom: "48px" }}>
+          Explore Full 100+ Catalog
         </Link>
+
+        {recommendedHampers.length > 0 && (
+          <div style={{ textAlign: "left", marginTop: "40px" }}>
+            <h3 style={{ fontSize: "22px", marginBottom: "20px" }}>Trending Hampers You May Love</h3>
+            <div className="product-grid">
+              {recommendedHampers.map((hamper) => (
+                <ProductCard key={hamper.productId} product={hamper} />
+              ))}
+            </div>
+          </div>
+        )}
       </section>
     );
   }
