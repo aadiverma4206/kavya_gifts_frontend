@@ -13,6 +13,12 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebase.js";
 import { getNextBusinessId } from "./sequenceService.js";
+import {
+  getDummyProducts,
+  getDummyFeaturedProducts,
+  getDummyProductsByCategory,
+  getDummyProductById,
+} from "../data/dummyProducts.js";
 
 const PRODUCTS_COLLECTION = "products";
 
@@ -76,33 +82,63 @@ function mapProductDoc(docSnap) {
 }
 
 /**
- * Public storefront: Retrieves active products.
+ * Public storefront: Retrieves active products (guaranteed 100+ hampers).
  */
 export async function getActiveProducts() {
-  const q = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("status", "==", "active")
-  );
-  const snapshot = await getDocs(q);
-  const products = snapshot.docs.map(mapProductDoc);
-  return products.sort((a, b) => {
-    const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
-    const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
-    return bTime - aTime;
-  });
+  try {
+    const q = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("status", "==", "active")
+    );
+    const snapshot = await getDocs(q);
+    const dbProducts = snapshot.docs.map(mapProductDoc);
+
+    const dummyList = getDummyProducts();
+    const existingIds = new Set(dbProducts.map((p) => p.productId || p.id));
+
+    const merged = [...dbProducts];
+    for (const item of dummyList) {
+      if (!existingIds.has(item.productId)) {
+        merged.push(item);
+      }
+    }
+
+    return merged.sort((a, b) => {
+      const aTime = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const bTime = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return bTime - aTime;
+    });
+  } catch (err) {
+    console.warn("Could not query Firestore products, using dummy catalog:", err);
+    return getDummyProducts();
+  }
 }
 
 /**
  * Public storefront: Retrieves featured active products.
  */
 export async function getFeaturedProducts() {
-  const q = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("status", "==", "active"),
-    where("featured", "==", true)
-  );
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map(mapProductDoc);
+  try {
+    const q = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("status", "==", "active"),
+      where("featured", "==", true)
+    );
+    const snapshot = await getDocs(q);
+    const dbFeatured = snapshot.docs.map(mapProductDoc);
+    const dummyFeatured = getDummyFeaturedProducts();
+    const existingIds = new Set(dbFeatured.map((p) => p.productId || p.id));
+    const merged = [...dbFeatured];
+    for (const item of dummyFeatured) {
+      if (!existingIds.has(item.productId)) {
+        merged.push(item);
+      }
+    }
+    return merged;
+  } catch (err) {
+    console.warn("Could not query Firestore featured products, using dummy catalog:", err);
+    return getDummyFeaturedProducts();
+  }
 }
 
 /**
@@ -111,36 +147,51 @@ export async function getFeaturedProducts() {
 export async function getProductsByCategory(categoryIdentifier) {
   if (!categoryIdentifier) return [];
 
-  // Query by categoryName
-  const qName = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("categoryName", "==", categoryIdentifier),
-    where("status", "==", "active")
-  );
-  const snapName = await getDocs(qName);
-  if (!snapName.empty) {
-    return snapName.docs.map(mapProductDoc);
-  }
+  try {
+    // 1. Query by categoryName
+    const qName = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("categoryName", "==", categoryIdentifier),
+      where("status", "==", "active")
+    );
+    const snapName = await getDocs(qName);
+    if (!snapName.empty) {
+      const prods = snapName.docs.map(mapProductDoc);
+      const dummyMatches = getDummyProductsByCategory(categoryIdentifier);
+      const existingIds = new Set(prods.map((p) => p.productId || p.id));
+      for (const item of dummyMatches) {
+        if (!existingIds.has(item.productId)) prods.push(item);
+      }
+      return prods;
+    }
 
-  // Fallback query by legacy "category" field
-  const qLegacy = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("category", "==", categoryIdentifier),
-    where("status", "==", "active")
-  );
-  const snapLegacy = await getDocs(qLegacy);
-  if (!snapLegacy.empty) {
-    return snapLegacy.docs.map(mapProductDoc);
-  }
+    // 2. Fallback query by legacy "category" field
+    const qLegacy = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("category", "==", categoryIdentifier),
+      where("status", "==", "active")
+    );
+    const snapLegacy = await getDocs(qLegacy);
+    if (!snapLegacy.empty) {
+      return snapLegacy.docs.map(mapProductDoc);
+    }
 
-  // Fallback query by categoryId
-  const qId = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("categoryId", "==", categoryIdentifier),
-    where("status", "==", "active")
-  );
-  const snapId = await getDocs(qId);
-  return snapId.docs.map(mapProductDoc);
+    // 3. Fallback query by categoryId
+    const qId = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("categoryId", "==", categoryIdentifier),
+      where("status", "==", "active")
+    );
+    const snapId = await getDocs(qId);
+    if (!snapId.empty) {
+      return snapId.docs.map(mapProductDoc);
+    }
+
+    return getDummyProductsByCategory(categoryIdentifier);
+  } catch (err) {
+    console.warn("Could not query category products, falling back to dummy list:", err);
+    return getDummyProductsByCategory(categoryIdentifier);
+  }
 }
 
 /**
@@ -149,48 +200,54 @@ export async function getProductsByCategory(categoryIdentifier) {
 export async function getProductById(productId) {
   if (!productId) return null;
 
-  // 1. Fetch by direct document ID
-  const directRef = doc(db, PRODUCTS_COLLECTION, productId);
-  const directSnap = await getDoc(directRef);
-  if (directSnap.exists()) {
-    const product = mapProductDoc(directSnap);
-    return product.status === "active" ? product : null;
-  }
+  try {
+    // 1. Fetch by direct document ID
+    const directRef = doc(db, PRODUCTS_COLLECTION, productId);
+    const directSnap = await getDoc(directRef);
+    if (directSnap.exists()) {
+      const product = mapProductDoc(directSnap);
+      if (product.status === "active") return product;
+    }
 
-  // 2. Query by productId field
-  const qId = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("productId", "==", productId),
-    where("status", "==", "active")
-  );
-  const snapId = await getDocs(qId);
-  if (!snapId.empty) {
-    return mapProductDoc(snapId.docs[0]);
-  }
+    // 2. Query by productId field
+    const qId = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("productId", "==", productId),
+      where("status", "==", "active")
+    );
+    const snapId = await getDocs(qId);
+    if (!snapId.empty) {
+      return mapProductDoc(snapId.docs[0]);
+    }
 
-  // 3. Query by legacy product_id
-  const qLegacy = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("product_id", "==", productId),
-    where("status", "==", "active")
-  );
-  const snapLegacy = await getDocs(qLegacy);
-  if (!snapLegacy.empty) {
-    return mapProductDoc(snapLegacy.docs[0]);
-  }
+    // 3. Query by legacy product_id
+    const qLegacy = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("product_id", "==", productId),
+      where("status", "==", "active")
+    );
+    const snapLegacy = await getDocs(qLegacy);
+    if (!snapLegacy.empty) {
+      return mapProductDoc(snapLegacy.docs[0]);
+    }
 
-  // 4. Query by slug
-  const qSlug = query(
-    collection(db, PRODUCTS_COLLECTION),
-    where("slug", "==", productId),
-    where("status", "==", "active")
-  );
-  const snapSlug = await getDocs(qSlug);
-  if (!snapSlug.empty) {
-    return mapProductDoc(snapSlug.docs[0]);
-  }
+    // 4. Query by slug
+    const qSlug = query(
+      collection(db, PRODUCTS_COLLECTION),
+      where("slug", "==", productId),
+      where("status", "==", "active")
+    );
+    const snapSlug = await getDocs(qSlug);
+    if (!snapSlug.empty) {
+      return mapProductDoc(snapSlug.docs[0]);
+    }
 
-  return null;
+    // 5. Fallback to dummy products
+    return getDummyProductById(productId);
+  } catch (err) {
+    console.warn("Could not query Firestore product by ID, checking dummy catalog:", err);
+    return getDummyProductById(productId);
+  }
 }
 
 /**
