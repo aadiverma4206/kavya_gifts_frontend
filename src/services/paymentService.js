@@ -48,6 +48,7 @@ export async function recordPayment({
   paymentMethod,
   provider = "UPI",
   providerPaymentId = null,
+  customerId = null,
   userId = null,
   paymentStatus = null,
   status = null,
@@ -56,11 +57,12 @@ export async function recordPayment({
 
   const finalMethod = paymentMethod || method || "Online";
   const finalStatus = paymentStatus || status || "pending";
+  const finalCustomerId = customerId || userId || null;
 
   const paymentData = {
     paymentId,
     orderId,
-    customerId: customerId || null,
+    customerId: finalCustomerId,
     amount: Number(amount),
     provider: provider || "UPI",
     providerPaymentId: providerPaymentId || null,
@@ -74,9 +76,9 @@ export async function recordPayment({
   await setDoc(docRef, paymentData);
 
   // Log Activity
-  if (customerId) {
+  if (finalCustomerId) {
     await logUserActivity({
-      customerId,
+      customerId: finalCustomerId,
       action: "PAYMENT_RECORDED",
       description: `Payment ${paymentId} for ₹${amount} initiated with status ${finalStatus}`,
     });
