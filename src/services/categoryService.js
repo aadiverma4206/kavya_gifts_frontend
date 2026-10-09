@@ -66,8 +66,14 @@ export async function getActiveCategories() {
       const cats = snapshot.docs.map(mapCategoryDoc);
       cats.sort((a, b) => a.sortOrder - b.sortOrder);
       const names = cats.map((c) => c.categoryName).filter(Boolean);
-      if (names.length > 0) {
-        return [...new Set(names)];
+      try {
+        const products = await getActiveProducts();
+        const prodCats = products.map((p) => p.categoryName || p.category).filter(Boolean);
+        return [...new Set([...names, ...prodCats])];
+      } catch (_) {
+        if (names.length > 0) {
+          return [...new Set(names)];
+        }
       }
     }
   } catch (err) {
