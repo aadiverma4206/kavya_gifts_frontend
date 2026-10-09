@@ -68,3 +68,27 @@ export function formatOrderId(orderId) {
   const str = String(orderId).replace(/^#/, "");
   return `#${str.toUpperCase()}`;
 }
+
+/**
+ * Formats a price range string (e.g. ₹1,999 - ₹4,499)
+ */
+export function formatPriceRange(min, max) {
+  const minStr = formatCurrency(min);
+  const maxStr = formatCurrency(max);
+  if (min === max) return minStr;
+  return `${minStr} - ${maxStr}`;
+}
+
+/**
+ * Returns formatted stock status text and color theme.
+ */
+export function formatStockBadge(stockQuantity) {
+  const qty = Number(stockQuantity) || 0;
+  if (qty <= 0) {
+    return { text: "Out of Stock", level: "critical", isAvailable: false };
+  }
+  if (qty <= 5) {
+    return { text: `Only ${qty} left`, level: "warning", isAvailable: true };
+  }
+  return { text: "In Stock", level: "success", isAvailable: true };
+}
