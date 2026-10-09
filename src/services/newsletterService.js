@@ -4,7 +4,7 @@ import {
   setDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { db } from "../firebase/firebase.js";
 
 const NEWSLETTER_COLLECTION = "newsletter_subscribers";
 

@@ -6,7 +6,7 @@ import {
   getActiveProducts,
   getProductsByCategory as getProductsByCategoryService,
   getProductById as getProductByIdService,
-} from "./services/productService";
+} from "./services/productService.js";
 
 export async function getAllProducts() {
   return getActiveProducts();

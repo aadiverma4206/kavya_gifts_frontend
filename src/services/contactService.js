@@ -3,7 +3,7 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "../firebase/firebase";
+import { db } from "../firebase/firebase.js";
 
 const CONTACT_COLLECTION = "contact_messages";
 
