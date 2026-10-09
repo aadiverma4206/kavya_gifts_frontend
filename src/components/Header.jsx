@@ -62,7 +62,10 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="nav" aria-label="Main Navigation">
-          {categories.map((category) => (
+          <Link to="/#catalog" style={{ fontWeight: 600 }}>
+            All Hampers
+          </Link>
+          {categories.slice(0, 6).map((category) => (
             <Link key={category} to={`/category/${encodeURIComponent(category)}`}>
               {category}
             </Link>
