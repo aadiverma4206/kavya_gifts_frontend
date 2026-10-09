@@ -54,6 +54,22 @@
   color: #ffffff;
 }
 
+.product-category-pill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #3f2a24;
+  backdrop-filter: blur(4px);
+  z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
 .product-card-body {
   padding: 18px;
   display: flex;

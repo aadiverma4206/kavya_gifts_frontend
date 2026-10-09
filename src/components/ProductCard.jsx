@@ -40,6 +40,7 @@ export default function ProductCard({ product }) {
           loading="lazy"
           onError={handleImageError}
         />
+        {categoryLabel && <span className="product-category-pill">{categoryLabel}</span>}
         {isOutOfStock && <span className="product-badge out-of-stock">Sold Out</span>}
         {!isOutOfStock && originalPrice && Number(originalPrice) > price && (
           <span className="product-badge discount">
