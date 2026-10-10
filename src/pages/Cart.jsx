@@ -20,6 +20,7 @@ export default function Cart() {
     updateQuantity,
     toggleGiftWrapping,
     removeFromCart,
+    clearCart,
     productSubtotal,
     giftWrappingTotal,
     grandTotal,
@@ -84,16 +85,33 @@ export default function Cart() {
     }
   }
 
+  function handleClearCart() {
+    if (window.confirm("Are you sure you want to remove all hampers from your cart?")) {
+      clearCart();
+      toast.info("Your cart has been cleared.");
+    }
+  }
+
   return (
     <section className="section container">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px", flexWrap: "wrap", gap: "10px" }}>
         <div>
           <h2>Your Gifting Cart</h2>
           <p className="muted">Review your selected hampers, gift packaging preferences, and totals</p>
         </div>
-        <Link to="/" className="btn btn-secondary btn-sm">
-          + Add More Hampers
-        </Link>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            type="button"
+            onClick={handleClearCart}
+            className="btn btn-secondary btn-sm"
+            style={{ color: "#b91c1c", borderColor: "#fecaca" }}
+          >
+            Clear Cart
+          </button>
+          <Link to="/" className="btn btn-secondary btn-sm">
+            + Add More Hampers
+          </Link>
+        </div>
       </div>
 
       {isBlocked && (
