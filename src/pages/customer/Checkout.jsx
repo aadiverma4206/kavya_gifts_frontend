@@ -75,6 +75,16 @@ export default function Checkout() {
       return;
     }
 
+    if (deliveryDate) {
+      const selected = new Date(deliveryDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (selected < today) {
+        setError("Preferred delivery date cannot be in the past.");
+        return;
+      }
+    }
+
     setSubmitting(true);
     try {
       const existingOrderId = sessionStorage.getItem("kavya_pending_order_id");
@@ -188,6 +198,7 @@ export default function Checkout() {
                 <label>Preferred Delivery Date (Optional)</label>
                 <input
                   type="date"
+                  min={new Date().toISOString().split("T")[0]}
                   value={deliveryDate}
                   onChange={(e) => setDeliveryDate(e.target.value)}
                 />
