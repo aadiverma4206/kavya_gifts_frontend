@@ -21,6 +21,7 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [added, setAdded] = useState(false);
+  const [activeImage, setActiveImage] = useState("");
 
   useEffect(() => {
     let isMounted = true;
@@ -35,6 +36,13 @@ export default function Product() {
         // Reset state
         setQuantity(1);
         setGiftWrappingSelected(false);
+        const firstImg =
+          (Array.isArray(data?.images) && data.images[0]) ||
+          data?.thumbnail ||
+          data?.image ||
+          data?.image_url ||
+          "";
+        setActiveImage(firstImg);
       })
       .catch((err) => {
         console.error("Error loading product:", err);
@@ -106,13 +114,27 @@ export default function Product() {
   const wrapTotal = unitWrapPrice * quantity;
   const estimatedTotal = itemSubtotal + wrapTotal;
 
+  const allImages = [
+    activeImage,
+    ...(Array.isArray(product.images) ? product.images : []),
+    product.image,
+    product.thumbnail,
+    product.image_url,
+  ].filter(Boolean);
+  const uniqueImages = [...new Set(allImages)];
+  const currentImgUrl = toDirectImageUrl(activeImage || uniqueImages[0]) || "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Luxury%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
+
   return (
     <div className="product-page-wrapper">
       <section className="section container product-detail">
         <div className="product-detail-image">
           <img
-            src={toDirectImageUrl(product.image || product.thumbnail || product.image_url)}
+            src={currentImgUrl}
             alt={product.productName || product.product_name}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Luxury%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
+            }}
           />
           {stockInfo.isLowStock && (
             <span className="stock-warning-badge">{stockInfo.message}</span>
@@ -124,6 +146,35 @@ export default function Product() {
             >
               Out of Stock
             </span>
+          )}
+
+          {uniqueImages.length > 1 && (
+            <div className="product-thumbnails-strip" style={{ display: "flex", gap: "8px", marginTop: "12px", overflowX: "auto" }}>
+              {uniqueImages.map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveImage(img)}
+                  style={{
+                    border: (activeImage === img || (!activeImage && idx === 0)) ? "2px solid var(--color-primary)" : "1px solid #e5e7eb",
+                    borderRadius: "6px",
+                    padding: "2px",
+                    background: "none",
+                    cursor: "pointer",
+                    width: "56px",
+                    height: "56px",
+                    flexShrink: 0,
+                  }}
+                  aria-label={`View photo ${idx + 1}`}
+                >
+                  <img
+                    src={toDirectImageUrl(img)}
+                    alt=""
+                    style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "4px" }}
+                  />
+                </button>
+              ))}
+            </div>
           )}
         </div>
 
