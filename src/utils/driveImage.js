@@ -11,17 +11,27 @@
 // Anything else (a normal image URL, an empty string, etc.) is returned
 // unchanged.
 export function toDirectImageUrl(url) {
-  if (!url) return url;
+  if (!url) return "";
+
+  // If passed an array of images (e.g., product.images), extract the first valid entry
+  if (Array.isArray(url)) {
+    return toDirectImageUrl(url[0]);
+  }
+
+  if (typeof url !== "string") return "";
+
+  const trimmed = url.trim();
+  if (!trimmed) return "";
 
   const patterns = [/\/file\/d\/([^/]+)/, /[?&]id=([^&]+)/];
 
   for (const pattern of patterns) {
-    const match = url.match(pattern);
+    const match = trimmed.match(pattern);
     if (match) {
       const fileId = match[1];
       return `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   }
 
-  return url;
+  return trimmed;
 }
