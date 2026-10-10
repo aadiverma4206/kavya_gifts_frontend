@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { toDirectImageUrl } from "../../utils/driveImage";
 import GiftWrapSelector from "../../components/customer/GiftWrapSelector";
 import { initializeCheckoutOrder } from "../../controllers/orderController";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./Checkout.css";
 
 export default function Checkout() {
+  useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
   const { items, subtotal, giftWrap, updateGiftWrap, giftWrapFee, grandTotal } = useCart();
   const { currentUser, userProfile, isBlocked } = useAuth();
@@ -18,6 +20,17 @@ export default function Checkout() {
   const [email, setEmail] = useState(currentUser?.email || "");
   const [address, setAddress] = useState(userProfile?.address || "");
   const [deliveryDate, setDeliveryDate] = useState("");
+
+  useEffect(() => {
+    if (userProfile) {
+      if (userProfile.fullName && !recipientName) setRecipientName(userProfile.fullName);
+      if (userProfile.mobile && !phone) setPhone(userProfile.mobile);
+      if (userProfile.address && !address) setAddress(userProfile.address);
+    }
+    if (currentUser?.email && !email) {
+      setEmail(currentUser.email);
+    }
+  }, [userProfile, currentUser]);
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");

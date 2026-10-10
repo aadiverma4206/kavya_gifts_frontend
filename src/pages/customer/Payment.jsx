@@ -10,9 +10,11 @@ import {
   handlePaymentCancellation,
   retryPaymentForOrder,
 } from "../../controllers/paymentController";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./Payment.css";
 
 export default function Payment() {
+  useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
   const navigate = useNavigate();
   const { items, subtotal, giftWrap, giftWrapFee, grandTotal, clearCart } = useCart();
