@@ -20,6 +20,20 @@ export default function NotFound() {
             View Cart
           </Link>
         </div>
+        <div style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid #f0e6e4" }}>
+          <p className="muted" style={{ fontSize: "13px", marginBottom: "10px" }}>Popular Collections to Explore:</p>
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center" }}>
+            <Link to="/category/Festive%20Celebrations" className="btn btn-secondary btn-sm" style={{ fontSize: "12px", borderRadius: "999px" }}>
+              🎉 Festive Hampers
+            </Link>
+            <Link to="/category/Weddings%20%26%20Anniversaries" className="btn btn-secondary btn-sm" style={{ fontSize: "12px", borderRadius: "999px" }}>
+              💍 Wedding Trunks
+            </Link>
+            <Link to="/category/Artisanal%20Chocolates%20%26%20Sweets" className="btn btn-secondary btn-sm" style={{ fontSize: "12px", borderRadius: "999px" }}>
+              🍫 Luxury Chocolates
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
