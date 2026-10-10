@@ -24,7 +24,7 @@ export default function Header() {
     getActiveCategories()
       .then((unique) => {
         if (!isMounted) return;
-        const catNames = unique.map((c) => (typeof c === "object" ? c.name : c)).filter(Boolean);
+        const catNames = unique.map((c) => (typeof c === "object" ? (c.categoryName || c.name || "") : c)).filter(Boolean);
         setCategories(catNames.length > 0 ? catNames : ["Diwali", "Wedding", "Corporate"]);
       })
       .catch(() => {
