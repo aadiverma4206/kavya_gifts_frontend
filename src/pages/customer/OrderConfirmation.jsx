@@ -108,16 +108,27 @@ export default function OrderConfirmation() {
         <div className="items-breakdown">
           <h4>Hamper Details</h4>
           <div className="items-list">
-            {order.items?.map((it, idx) => (
-              <div key={idx} className="item-row">
-                <img src={toDirectImageUrl(it.image_url)} alt={it.product_name} />
-                <div className="item-info">
-                  <strong>{it.product_name}</strong>
-                  <span className="muted">Qty: {it.quantity}</span>
+            {order.items?.map((it, idx) => {
+              const itemImg = it.image_url || it.thumbnail || it.image || (Array.isArray(it.images) && it.images[0]);
+              const itemName = it.productName || it.product_name || "Gift Hamper";
+              return (
+                <div key={idx} className="item-row">
+                  <img
+                    src={toDirectImageUrl(itemImg) || "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E"}
+                    alt={itemName}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
+                    }}
+                  />
+                  <div className="item-info">
+                    <strong>{itemName}</strong>
+                    <span className="muted">Qty: {it.quantity}</span>
+                  </div>
+                  <strong>₹{(Number(it.price || 0) * Number(it.quantity || 1)).toLocaleString("en-IN")}</strong>
                 </div>
-                <strong>₹{(it.price * it.quantity).toLocaleString("en-IN")}</strong>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
