@@ -112,12 +112,19 @@ export async function editCustomerReview({
     throw new Error("Review ID and Customer ID are required.");
   }
 
+  if (rating !== undefined) {
+    const numRating = Number(rating);
+    if (isNaN(numRating) || numRating < 1 || numRating > 5) {
+      throw new Error("Rating must be between 1 and 5 stars.");
+    }
+  }
+
   return await updateCustomerReview({
     reviewId,
     customerId,
-    rating,
-    title,
-    comment,
+    rating: rating !== undefined ? Number(rating) : undefined,
+    title: title !== undefined ? String(title).trim() : undefined,
+    comment: comment !== undefined ? String(comment).trim() : undefined,
   });
 }
 
