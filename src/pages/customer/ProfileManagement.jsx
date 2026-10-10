@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { saveUserProfile } from "../../services/userService";
@@ -15,6 +15,14 @@ export default function ProfileManagement() {
   const [profileMsg, setProfileMsg] = useState("");
   const [profileErr, setProfileErr] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
+
+  useEffect(() => {
+    if (userProfile) {
+      if (userProfile.fullName) setFullName(userProfile.fullName);
+      if (userProfile.mobile) setMobile(userProfile.mobile);
+      if (userProfile.address) setAddress(userProfile.address);
+    }
+  }, [userProfile]);
 
   // Password change state
   const [currentPassword, setCurrentPassword] = useState("");
