@@ -10,12 +10,22 @@ const CATEGORY_ICONS = {
   Celebration: "🎉",
   Luxury: "👑",
   Festive: "🪔",
+  "Festive Celebrations": "🪔",
+  "Weddings & Anniversaries": "💍",
+  "Wellness & Self Care": "🌿",
+  "Birthdays": "🎂",
+  "Corporate & Keepsakes": "💼",
+  "Artisanal Chocolates & Sweets": "🍫",
+  "Luxury Perfumes & Fragrances": "🌸",
+  "Preserved Flowers & Bouquets": "💐",
+  "Gourmet Delights & Teas": "🍵",
+  "Baby & New Parents": "🧸",
 };
 
 export default function CategoryCard({ category }) {
   const name =
     typeof category === "object" && category !== null
-      ? category.name || category.category_name || "Collection"
+      ? category.categoryName || category.name || category.category_name || "Collection"
       : String(category || "Collection");
 
   const icon = CATEGORY_ICONS[name] || "🎁";
