@@ -92,3 +92,44 @@ export function formatStockBadge(stockQuantity) {
   }
   return { text: "In Stock", level: "success", isAvailable: true };
 }
+
+/**
+ * Formats a 10-digit Indian phone number into standard "+91 XXXXX XXXXX" layout.
+ * @param {string|number} phone
+ * @returns {string}
+ */
+export function formatPhoneNumber(phone) {
+  if (!phone) return "";
+  const cleaned = String(phone).replace(/\D/g, "");
+  if (cleaned.length === 10) {
+    return `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
+  }
+  if (cleaned.length === 12 && cleaned.startsWith("91")) {
+    return `+91 ${cleaned.slice(2, 7)} ${cleaned.slice(7)}`;
+  }
+  return String(phone);
+}
+
+/**
+ * Formats a date into a clean short format (e.g. "10 Oct 2026").
+ * @param {string|number|Date|object} dateInput
+ * @returns {string}
+ */
+export function formatShortDate(dateInput) {
+  if (!dateInput) return "N/A";
+  let dateObj;
+  if (typeof dateInput === "object" && typeof dateInput.toDate === "function") {
+    dateObj = dateInput.toDate();
+  } else if (typeof dateInput === "object" && dateInput.seconds) {
+    dateObj = new Date(dateInput.seconds * 1000);
+  } else {
+    dateObj = new Date(dateInput);
+  }
+  if (isNaN(dateObj.getTime())) return "N/A";
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(dateObj);
+}
+
