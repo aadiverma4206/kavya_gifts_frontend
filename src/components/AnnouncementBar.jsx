@@ -9,7 +9,13 @@ const ANNOUNCEMENTS = [
 
 export default function AnnouncementBar() {
   const [index, setIndex] = useState(0);
-  const [dismissed, setDismissed] = useState(false);
+  const [dismissed, setDismissed] = useState(() => {
+    try {
+      return sessionStorage.getItem("kavya_announcement_dismissed") === "true";
+    } catch {
+      return false;
+    }
+  });
 
   useEffect(() => {
     if (dismissed) return;
@@ -19,19 +25,26 @@ export default function AnnouncementBar() {
     return () => clearInterval(interval);
   }, [dismissed]);
 
+  function handleDismiss() {
+    setDismissed(true);
+    try {
+      sessionStorage.setItem("kavya_announcement_dismissed", "true");
+    } catch {}
+  }
+
   if (dismissed) return null;
 
   return (
     <div className="announcement-bar" role="region" aria-label="Store Announcement">
       <div className="announcement-content">
-        <span className="announcement-text" key={index}>
+        <span className="announcement-text" key={index} aria-live="polite">
           {ANNOUNCEMENTS[index]}
         </span>
       </div>
       <button
         type="button"
         className="announcement-close"
-        onClick={() => setDismissed(true)}
+        onClick={handleDismiss}
         aria-label="Dismiss announcement"
       >
         ×
