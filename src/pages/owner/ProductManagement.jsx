@@ -237,9 +237,13 @@ export default function ProductManagement() {
                     <td><strong>{p.productId || p.product_id}</strong></td>
                     <td>
                       <img
-                        src={toDirectImageUrl(p.thumbnail || p.image_url)}
+                        src={toDirectImageUrl(p.thumbnail || p.image_url || p.image || (Array.isArray(p.images) && p.images[0])) || "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E"}
                         alt={p.productName || p.product_name}
                         style={{ width: "42px", height: "42px", borderRadius: "6px", objectFit: "cover" }}
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
+                        }}
                       />
                     </td>
                     <td>
@@ -251,8 +255,19 @@ export default function ProductManagement() {
                       )}
                     </td>
                     <td>{p.categoryName || p.category}</td>
-                    <td>₹{p.price.toLocaleString("en-IN")}</td>
-                    <td>{p.stockQuantity || p.stock_qty} units</td>
+                    <td>₹{Number(p.price || 0).toLocaleString("en-IN")}</td>
+                    <td>
+                      {(() => {
+                        const curStock = p.stockQuantity !== undefined ? Number(p.stockQuantity) : (p.stock_qty !== undefined ? Number(p.stock_qty) : 0);
+                        if (curStock <= 0) {
+                          return <span style={{ color: "#dc2626", fontWeight: "bold" }}>0 (Sold Out)</span>;
+                        }
+                        if (curStock <= 10) {
+                          return <span style={{ color: "#d97706", fontWeight: "600" }}>{curStock} units (Low)</span>;
+                        }
+                        return <span style={{ color: "#16a34a" }}>{curStock} units</span>;
+                      })()}
+                    </td>
                     <td>
                       <span className="muted" style={{ fontSize: "12px" }}>
                         {p.giftWrappingAvailable ? `₹${p.giftWrappingPrice || 120}` : "No"}
