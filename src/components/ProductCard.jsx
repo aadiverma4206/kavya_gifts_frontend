@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { toDirectImageUrl } from "../utils/driveImage.js";
 import { formatCurrency } from "../utils/formatters.js";
@@ -15,6 +15,11 @@ export default function ProductCard({ product }) {
     "";
   const [imgSrc, setImgSrc] = useState(() => toDirectImageUrl(rawImg) || FALLBACK_IMAGE);
   const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgSrc(toDirectImageUrl(rawImg) || FALLBACK_IMAGE);
+    setImgError(false);
+  }, [rawImg]);
 
   const productId = product.productId || product.product_id || product.id;
   const productName = product.productName || product.product_name || "Gift Hamper";
