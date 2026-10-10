@@ -15,6 +15,16 @@ import { getPaymentsByCustomer } from "../services/paymentService.js";
 import { getCustomerReviews } from "../services/reviewService.js";
 import { getCustomerActivity } from "../services/activityService.js";
 
+function safeToDate(input) {
+  if (!input) return new Date();
+  if (typeof input.toDate === "function") return input.toDate();
+  if (typeof input === "object" && typeof input.seconds === "number") {
+    return new Date(input.seconds * 1000);
+  }
+  const d = new Date(input);
+  return isNaN(d.getTime()) ? new Date() : d;
+}
+
 /**
  * Loads order history for a customer with formatted fields.
  */
@@ -24,7 +34,7 @@ export async function getCustomerOrderHistory(customerIdOrUid) {
 
   return rawOrders.map((ord) => ({
     orderId: ord.orderId,
-    date: ord.createdAt?.toDate ? ord.createdAt.toDate() : ord.createdAt || new Date(),
+    date: safeToDate(ord.createdAt),
     products: (ord.items || []).map((it) => ({
       productId: it.productId || it.product_id,
       productName: it.productName || it.product_name,
@@ -62,8 +72,8 @@ export async function getCustomerPaymentHistory(customerId) {
     provider: p.provider || "UPI",
     providerPaymentId: p.providerPaymentId || null,
     status: p.paymentStatus || p.status || "pending",
-    date: p.createdAt?.toDate ? p.createdAt.toDate() : p.createdAt || new Date(),
-    verifiedAt: p.verifiedAt?.toDate ? p.verifiedAt.toDate() : p.verifiedAt || null,
+    date: safeToDate(p.createdAt),
+    verifiedAt: p.verifiedAt ? safeToDate(p.verifiedAt) : null,
   }));
 }
 
@@ -82,8 +92,8 @@ export async function getCustomerReviewHistory(customerId) {
     title: r.title,
     comment: r.comment,
     status: r.status || "approved",
-    date: r.createdAt?.toDate ? r.createdAt.toDate() : r.createdAt || new Date(),
-    updatedAt: r.updatedAt?.toDate ? r.updatedAt.toDate() : r.updatedAt || null,
+    date: safeToDate(r.createdAt),
+    updatedAt: r.updatedAt ? safeToDate(r.updatedAt) : null,
   }));
 }
 
@@ -98,7 +108,7 @@ export async function getCustomerActivityHistory(customerId) {
     activityId: a.activityId || a.id,
     action: a.action || "EVENT",
     description: a.description || "",
-    date: a.createdAt?.toDate ? a.createdAt.toDate() : a.createdAt || new Date(),
+    date: safeToDate(a.createdAt),
   }));
 }
 
