@@ -13,9 +13,10 @@
 export function toDirectImageUrl(url) {
   if (!url) return "";
 
-  // If passed an array of images (e.g., product.images), extract the first valid entry
+  // If passed an array of images (e.g., product.images), extract the first valid non-empty entry
   if (Array.isArray(url)) {
-    return toDirectImageUrl(url[0]);
+    const firstValid = url.find((u) => typeof u === "string" && u.trim().length > 0);
+    return firstValid ? toDirectImageUrl(firstValid) : "";
   }
 
   if (typeof url !== "string") return "";
@@ -23,7 +24,11 @@ export function toDirectImageUrl(url) {
   const trimmed = url.trim();
   if (!trimmed) return "";
 
-  const patterns = [/\/file\/d\/([^/]+)/, /[?&]id=([^&]+)/];
+  const patterns = [
+    /\/file\/d\/([a-zA-Z0-9_-]+)/,
+    /[?&]id=([a-zA-Z0-9_-]+)/,
+    /\/d\/([a-zA-Z0-9_-]+)/,
+  ];
 
   for (const pattern of patterns) {
     const match = trimmed.match(pattern);
