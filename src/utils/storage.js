@@ -5,8 +5,14 @@
 export const safeStorage = {
   get: (key, defaultValue = null) => {
     try {
+      if (typeof window === "undefined" || !window.localStorage) return defaultValue;
       const item = window.localStorage.getItem(key);
-      return item !== null ? JSON.parse(item) : defaultValue;
+      if (item === null) return defaultValue;
+      try {
+        return JSON.parse(item);
+      } catch {
+        return item;
+      }
     } catch (err) {
       console.warn(`[storage] Could not read "${key}" from localStorage:`, err);
       return defaultValue;
@@ -15,7 +21,9 @@ export const safeStorage = {
 
   set: (key, value) => {
     try {
-      window.localStorage.setItem(key, JSON.stringify(value));
+      if (typeof window === "undefined" || !window.localStorage) return false;
+      const serialized = typeof value === "string" ? value : JSON.stringify(value);
+      window.localStorage.setItem(key, serialized);
       return true;
     } catch (err) {
       console.warn(`[storage] Could not write "${key}" to localStorage:`, err);
@@ -25,6 +33,7 @@ export const safeStorage = {
 
   remove: (key) => {
     try {
+      if (typeof window === "undefined" || !window.localStorage) return false;
       window.localStorage.removeItem(key);
       return true;
     } catch (err) {
@@ -35,6 +44,7 @@ export const safeStorage = {
 
   clear: () => {
     try {
+      if (typeof window === "undefined" || !window.localStorage) return false;
       window.localStorage.clear();
       return true;
     } catch (err) {
