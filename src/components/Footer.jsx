@@ -11,15 +11,17 @@ export default function Footer() {
 
   async function handleSubscribe(e) {
     e.preventDefault();
-    if (!email || !email.includes("@")) {
-      notify.warning("Please enter a valid email address");
+    const cleanEmail = (email || "").trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+      notify.warning("Please enter a valid email address (e.g. name@example.com)");
       return;
     }
 
     setLoading(true);
     setStatusMessage("");
     try {
-      await subscribeNewsletter(email.trim());
+      await subscribeNewsletter(cleanEmail);
       setStatusMessage("Thanks for subscribing to Kavya Gifts!");
       notify.success("Subscribed successfully! Welcome to Kavya Gifts.");
       setEmail("");
@@ -82,7 +84,11 @@ export default function Footer() {
               {loading ? "..." : "Subscribe"}
             </button>
           </form>
-          {statusMessage && <p className="status-msg">{statusMessage}</p>}
+          {statusMessage && (
+            <p className="status-msg" role="status" aria-live="polite">
+              {statusMessage}
+            </p>
+          )}
         </div>
       </div>
       <p className="footer-bottom">
