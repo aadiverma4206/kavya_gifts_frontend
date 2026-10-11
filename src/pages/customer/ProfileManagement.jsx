@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { saveUserProfile } from "../../services/userService";
 import { changeCustomerPassword } from "../../services/authService";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import notify from "../../utils/notify";
 import "./ProfileManagement.css";
 
 export default function ProfileManagement() {
+  useDocumentTitle("Profile & Security - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
 
   // Profile details state
@@ -42,17 +45,26 @@ export default function ProfileManagement() {
       return;
     }
 
+    const cleanMobile = mobile.trim().replace(/\D/g, "");
+    if (!/^[6-9]\d{9}$/.test(cleanMobile)) {
+      setProfileErr("Please enter a valid 10-digit Indian mobile number.");
+      return;
+    }
+
     setSavingProfile(true);
     try {
       await saveUserProfile(currentUser.uid, {
         fullName: fullName.trim(),
-        mobile: mobile.trim(),
+        mobile: cleanMobile,
         address: address.trim(),
       });
       setProfileMsg("Profile updated successfully!");
+      notify.success("Profile updated successfully!");
     } catch (err) {
       console.error("Profile update error:", err);
-      setProfileErr(err.message || "Could not update profile.");
+      const errMsg = err.message || "Could not update profile.";
+      setProfileErr(errMsg);
+      notify.error(errMsg);
     } finally {
       setSavingProfile(false);
     }
@@ -80,16 +92,18 @@ export default function ProfileManagement() {
     try {
       await changeCustomerPassword(currentPassword, newPassword);
       setPwdMsg("Password changed successfully!");
+      notify.success("Password changed successfully!");
       setCurrentPassword("");
       setNewPassword("");
       setConfirmNewPassword("");
     } catch (err) {
       console.error("Password update error:", err);
+      let errMsg = err.message || "Failed to update password.";
       if (err.code === "auth/invalid-credential" || err.code === "auth/wrong-password") {
-        setPwdErr("Current password is incorrect.");
-      } else {
-        setPwdErr(err.message || "Failed to update password.");
+        errMsg = "Current password is incorrect.";
       }
+      setPwdErr(errMsg);
+      notify.error(errMsg);
     } finally {
       setSavingPwd(false);
     }
