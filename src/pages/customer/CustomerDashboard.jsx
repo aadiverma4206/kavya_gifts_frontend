@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { loadFullCustomerDashboardHistory } from "../../controllers/historyController.js";
 import { toDirectImageUrl } from "../../utils/driveImage.js";
+import useDocumentTitle from "../../hooks/useDocumentTitle.js";
 import "./CustomerDashboard.css";
 
 export default function CustomerDashboard() {
+  useDocumentTitle("Customer Portal - Kavya Luxury Gifts");
   const { currentUser, userProfile, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -63,6 +65,9 @@ export default function CustomerDashboard() {
         <div className="dashboard-hero-actions">
           <Link to="/" className="btn btn-primary">
             Explore Catalog
+          </Link>
+          <Link to="/profile" className="btn btn-secondary">
+            Account & Security
           </Link>
           <button onClick={handleLogout} className="btn btn-secondary">
             Sign Out
@@ -310,7 +315,7 @@ export default function CustomerDashboard() {
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                         <span style={{ color: "#f59e0b", fontWeight: 700 }}>
-                          {"★".repeat(rev.rating)} ({rev.rating}/5)
+                          {"★".repeat(Math.max(0, Math.min(5, Math.round(Number(rev.rating) || 0))))} ({rev.rating}/5)
                         </span>
                         <span className={`status-pill ${rev.status === "approved" ? "delivered" : "placed"}`}>
                           {rev.status}
