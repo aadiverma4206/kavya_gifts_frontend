@@ -65,7 +65,8 @@ export default function Cart() {
 
   function handleQtyChange(item, nextQty) {
     try {
-      updateQuantity(item.productId, item.giftWrappingSelected, nextQty);
+      const pId = item.productId || item.product_id;
+      updateQuantity(pId, item.giftWrappingSelected, nextQty);
     } catch (err) {
       toast.error(err.message || "Could not adjust quantity.");
     }
@@ -73,12 +74,13 @@ export default function Cart() {
 
   function handleGiftWrapToggle(item) {
     try {
+      const pId = item.productId || item.product_id;
       const nextWrapState = !item.giftWrappingSelected;
-      toggleGiftWrapping(item.productId, item.giftWrappingSelected, nextWrapState);
+      toggleGiftWrapping(pId, item.giftWrappingSelected, nextWrapState);
       toast.success(
         nextWrapState
-          ? `Gift wrapping added for ${item.productName} (+₹${item.giftWrappingPrice || 120} each)`
-          : `Gift wrapping removed for ${item.productName}`
+          ? `Gift wrapping added for ${item.productName || item.product_name} (+₹${item.giftWrappingPrice || 120} each)`
+          : `Gift wrapping removed for ${item.productName || item.product_name}`
       );
     } catch (err) {
       toast.error(err.message || "Cannot change gift wrapping for this item.");
@@ -228,8 +230,9 @@ export default function Cart() {
                 type="button"
                 className="remove-btn"
                 onClick={() => {
-                  removeFromCart(item.productId, item.giftWrappingSelected);
-                  notify.info(`${item.productName || 'Hamper'} removed from cart.`);
+                  const pId = item.productId || item.product_id;
+                  removeFromCart(pId, item.giftWrappingSelected);
+                  notify.info(`${item.productName || item.product_name || 'Hamper'} removed from cart.`);
                 }}
               >
                 Remove
