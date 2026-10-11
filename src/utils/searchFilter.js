@@ -8,7 +8,8 @@ export function filterAndSortProducts(products = [], {
   sortBy = "default",
   priceRange = null,
 } = {}) {
-  let list = [...products];
+  if (!Array.isArray(products)) return [];
+  let list = products.filter((p) => p && typeof p === "object");
 
   // 1. Category Filter
   if (selectedCategory && selectedCategory !== "all") {
@@ -31,11 +32,12 @@ export function filterAndSortProducts(products = [], {
   }
 
   // 3. Price Range Filter
-  if (priceRange && typeof priceRange.max === "number") {
+  if (priceRange && (priceRange.min !== undefined || priceRange.max !== undefined)) {
+    const min = priceRange.min !== undefined ? Number(priceRange.min) : 0;
+    const max = priceRange.max !== undefined ? Number(priceRange.max) : Infinity;
     list = list.filter((p) => {
       const price = Number(p.price) || 0;
-      const min = priceRange.min || 0;
-      return price >= min && price <= priceRange.max;
+      return price >= min && price <= max;
     });
   }
 
