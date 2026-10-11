@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext.jsx";
 import {
@@ -8,6 +8,7 @@ import {
 } from "../../controllers/reviewController.js";
 import { getProductById } from "../../services/productService.js";
 import { toDirectImageUrl } from "../../utils/driveImage.js";
+import useDocumentTitle from "../../hooks/useDocumentTitle.js";
 import "./ProductReview.css";
 
 export default function ProductReview() {
@@ -15,6 +16,7 @@ export default function ProductReview() {
   const location = useLocation();
   const navigate = useNavigate();
   const { currentUser, userProfile, isBlocked } = useAuth();
+  const navTimerRef = useRef(null);
 
   const [product, setProduct] = useState(null);
   const [productName, setProductName] = useState(location.state?.productName || "");
@@ -23,6 +25,7 @@ export default function ProductReview() {
   const [comment, setComment] = useState("");
 
   const [isEditing, setIsEditing] = useState(false);
+  useDocumentTitle(isEditing ? "Edit Review - Kavya Luxury Gifts" : "Review Hamper - Kavya Luxury Gifts");
   const [existingReviewId, setExistingReviewId] = useState(null);
   const [checkingEligibility, setCheckingEligibility] = useState(true);
   const [canReview, setCanReview] = useState(false);
@@ -206,6 +209,7 @@ export default function ProductReview() {
                   key={star}
                   className={`star-btn ${star <= rating ? "selected" : ""}`}
                   onClick={() => setRating(star)}
+                  aria-label={`Rate ${star} out of 5 stars`}
                 >
                   ★
                 </button>
