@@ -283,7 +283,24 @@ export default function Payment() {
     if (verifyRes.success) {
       clearCart();
       sessionStorage.removeItem("kavya_pending_order_id");
-      navigate(`/order-confirmation/${orderId}`);
+      navigate(`/order-confirmation/${orderId}`, {
+        state: {
+          order: {
+            ...order,
+            orderId,
+            orderStatus: "confirmed",
+            paymentStatus: "paid",
+            paymentId: activePaymentRecord.paymentId,
+            totalAmount: displayTotal,
+          },
+          payment: {
+            paymentId: activePaymentRecord.paymentId,
+            orderId,
+            amount: displayTotal,
+            paymentStatus: "paid",
+          },
+        },
+      });
     } else {
       if (verifyRes.isNetworkError) {
         setPaymentState("network_error");
@@ -492,7 +509,11 @@ export default function Payment() {
                     placeholder="1234 5678 9012 3456"
                     maxLength={19}
                     value={cardNumber}
-                    onChange={(e) => setCardNumber(e.target.value)}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, "").slice(0, 16);
+                      const formatted = digits.match(/.{1,4}/g)?.join(" ") || digits;
+                      setCardNumber(formatted);
+                    }}
                     required
                   />
                 </div>
@@ -501,10 +522,17 @@ export default function Payment() {
                     <label>Expiry (MM/YY)</label>
                     <input
                       type="text"
-                      placeholder="12/28"
+                      placeholder="MM/YY"
                       maxLength={5}
                       value={cardExpiry}
-                      onChange={(e) => setCardExpiry(e.target.value)}
+                      onChange={(e) => {
+                        const digits = e.target.value.replace(/\D/g, "").slice(0, 4);
+                        if (digits.length >= 3) {
+                          setCardExpiry(`${digits.slice(0, 2)}/${digits.slice(2)}`);
+                        } else {
+                          setCardExpiry(digits);
+                        }
+                      }}
                       required
                     />
                   </div>
@@ -515,7 +543,7 @@ export default function Payment() {
                       placeholder="•••"
                       maxLength={4}
                       value={cardCvv}
-                      onChange={(e) => setCardCvv(e.target.value)}
+                      onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
                       required
                     />
                   </div>
