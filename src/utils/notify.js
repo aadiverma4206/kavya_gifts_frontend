@@ -19,7 +19,16 @@ export function getFriendlyErrorMessage(error, fallback = "Something went wrong.
     return "Invalid email or password. Please check your credentials.";
   }
   if (code === "auth/email-already-in-use") {
-    return "An account with this email address already exists.";
+    return "An account with this email address already exists. Please sign in.";
+  }
+  if (code === "auth/invalid-email") {
+    return "Please enter a valid email address.";
+  }
+  if (code === "auth/user-disabled") {
+    return "This user account has been disabled. Please contact support.";
+  }
+  if (code === "auth/popup-closed-by-user") {
+    return "Sign in window was closed before completion.";
   }
   if (code === "auth/weak-password") {
     return "Password is too weak. Please choose at least 6 characters.";
@@ -34,6 +43,12 @@ export function getFriendlyErrorMessage(error, fallback = "Something went wrong.
   // Firestore or Permission errors
   if (code === "permission-denied" || msg.includes("permission-denied")) {
     return "You do not have permission to perform this action.";
+  }
+  if (code === "unavailable" || code === "deadline-exceeded") {
+    return "Service temporarily unavailable. Please try again shortly.";
+  }
+  if (code === "resource-exhausted") {
+    return "System busy. Please try again in a few seconds.";
   }
 
   return msg || fallback;
