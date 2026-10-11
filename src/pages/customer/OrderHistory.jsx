@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getOrdersByCustomer } from "../../services/orderService";
 import { toDirectImageUrl } from "../../utils/driveImage";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
 
 export default function OrderHistory() {
+  useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,8 +16,14 @@ export default function OrderHistory() {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
     if (idToQuery) {
       getOrdersByCustomer(idToQuery)
-        .then((data) => setOrders(data))
+        .then((data) => setOrders(data || []))
+        .catch((err) => {
+          console.error("Error fetching order history:", err);
+          setOrders([]);
+        })
         .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
     }
   }, [currentUser, userProfile]);
 
