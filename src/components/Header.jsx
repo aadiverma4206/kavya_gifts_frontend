@@ -14,10 +14,20 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Close mobile menu on route change
+  // Close mobile menu on route change or Escape key
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     let isMounted = true;
@@ -133,12 +143,24 @@ export default function Header() {
             {currentUser ? (
               <>
                 <hr className="mobile-nav-divider" />
-                <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
-                  My Account
-                </Link>
-                <Link to="/orders" onClick={() => setMobileMenuOpen(false)}>
-                  Order History
-                </Link>
+                {isOwner ? (
+                  <Link
+                    to="/owner/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ fontWeight: 700, color: "var(--color-primary)" }}
+                  >
+                    👑 Owner Portal
+                  </Link>
+                ) : (
+                  <>
+                    <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}>
+                      My Account
+                    </Link>
+                    <Link to="/orders" onClick={() => setMobileMenuOpen(false)}>
+                      Order History
+                    </Link>
+                  </>
+                )}
                 <button onClick={handleLogout} className="mobile-logout-btn">
                   Log Out
                 </button>
