@@ -1,4 +1,4 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 /**
@@ -8,6 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function ProtectedRoute({ children, roleRequired }) {
   const { currentUser, userProfile, loading, isOwner, isBlocked, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (loading) {
     return (
@@ -49,13 +50,13 @@ export default function ProtectedRoute({ children, roleRequired }) {
             This section is strictly restricted to verified Kavya Gifting store owners. Your current account does not have owner privileges.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-            <a href="/" className="btn btn-primary">Return to Storefront</a>
+            <Link to="/" className="btn btn-primary">Return to Storefront</Link>
             <button
               type="button"
               className="btn btn-secondary"
               onClick={async () => {
                 await logout();
-                window.location.href = "/owner/login";
+                navigate("/owner/login");
               }}
             >
               Sign In with Owner Account
@@ -91,7 +92,7 @@ export default function ProtectedRoute({ children, roleRequired }) {
             className="btn btn-secondary"
             onClick={async () => {
               await logout();
-              window.location.href = "/";
+              navigate("/");
             }}
           >
             Sign Out & Return Home
