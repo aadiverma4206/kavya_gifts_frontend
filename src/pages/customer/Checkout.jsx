@@ -66,8 +66,9 @@ export default function Checkout() {
       setError("Please specify the recipient name.");
       return;
     }
-    if (!phone.trim()) {
-      setError("Please specify a contact phone number.");
+    const cleanPhone = phone.replace(/\D/g, "");
+    if (!cleanPhone || cleanPhone.length !== 10) {
+      setError("Please specify a valid 10-digit contact mobile number.");
       return;
     }
     if (!address.trim() || address.trim().length < 8) {
@@ -172,12 +173,14 @@ export default function Checkout() {
               </div>
 
               <div className="form-group">
-                <label>Email Address</label>
+                <label>Email Address *</label>
                 <input
                   type="email"
+                  placeholder="name@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled
+                  disabled={Boolean(currentUser?.email)}
+                  required
                 />
               </div>
             </div>
@@ -226,20 +229,27 @@ export default function Checkout() {
             <h3>Order Summary</h3>
 
             <div className="summary-items-list">
-              {items.map((item) => (
-                <div key={item.product_id} className="summary-line-item">
-                  <img src={toDirectImageUrl(item.image_url)} alt={item.product_name} />
-                  <div className="summary-item-info">
-                    <h4>{item.product_name}</h4>
-                    <p className="muted">
-                      Qty: {item.quantity} × ₹{item.price.toLocaleString("en-IN")}
-                    </p>
+              {items.map((item, idx) => {
+                const itemKey = item.cartItemId || `${item.productId || item.product_id}_${item.giftWrappingSelected ? "wrap" : "nowrap"}_${idx}`;
+                const itemImg = item.image_url || item.thumbnail || item.image || (Array.isArray(item.images) && item.images[0]);
+                const itemPrice = Number(item.price) || 0;
+                const itemQty = Number(item.quantity) || 1;
+                return (
+                  <div key={itemKey} className="summary-line-item">
+                    <img src={toDirectImageUrl(itemImg)} alt={item.product_name || item.productName} />
+                    <div className="summary-item-info">
+                      <h4>{item.product_name || item.productName}</h4>
+                      <p className="muted">
+                        Qty: {itemQty} × ₹{itemPrice.toLocaleString("en-IN")}
+                        {item.giftWrappingSelected && <span style={{ color: "var(--color-primary)", marginLeft: "4px" }}>(Gift Wrapped)</span>}
+                      </p>
+                    </div>
+                    <span className="summary-item-subtotal">
+                      ₹{(itemPrice * itemQty).toLocaleString("en-IN")}
+                    </span>
                   </div>
-                  <span className="summary-item-subtotal">
-                    ₹{(item.price * item.quantity).toLocaleString("en-IN")}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className="summary-calc-breakdown">
