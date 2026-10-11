@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
 export default function Login() {
+  useDocumentTitle("Customer Sign In - Kavya Luxury Gifts");
   const navigate = useNavigate();
   const location = useLocation();
   const { loginCustomer, resetPassword } = useAuth();

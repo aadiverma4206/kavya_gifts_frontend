@@ -7,9 +7,11 @@ import {
   validateRegistrationStep2,
 } from "../../controllers/authController";
 import { generateCaptcha } from "../../utils/captcha";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
 export default function Register() {
+  useDocumentTitle("Customer Registration - Kavya Luxury Gifts");
   const navigate = useNavigate();
   const { register } = useAuth();
 
