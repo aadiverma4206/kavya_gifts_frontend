@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
+import { toast } from "sonner";
 import { getOrderById } from "../../services/orderService";
 import { toDirectImageUrl } from "../../utils/driveImage";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderConfirmation.css";
 
 export default function OrderConfirmation() {
+  useDocumentTitle("Order Confirmation - Kavya Luxury Gifts");
   const { orderId } = useParams();
   const location = useLocation();
   const [order, setOrder] = useState(location.state?.order || null);
@@ -14,6 +17,10 @@ export default function OrderConfirmation() {
     if (!order && orderId) {
       getOrderById(orderId)
         .then((data) => setOrder(data))
+        .catch((err) => {
+          console.warn("Could not retrieve order details:", err);
+          setOrder(null);
+        })
         .finally(() => setLoading(false));
     }
   }, [order, orderId]);
@@ -51,7 +58,27 @@ export default function OrderConfirmation() {
         <div className="reference-badges-row">
           <div className="reference-box">
             <span className="ref-label">Order Reference</span>
-            <strong className="ref-val">{order.orderId}</strong>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <strong className="ref-val">{order.orderId}</strong>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(order.orderId);
+                  toast.success("Order ID copied to clipboard!");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  padding: "2px",
+                }}
+                title="Copy Order ID"
+                aria-label="Copy Order ID"
+              >
+                📋
+              </button>
+            </div>
           </div>
           {order.paymentId && (
             <div className="reference-box">
