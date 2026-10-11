@@ -14,6 +14,10 @@ export default class ErrorBoundary extends Component {
     console.error("ErrorBoundary caught an uncaught exception:", error, errorInfo);
   }
 
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
   handleReset = () => {
     this.setState({ hasError: false, error: null });
     window.location.href = "/";
@@ -23,6 +27,8 @@ export default class ErrorBoundary extends Component {
     if (this.state.hasError) {
       return (
         <div
+          role="alert"
+          aria-live="assertive"
           style={{
             minHeight: "60vh",
             display: "flex",
@@ -50,21 +56,37 @@ export default class ErrorBoundary extends Component {
             <p style={{ color: "var(--color-muted, #5a4038)", fontSize: "15px", lineHeight: "1.6", marginBottom: "24px" }}>
               We encountered an unexpected display issue while presenting this collection.
             </p>
-            <button
-              onClick={this.handleReset}
-              className="btn btn-primary btn-pill"
-              style={{
-                background: "var(--color-primary, #7a1f2b)",
-                color: "#ffffff",
-                padding: "12px 28px",
-                border: "none",
-                borderRadius: "999px",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-            >
-              Return to Storefront
-            </button>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                onClick={this.handleRetry}
+                className="btn btn-primary btn-pill"
+                style={{
+                  background: "var(--color-primary, #7a1f2b)",
+                  color: "#ffffff",
+                  padding: "10px 24px",
+                  border: "none",
+                  borderRadius: "999px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
+              >
+                Try Again
+              </button>
+              <button
+                type="button"
+                onClick={this.handleReset}
+                className="btn btn-secondary btn-pill"
+                style={{
+                  padding: "10px 24px",
+                  borderRadius: "999px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
+              >
+                Return Home
+              </button>
+            </div>
           </div>
         </div>
       );
