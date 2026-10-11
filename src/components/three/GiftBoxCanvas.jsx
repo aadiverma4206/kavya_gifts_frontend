@@ -14,6 +14,11 @@ import { RotateCw, Sparkles, Box } from "lucide-react";
 export default function GiftBoxCanvas({ autoRotate = true, interactive = true }) {
   const mountRef = useRef(null);
   const [isRotating, setIsRotating] = useState(autoRotate);
+  const isRotatingRef = useRef(isRotating);
+
+  useEffect(() => {
+    isRotatingRef.current = isRotating;
+  }, [isRotating]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -390,7 +395,7 @@ export default function GiftBoxCanvas({ autoRotate = true, interactive = true })
         rootGroup.rotation.y += rotVelocityY;
         rootGroup.rotation.x += rotVelocityX;
       } else {
-        if (isRotating) {
+        if (isRotatingRef.current) {
           rootGroup.rotation.y += 0.006;
         }
         rotVelocityX *= 0.92;
@@ -414,12 +419,26 @@ export default function GiftBoxCanvas({ autoRotate = true, interactive = true })
       container.removeEventListener("touchstart", onPointerDown);
       window.removeEventListener("touchmove", onPointerMove);
       window.removeEventListener("touchend", onPointerUp);
+
+      scene.traverse((child) => {
+        if (child.geometry) child.geometry.dispose();
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            child.material.forEach((mat) => mat.dispose());
+          } else {
+            child.material.dispose();
+          }
+        }
+      });
+
+      if (shadowTex) shadowTex.dispose();
+
       if (renderer.domElement && container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
       renderer.dispose();
     };
-  }, [interactive, isRotating]);
+  }, [interactive]);
 
   return (
     <div className="mosaic-3d-wrapper">
