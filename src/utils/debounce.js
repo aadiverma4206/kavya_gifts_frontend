@@ -6,12 +6,35 @@
  */
 export function debounce(fn, delay = 300) {
   let timerId;
-  return function (...args) {
+  let lastArgs;
+  let lastThis;
+
+  const debounced = function (...args) {
+    lastArgs = args;
+    lastThis = this;
     if (timerId) clearTimeout(timerId);
     timerId = setTimeout(() => {
-      fn.apply(this, args);
+      timerId = null;
+      fn.apply(lastThis, lastArgs);
     }, delay);
   };
+
+  debounced.cancel = () => {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  };
+
+  debounced.flush = () => {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+      fn.apply(lastThis, lastArgs);
+    }
+  };
+
+  return debounced;
 }
 
 /**
@@ -22,11 +45,22 @@ export function debounce(fn, delay = 300) {
  */
 export function throttle(fn, interval = 200) {
   let lastTime = 0;
-  return function (...args) {
+  let timerId = null;
+
+  const throttled = function (...args) {
     const now = Date.now();
     if (now - lastTime >= interval) {
       lastTime = now;
       fn.apply(this, args);
     }
   };
+
+  throttled.cancel = () => {
+    if (timerId) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  };
+
+  return throttled;
 }
