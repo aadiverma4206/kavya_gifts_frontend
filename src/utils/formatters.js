@@ -8,7 +8,9 @@
  * @returns {string} Formatted currency string, e.g. "₹1,299"
  */
 export function formatCurrency(amount) {
-  const numeric = Number(amount) || 0;
+  if (amount === null || amount === undefined) return "₹0";
+  const cleaned = typeof amount === "string" ? amount.replace(/,/g, "").trim() : amount;
+  const numeric = Number(cleaned) || 0;
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -25,11 +27,12 @@ export function formatDate(dateInput) {
   if (!dateInput) return "N/A";
 
   let dateObj;
-  // Support Firestore Timestamp objects with .toDate() or seconds
+  // Support Firestore Timestamp objects with .toDate(), seconds, or _seconds
   if (typeof dateInput === "object" && typeof dateInput.toDate === "function") {
     dateObj = dateInput.toDate();
-  } else if (typeof dateInput === "object" && dateInput.seconds) {
-    dateObj = new Date(dateInput.seconds * 1000);
+  } else if (typeof dateInput === "object" && (dateInput.seconds || dateInput._seconds)) {
+    const sec = dateInput.seconds || dateInput._seconds;
+    dateObj = new Date(sec * 1000);
   } else {
     dateObj = new Date(dateInput);
   }
@@ -120,8 +123,9 @@ export function formatShortDate(dateInput) {
   let dateObj;
   if (typeof dateInput === "object" && typeof dateInput.toDate === "function") {
     dateObj = dateInput.toDate();
-  } else if (typeof dateInput === "object" && dateInput.seconds) {
-    dateObj = new Date(dateInput.seconds * 1000);
+  } else if (typeof dateInput === "object" && (dateInput.seconds || dateInput._seconds)) {
+    const sec = dateInput.seconds || dateInput._seconds;
+    dateObj = new Date(sec * 1000);
   } else {
     dateObj = new Date(dateInput);
   }
