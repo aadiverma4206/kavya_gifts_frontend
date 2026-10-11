@@ -47,7 +47,11 @@ export default function Category() {
       return list.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
     }
     if (sortBy === "name_asc") {
-      return list.sort((a, b) => (a.productName || "").localeCompare(b.productName || ""));
+      return list.sort((a, b) => {
+        const nameA = a.productName || a.product_name || "";
+        const nameB = b.productName || b.product_name || "";
+        return nameA.localeCompare(nameB);
+      });
     }
     return list;
   }, [products, sortBy]);

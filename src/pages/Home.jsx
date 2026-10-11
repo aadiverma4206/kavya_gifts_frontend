@@ -30,11 +30,10 @@ export default function Home() {
       .then(([prods, cats]) => {
         if (!isMounted) return;
         setProducts(prods);
-        setCategories(
-          cats && cats.length > 0
-            ? cats
-            : [...new Set(prods.map((p) => p.categoryName || p.category))].filter(Boolean)
-        );
+        const rawCats = cats && cats.length > 0
+          ? cats.map((c) => (typeof c === "string" ? c : c.categoryName || c.name || c.category_name || "")).filter(Boolean)
+          : prods.map((p) => p.categoryName || p.category).filter(Boolean);
+        setCategories([...new Set(rawCats)]);
       })
       .catch((err) => {
         console.error("Error loading home page data:", err);
