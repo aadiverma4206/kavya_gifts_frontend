@@ -30,7 +30,13 @@ export function validateRegistrationStep1(data) {
     return { isValid: false, error: "Please enter your Full Name (minimum 2 characters)." };
   }
 
-  const cleanMobile = mobile.replace(/\D/g, "").slice(-10);
+  let cleanMobile = mobile.replace(/\D/g, "");
+  if (cleanMobile.length === 11 && cleanMobile.startsWith("0")) {
+    cleanMobile = cleanMobile.slice(1);
+  }
+  if (cleanMobile.length === 12 && cleanMobile.startsWith("91")) {
+    cleanMobile = cleanMobile.slice(2);
+  }
   if (!MOBILE_REGEX.test(cleanMobile)) {
     return { isValid: false, error: "Please enter a valid 10-digit Indian Mobile Number." };
   }
