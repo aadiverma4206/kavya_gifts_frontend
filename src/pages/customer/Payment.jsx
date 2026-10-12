@@ -48,7 +48,12 @@ export default function Payment() {
   // Load existing pending order if navigated directly or refreshed
   useEffect(() => {
     if (!order) {
-      const pendingOrderId = sessionStorage.getItem("kavya_pending_order_id");
+      let pendingOrderId = null;
+      try {
+        pendingOrderId = window.sessionStorage?.getItem("kavya_pending_order_id");
+      } catch {
+        // Safe fallback
+      }
       if (pendingOrderId) {
         getOrderById(pendingOrderId)
           .then((ord) => {
@@ -101,19 +106,37 @@ export default function Payment() {
     e.preventDefault();
     setErrorMessage("");
 
-    if (paymentMethod === "upi" && !upiId.includes("@")) {
+    if (paymentMethod === "upi" && !/^[\w.-]+@[\w.-]+$/.test(upiId.trim())) {
       setErrorMessage("Please provide a valid UPI ID (e.g. name@okhdfcbank).");
       return;
     }
-    if (paymentMethod === "card" && (!cardNumber || cardNumber.replace(/\s/g, "").length < 16)) {
-      setErrorMessage("Please provide a valid 16-digit card number.");
-      return;
+    if (paymentMethod === "card") {
+      const digits = (cardNumber || "").replace(/\D/g, "");
+      if (digits.length < 15 || digits.length > 19) {
+        setErrorMessage("Please provide a valid card number (15-19 digits).");
+        return;
+      }
+      if (!cardExpiry.trim()) {
+        setErrorMessage("Please provide card expiry date (MM/YY).");
+        return;
+      }
+      const cleanCvv = (cardCvv || "").replace(/\D/g, "");
+      if (cleanCvv.length < 3 || cleanCvv.length > 4) {
+        setErrorMessage("Please provide a valid 3 or 4-digit CVV.");
+        return;
+      }
     }
 
     setPaymentState("initiating");
 
     try {
-      const orderId = order?.orderId || sessionStorage.getItem("kavya_pending_order_id");
+      let pendingId = null;
+      try {
+        pendingId = window.sessionStorage?.getItem("kavya_pending_order_id");
+      } catch {
+        // Safe fallback
+      }
+      const orderId = order?.orderId || pendingId;
       if (!orderId) {
         throw new Error("Missing active order. Please return to Checkout.");
       }
@@ -211,7 +234,11 @@ export default function Payment() {
       // Step 4: Verification confirmed on server!
       // Clear cart, clean session storage, and route to confirmation
       clearCart();
-      sessionStorage.removeItem("kavya_pending_order_id");
+      try {
+        window.sessionStorage?.removeItem("kavya_pending_order_id");
+      } catch {
+        // Safe fallback
+      }
 
       navigate(`/order-confirmation/${orderId}`, {
         state: {
