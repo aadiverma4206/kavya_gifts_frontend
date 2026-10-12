@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getOrdersByCustomer } from "../../services/orderService";
 import { toDirectImageUrl } from "../../utils/driveImage";
+import { formatShortDate, formatCurrency } from "../../utils/formatters";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
 
@@ -56,19 +57,15 @@ export default function OrderHistory() {
 
       {!loading && orders.length > 0 && (
         <div className="orders-cards-list">
-          {orders.map((ord) => (
-            <div key={ord.id} className="card order-card">
+          {orders.map((ord, oIdx) => (
+            <div key={ord.id || ord.orderId || oIdx} className="card order-card">
               {/* Card Header */}
               <div className="order-card-header">
                 <div className="order-meta">
-                  <span className="order-id-badge">{ord.orderId}</span>
+                  <span className="order-id-badge">{ord.orderId || `#KG-${oIdx + 1}`}</span>
                   <span className="order-date muted">
-                    {ord.createdAt?.toDate
-                      ? ord.createdAt.toDate().toLocaleDateString("en-IN", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })
+                    {formatShortDate(ord.createdAt) !== "N/A"
+                      ? formatShortDate(ord.createdAt)
                       : "Recently placed"}
                   </span>
                 </div>
