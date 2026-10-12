@@ -1,57 +1,93 @@
 /**
- * Safe LocalStorage wrapper to prevent crashes in private browsing or restricted environments.
+ * Safe LocalStorage & SessionStorage wrapper to prevent crashes in private browsing,
+ * SSR, quota exceeded, or restricted iframe environments.
  */
 
-export const safeStorage = {
-  get: (key, defaultValue = null) => {
+function createStorageWrapper(type) {
+  const isAvailable = () => {
     try {
-      if (typeof window === "undefined" || !window.localStorage) return defaultValue;
-      const item = window.localStorage.getItem(key);
-      if (item === null) return defaultValue;
+      if (typeof window === "undefined") return false;
+      const storage = window[type];
+      if (!storage) return false;
+      const testKey = "__storage_test__";
+      storage.setItem(testKey, testKey);
+      storage.removeItem(testKey);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  return {
+    get: (key, defaultValue = null) => {
       try {
-        return JSON.parse(item);
-      } catch {
-        return item;
+        if (typeof window === "undefined" || !window[type]) return defaultValue;
+        const item = window[type].getItem(key);
+        if (item === null) return defaultValue;
+        try {
+          return JSON.parse(item);
+        } catch {
+          return item;
+        }
+      } catch (err) {
+        console.warn(`[${type}] Could not read "${key}":`, err);
+        return defaultValue;
       }
-    } catch (err) {
-      console.warn(`[storage] Could not read "${key}" from localStorage:`, err);
-      return defaultValue;
-    }
-  },
+    },
 
-  set: (key, value) => {
-    try {
-      if (typeof window === "undefined" || !window.localStorage) return false;
-      const serialized = typeof value === "string" ? value : JSON.stringify(value);
-      window.localStorage.setItem(key, serialized);
-      return true;
-    } catch (err) {
-      console.warn(`[storage] Could not write "${key}" to localStorage:`, err);
-      return false;
-    }
-  },
+    set: (key, value) => {
+      try {
+        if (typeof window === "undefined" || !window[type]) return false;
+        if (value === undefined) {
+          window[type].removeItem(key);
+          return true;
+        }
+        const serialized = typeof value === "string" ? value : JSON.stringify(value);
+        window[type].setItem(key, serialized);
+        return true;
+      } catch (err) {
+        console.warn(`[${type}] Could not write "${key}":`, err);
+        return false;
+      }
+    },
 
-  remove: (key) => {
-    try {
-      if (typeof window === "undefined" || !window.localStorage) return false;
-      window.localStorage.removeItem(key);
-      return true;
-    } catch (err) {
-      console.warn(`[storage] Could not remove "${key}" from localStorage:`, err);
-      return false;
-    }
-  },
+    has: (key) => {
+      try {
+        if (typeof window === "undefined" || !window[type]) return false;
+        return window[type].getItem(key) !== null;
+      } catch {
+        return false;
+      }
+    },
 
-  clear: () => {
-    try {
-      if (typeof window === "undefined" || !window.localStorage) return false;
-      window.localStorage.clear();
-      return true;
-    } catch (err) {
-      console.warn("[storage] Could not clear localStorage:", err);
-      return false;
-    }
-  },
-};
+    remove: (key) => {
+      try {
+        if (typeof window === "undefined" || !window[type]) return false;
+        window[type].removeItem(key);
+        return true;
+      } catch (err) {
+        console.warn(`[${type}] Could not remove "${key}":`, err);
+        return false;
+      }
+    },
+
+    clear: () => {
+      try {
+        if (typeof window === "undefined" || !window[type]) return false;
+        window[type].clear();
+        return true;
+      } catch (err) {
+        console.warn(`[${type}] Could not clear:`, err);
+        return false;
+      }
+    },
+
+    isAvailable,
+  };
+}
+
+export const safeStorage = createStorageWrapper("localStorage");
+export const safeSessionStorage = createStorageWrapper("sessionStorage");
 
 export default safeStorage;
+
