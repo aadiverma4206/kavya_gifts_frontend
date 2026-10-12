@@ -14,6 +14,12 @@ export default class ErrorBoundary extends Component {
     console.error("ErrorBoundary caught an uncaught exception:", error, errorInfo);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.state.hasError && this.props.resetKey !== prevProps.resetKey) {
+      this.setState({ hasError: false, error: null });
+    }
+  }
+
   handleRetry = () => {
     this.setState({ hasError: false, error: null });
   };
@@ -25,6 +31,13 @@ export default class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
+      if (typeof this.props.fallback === "function") {
+        return this.props.fallback({ error: this.state.error, retry: this.handleRetry });
+      }
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
       return (
         <div
           role="alert"
