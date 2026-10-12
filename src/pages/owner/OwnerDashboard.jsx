@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import OwnerLayout from "../../components/owner/OwnerLayout";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { getAllOrdersForOwner } from "../../services/orderService";
 import { getAllProductsForOwner } from "../../services/productService";
 import { getAllUsersForOwner } from "../../services/userService";
@@ -19,6 +20,7 @@ import { getAllPaymentsForOwner } from "../../services/paymentService";
 import "./OwnerDashboard.css";
 
 export default function OwnerDashboard() {
+  useDocumentTitle("Owner Dashboard | Kavya Gifts");
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -83,7 +85,7 @@ export default function OwnerDashboard() {
 
   // Group products count by category for BarChart
   const categoryCounts = products.reduce((acc, p) => {
-    const cat = p.category || "General";
+    const cat = p.categoryName || p.category || "General";
     acc[cat] = (acc[cat] || 0) + 1;
     return acc;
   }, {});
