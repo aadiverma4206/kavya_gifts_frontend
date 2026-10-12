@@ -9,7 +9,7 @@ export function useDocumentTitle(title, retainOnUnmount = false) {
   useEffect(() => {
     const defaultTitle = "Kavya Gifts | Handcrafted Luxury Gifts & Hampers";
     if (title) {
-      document.title = `${title} | Kavya Gifts`;
+      document.title = title.includes("Kavya") ? title : `${title} | Kavya Gifts`;
     } else {
       document.title = defaultTitle;
     }
