@@ -66,7 +66,13 @@ export default function Checkout() {
       setError("Please specify the recipient name.");
       return;
     }
-    const cleanPhone = phone.replace(/\D/g, "");
+    let cleanPhone = (phone || "").replace(/\D/g, "");
+    if (cleanPhone.length === 11 && cleanPhone.startsWith("0")) {
+      cleanPhone = cleanPhone.slice(1);
+    }
+    if (cleanPhone.length === 12 && cleanPhone.startsWith("91")) {
+      cleanPhone = cleanPhone.slice(2);
+    }
     if (!cleanPhone || cleanPhone.length !== 10) {
       setError("Please specify a valid 10-digit contact mobile number.");
       return;
@@ -88,11 +94,17 @@ export default function Checkout() {
 
     setSubmitting(true);
     try {
-      const existingOrderId = sessionStorage.getItem("kavya_pending_order_id");
+      let existingOrderId = null;
+      try {
+        existingOrderId = window.sessionStorage?.getItem("kavya_pending_order_id");
+      } catch {
+        // Safe fallback in restricted environments
+      }
+
       const order = await initializeCheckoutOrder({
         customer: {
           name: recipientName.trim(),
-          phone: phone.trim(),
+          phone: cleanPhone,
           email: email.trim(),
           address: address.trim(),
           deliveryDate,
@@ -109,7 +121,11 @@ export default function Checkout() {
       });
 
       if (order?.orderId) {
-        sessionStorage.setItem("kavya_pending_order_id", order.orderId);
+        try {
+          window.sessionStorage?.setItem("kavya_pending_order_id", order.orderId);
+        } catch {
+          // Safe fallback
+        }
       }
 
       // Pass checkout state & order to payment page
