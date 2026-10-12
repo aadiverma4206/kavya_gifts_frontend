@@ -76,9 +76,13 @@ export function formatOrderId(orderId) {
  * Formats a price range string (e.g. ₹1,999 - ₹4,499)
  */
 export function formatPriceRange(min, max) {
-  const minStr = formatCurrency(min);
-  const maxStr = formatCurrency(max);
-  if (min === max) return minStr;
+  const numMin = Number(min) || 0;
+  const numMax = Number(max) || 0;
+  const actualMin = Math.min(numMin, numMax);
+  const actualMax = Math.max(numMin, numMax);
+  const minStr = formatCurrency(actualMin);
+  const maxStr = formatCurrency(actualMax);
+  if (actualMin === actualMax) return minStr;
   return `${minStr} - ${maxStr}`;
 }
 
@@ -98,17 +102,21 @@ export function formatStockBadge(stockQuantity) {
 
 /**
  * Formats a 10-digit Indian phone number into standard "+91 XXXXX XXXXX" layout.
+ * Supports numbers with +91, 91, or leading trunk 0.
  * @param {string|number} phone
  * @returns {string}
  */
 export function formatPhoneNumber(phone) {
   if (!phone) return "";
-  const cleaned = String(phone).replace(/\D/g, "");
-  if (cleaned.length === 10) {
-    return `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
+  let cleaned = String(phone).replace(/\D/g, "");
+  if (cleaned.length === 11 && cleaned.startsWith("0")) {
+    cleaned = cleaned.slice(1);
   }
   if (cleaned.length === 12 && cleaned.startsWith("91")) {
-    return `+91 ${cleaned.slice(2, 7)} ${cleaned.slice(7)}`;
+    cleaned = cleaned.slice(2);
+  }
+  if (cleaned.length === 10) {
+    return `+91 ${cleaned.slice(0, 5)} ${cleaned.slice(5)}`;
   }
   return String(phone);
 }
