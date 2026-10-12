@@ -62,9 +62,22 @@ export default function OrderConfirmation() {
               <strong className="ref-val">{order.orderId}</strong>
               <button
                 type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText(order.orderId);
-                  toast.success("Order ID copied to clipboard!");
+                onClick={async () => {
+                  try {
+                    if (navigator.clipboard?.writeText) {
+                      await navigator.clipboard.writeText(order.orderId);
+                    } else {
+                      const temp = document.createElement("textarea");
+                      temp.value = order.orderId;
+                      document.body.appendChild(temp);
+                      temp.select();
+                      document.execCommand("copy");
+                      document.body.removeChild(temp);
+                    }
+                    toast.success("Order ID copied to clipboard!");
+                  } catch {
+                    toast.error("Could not copy order ID");
+                  }
                 }}
                 style={{
                   background: "none",
