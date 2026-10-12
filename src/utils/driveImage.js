@@ -15,14 +15,25 @@ export function toDirectImageUrl(url) {
 
   // If passed an array of images (e.g., product.images), extract the first valid non-empty entry
   if (Array.isArray(url)) {
-    const firstValid = url.find((u) => typeof u === "string" && u.trim().length > 0);
+    const firstValid = url.find((u) => u && (typeof u === "string" || typeof u === "object"));
     return firstValid ? toDirectImageUrl(firstValid) : "";
+  }
+
+  // If passed an image object (e.g., { url: '...' }), extract string
+  if (url && typeof url === "object") {
+    const candidate = url.url || url.src || url.image || url.thumbnail || url.image_url;
+    return typeof candidate === "string" ? toDirectImageUrl(candidate) : "";
   }
 
   if (typeof url !== "string") return "";
 
   const trimmed = url.trim();
   if (!trimmed) return "";
+
+  // Dropbox direct link transformation
+  if (trimmed.includes("dropbox.com")) {
+    return trimmed.replace(/([?&])dl=0\b/, "$1raw=1");
+  }
 
   const patterns = [
     /\/file\/d\/([a-zA-Z0-9_-]+)/,
