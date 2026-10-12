@@ -87,9 +87,14 @@ export default function Header() {
           {currentUser ? (
             <div className="header-auth-group">
               {isOwner ? (
-                <Link to="/owner/dashboard" className="owner-badge-btn">
-                  <Crown size={14} style={{ marginRight: "4px" }} /> Owner Portal
-                </Link>
+                <div className="user-dropdown-wrap">
+                  <Link to="/owner/dashboard" className="owner-badge-btn">
+                    <Crown size={14} style={{ marginRight: "4px" }} /> Owner Portal
+                  </Link>
+                  <button type="button" onClick={handleLogout} className="header-sublink logout-btn hide-mobile">
+                    <LogOut size={13} style={{ marginRight: "3px" }} /> Logout
+                  </button>
+                </div>
               ) : (
                 <div className="user-dropdown-wrap">
                   <Link to="/dashboard" className="header-user-btn">
@@ -99,7 +104,7 @@ export default function Header() {
                   <Link to="/orders" className="header-sublink hide-mobile">
                     <Package size={14} style={{ marginRight: "3px" }} /> Orders
                   </Link>
-                  <button onClick={handleLogout} className="header-sublink logout-btn hide-mobile">
+                  <button type="button" onClick={handleLogout} className="header-sublink logout-btn hide-mobile">
                     <LogOut size={13} style={{ marginRight: "3px" }} /> Logout
                   </button>
                 </div>
@@ -161,7 +166,7 @@ export default function Header() {
                     </Link>
                   </>
                 )}
-                <button onClick={handleLogout} className="mobile-logout-btn">
+                <button type="button" onClick={handleLogout} className="mobile-logout-btn">
                   Log Out
                 </button>
               </>
