@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import OwnerLayout from "../../components/owner/OwnerLayout";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import {
   getAllCategoriesForOwner,
   createCategory,
@@ -8,6 +9,7 @@ import {
 } from "../../services/categoryService";
 
 export default function CategoryManagement() {
+  useDocumentTitle("Occasion Categories - Owner Portal");
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categoryName, setCategoryName] = useState("");
@@ -27,7 +29,11 @@ export default function CategoryManagement() {
   function loadCats() {
     setLoading(true);
     getAllCategoriesForOwner()
-      .then((data) => setCategories(data))
+      .then((data) => setCategories(data || []))
+      .catch((err) => {
+        console.error("Could not load categories:", err);
+        setCategories([]);
+      })
       .finally(() => setLoading(false));
   }
 
