@@ -54,7 +54,7 @@ export default function App() {
       )}
 
       <main>
-        <ErrorBoundary>
+        <ErrorBoundary resetKey={location.pathname}>
           <Routes>
           {/* Public Storefront */}
           <Route path="/" element={<Home />} />
