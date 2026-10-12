@@ -28,7 +28,8 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    if (!email.trim() || !password) {
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail || !password) {
       setError("Please enter your Email or Customer ID and password.");
       return;
     }
@@ -36,7 +37,7 @@ export default function Login() {
     setLoading(true);
     try {
       // Authenticate via controller which verifies role & blocked status
-      const { profile, redirectPath } = await loginCustomer(email, password);
+      const { profile, redirectPath } = await loginCustomer(trimmedEmail, password);
 
       toast.success(`Welcome back, ${profile?.fullName || "Valued Customer"}!`);
       navigate(from === "/login" ? redirectPath : from, { replace: true });
@@ -59,16 +60,17 @@ export default function Login() {
   }
 
   async function handleResetPassword(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     setForgotMsg("");
-    if (!forgotEmail || !forgotEmail.trim()) {
-      setForgotMsg("Please provide your registered email address.");
+    const trimmed = forgotEmail.trim();
+    if (!trimmed || !trimmed.includes("@")) {
+      setForgotMsg("Please provide a valid registered email address.");
       return;
     }
 
     setForgotLoading(true);
     try {
-      const res = await resetPassword(forgotEmail);
+      const res = await resetPassword(trimmed);
       setForgotMsg(res.message || "Password reset link sent! Please check your inbox.");
       toast.info("Password reset instructions sent.");
     } catch (err) {
