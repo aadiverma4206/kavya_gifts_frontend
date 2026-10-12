@@ -86,6 +86,7 @@ export default function ProductReview() {
 
     return () => {
       isMounted = false;
+      if (navTimerRef.current) clearTimeout(navTimerRef.current);
     };
   }, [productId, userProfile, currentUser, productName]);
 
@@ -131,7 +132,7 @@ export default function ProductReview() {
         setSuccessMsg(`Thank you! Your review (${review.reviewId}) has been submitted.`);
       }
 
-      setTimeout(() => {
+      navTimerRef.current = setTimeout(() => {
         navigate(`/product/${productId}`);
       }, 1500);
     } catch (err) {
