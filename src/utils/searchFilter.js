@@ -15,8 +15,8 @@ export function filterAndSortProducts(products = [], {
   if (selectedCategory && selectedCategory !== "all") {
     const targetCat = selectedCategory.trim().toLowerCase();
     list = list.filter((p) => {
-      const cat = (p.categoryName || p.category || p.categoryId || "").toLowerCase();
-      return cat.includes(targetCat) || targetCat.includes(cat);
+      const cat = (p.categoryName || p.category || p.categoryId || "").toLowerCase().trim();
+      return Boolean(cat && (cat.includes(targetCat) || targetCat.includes(cat)));
     });
   }
 
@@ -70,7 +70,15 @@ export function filterAndSortProducts(products = [], {
       list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
       break;
     case "newest":
-      list.sort((a, b) => String(b.productId || b.id || "").localeCompare(String(a.productId || a.id || "")));
+      list.sort((a, b) => {
+        const dateA = a.createdAt?.toMillis ? a.createdAt.toMillis() : new Date(a.createdAt || 0).getTime();
+        const dateB = b.createdAt?.toMillis ? b.createdAt.toMillis() : new Date(b.createdAt || 0).getTime();
+        if (dateA && dateB && dateA !== dateB) return dateB - dateA;
+        const numA = Number(String(a.productId || a.id || "").replace(/\D/g, "")) || 0;
+        const numB = Number(String(b.productId || b.id || "").replace(/\D/g, "")) || 0;
+        if (numA !== numB) return numB - numA;
+        return String(b.productId || b.id || "").localeCompare(String(a.productId || a.id || ""), undefined, { numeric: true });
+      });
       break;
     default:
       // Default natural order
