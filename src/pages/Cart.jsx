@@ -272,6 +272,7 @@ export default function Cart() {
 
         <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "16px" }}>
           <button
+            type="button"
             onClick={handleProceedToCheckout}
             className="btn btn-primary btn-pill"
             style={{ minWidth: "260px" }}
