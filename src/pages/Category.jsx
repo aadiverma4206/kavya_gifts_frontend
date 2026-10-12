@@ -16,6 +16,8 @@ export default function Category() {
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState("default");
 
+  const [retryTrigger, setRetryTrigger] = useState(0);
+
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -27,7 +29,7 @@ export default function Category() {
       })
       .catch((err) => {
         console.error("Error loading category products:", err);
-        if (isMounted) setError("Could not load products for this category.");
+        if (isMounted) setError("Could not load products for this category. Please check your connection.");
       })
       .finally(() => {
         if (isMounted) setLoading(false);
@@ -36,7 +38,7 @@ export default function Category() {
     return () => {
       isMounted = false;
     };
-  }, [decodedName]);
+  }, [decodedName, retryTrigger]);
 
   const sortedProducts = useMemo(() => {
     const list = [...products];
@@ -102,7 +104,18 @@ export default function Category() {
         </div>
       )}
 
-      {error && <p className="muted">{error}</p>}
+      {error && (
+        <div className="catalog-empty card" style={{ textAlign: "center", padding: "40px 20px" }}>
+          <p className="muted" style={{ marginBottom: "16px" }}>{error}</p>
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
+            onClick={() => setRetryTrigger((k) => k + 1)}
+          >
+            Retry Loading
+          </button>
+        </div>
+      )}
 
       {!loading && !error && products.length === 0 && (
         <div className="catalog-empty card">
