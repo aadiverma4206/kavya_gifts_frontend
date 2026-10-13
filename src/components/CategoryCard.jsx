@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { ArrowRight, Sparkles } from "lucide-react";
 import "./CategoryCard.css";
 
 const CATEGORY_ICONS = {
@@ -51,13 +52,23 @@ export default function CategoryCard({ category }) {
   return (
     <Link
       to={`/category/${encodeURIComponent(name)}`}
-      className="category-card card"
+      className="modern-category-card"
       aria-label={`Explore ${name} hampers`}
     >
-      <div className="category-card-content">
-        <span className="category-icon" aria-hidden="true">{icon}</span>
-        <span className="category-title">{name}</span>
-        <span className="category-action">Explore &rarr;</span>
+      <div className="category-glow-blob" />
+      <div className="category-card-inner">
+        <div className="category-icon-orb">
+          <span className="category-emoji" aria-hidden="true">{icon}</span>
+        </div>
+        <div className="category-text-meta">
+          <span className="category-curation-tag">
+            <Sparkles size={11} /> Bespoke Hampers
+          </span>
+          <h3 className="category-name">{name}</h3>
+        </div>
+        <div className="category-arrow-circle">
+          <ArrowRight size={15} />
+        </div>
       </div>
     </Link>
   );
