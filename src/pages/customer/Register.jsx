@@ -83,6 +83,7 @@ export default function Register() {
     }
 
     setLoading(true);
+    try {
       let cleanMobile = mobile.replace(/\D/g, "");
       if (cleanMobile.length === 11 && cleanMobile.startsWith("0")) cleanMobile = cleanMobile.slice(1);
       if (cleanMobile.length === 12 && cleanMobile.startsWith("91")) cleanMobile = cleanMobile.slice(2);
