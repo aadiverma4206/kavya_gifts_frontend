@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin } from "lucide-react";
 import { subscribeNewsletter } from "../services/newsletterService.js";
 import { notify } from "../utils/notify.js";
 import "./Footer.css";
@@ -37,38 +38,92 @@ export default function Footer() {
 
   return (
     <footer className="site-footer" role="contentinfo">
-      <div className="container footer-grid">
-        <div className="footer-col">
-          <h3>Kavya Gifting</h3>
-          <p className="muted">
-            Thoughtfully curated hampers for every festival, celebration, and occasion — packed
-            with care, delivered with love across India.
+      {/* Luxury Trust Badges Row */}
+      <div className="footer-perks-band">
+        <div className="container footer-perks-grid">
+          <div className="perk-item">
+            <div className="perk-icon-wrap">
+              <Sparkles size={20} />
+            </div>
+            <div className="perk-text">
+              <div className="perk-title">100% Handcrafted</div>
+              <div className="perk-desc">Artisanal hampers with bespoke ribbons</div>
+            </div>
+          </div>
+          <div className="perk-item">
+            <div className="perk-icon-wrap">
+              <Truck size={20} />
+            </div>
+            <div className="perk-text">
+              <div className="perk-title">Express Pan-India</div>
+              <div className="perk-desc">Fast, shockproof gift delivery</div>
+            </div>
+          </div>
+          <div className="perk-item">
+            <div className="perk-icon-wrap">
+              <ShieldCheck size={20} />
+            </div>
+            <div className="perk-text">
+              <div className="perk-title">Secure Checkout</div>
+              <div className="perk-desc">Encrypted UPI, Cards & NetBanking</div>
+            </div>
+          </div>
+          <div className="perk-item">
+            <div className="perk-icon-wrap">
+              <HeartHandshake size={20} />
+            </div>
+            <div className="perk-text">
+              <div className="perk-title">Custom Keepsakes</div>
+              <div className="perk-desc">Personal wax seal & calligraphy note</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="container footer-main-grid">
+        <div className="footer-col brand-col">
+          <div className="footer-brand-title">
+            <Sparkles size={18} className="footer-brand-icon" />
+            <span>Kavya Gifting</span>
+          </div>
+          <p className="footer-tagline">
+            Thoughtfully curated luxury hampers for every milestone, festival, and corporate celebration.
+            Hand-assembled with love and delivered with elegance across India.
           </p>
+          <div className="footer-contact-links">
+            <div className="contact-item">
+              <MapPin size={15} /> <span>New Delhi • Mumbai • Bengaluru</span>
+            </div>
+            <div className="contact-item">
+              <Mail size={15} /> <span>concierge@kavyagifts.com</span>
+            </div>
+          </div>
         </div>
 
         <div className="footer-col">
-          <h4>Shop Hampers</h4>
-          <Link to="/category/Diwali">Diwali Hampers</Link>
-          <Link to="/category/Wedding">Wedding Hampers</Link>
-          <Link to="/category/Corporate">Corporate Hampers</Link>
-          <Link to="/cart">My Shopping Cart</Link>
+          <h4>Signature Collections</h4>
+          <Link to="/category/Diwali">Diwali Royal Hampers</Link>
+          <Link to="/category/Wedding">Wedding Keepsakes</Link>
+          <Link to="/category/Corporate">Corporate Suites</Link>
+          <Link to="/category/Birthday">Birthday Surprises</Link>
+          <Link to="/#catalog">All 100+ Catalog</Link>
         </div>
 
         <div className="footer-col">
           <h4>Customer Care</h4>
-          <Link to="/">About Our Craft</Link>
           <Link to="/orders">Track My Order</Link>
-          <Link to="/profile">My Account</Link>
           <Link to="/dashboard">Customer Portal</Link>
+          <Link to="/cart">Shopping Bag</Link>
+          <Link to="/profile">Account Settings</Link>
         </div>
 
-        <div className="footer-col">
-          <h4>Newsletter</h4>
-          <p className="muted">Get exclusive previews of seasonal hampers and festive offers.</p>
+        <div className="footer-col newsletter-col">
+          <h4>The Luxury Circle</h4>
+          <p className="muted">Subscribe to receive secret festive coupon codes and early access to limited edition hampers.</p>
           <form className="newsletter-form" onSubmit={handleSubscribe}>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
@@ -77,11 +132,11 @@ export default function Footer() {
             />
             <button
               type="submit"
-              className="btn btn-secondary footer-sub-btn"
+              className="footer-sub-btn"
               disabled={loading}
               aria-label="Subscribe"
             >
-              {loading ? "..." : "Subscribe"}
+              {loading ? "..." : <Send size={16} />}
             </button>
           </form>
           {statusMessage && (
@@ -91,9 +146,19 @@ export default function Footer() {
           )}
         </div>
       </div>
-      <p className="footer-bottom">
-        © {new Date().getFullYear()} Kavya Gifting. Handcrafted with passion. All rights reserved.
-      </p>
+
+      <div className="container footer-bottom-wrap">
+        <p className="footer-bottom-copy">
+          © {new Date().getFullYear()} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
+        </p>
+        <div className="footer-payment-tags">
+          <span>UPI</span>
+          <span>Visa</span>
+          <span>Mastercard</span>
+          <span>RuPay</span>
+          <span>Net Banking</span>
+        </div>
+      </div>
     </footer>
   );
 }
