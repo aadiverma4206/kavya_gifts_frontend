@@ -1,54 +1,114 @@
 .announcement-bar {
-  background: var(--color-primary);
-  color: #fff;
+  background: linear-gradient(90deg, #58141d 0%, #7a1f2b 50%, #58141d 100%);
+  color: #ffffff;
   font-size: 13px;
-  letter-spacing: 0.02em;
-  padding: 8px 16px;
   position: relative;
+  z-index: 60;
+  border-bottom: 1px solid rgba(212, 163, 71, 0.35);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.announcement-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  min-height: 38px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  position: relative;
 }
 
 .announcement-content {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 20px;
+  gap: 12px;
+  text-align: center;
+  animation: announcementSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: calc(100% - 60px);
+}
+
+.announcement-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #d4a347, #f5d68d);
+  color: #2a1815;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+}
+
+.announcement-pill-icon {
+  animation: sparkleRotate 3s infinite ease-in-out;
 }
 
 .announcement-text {
-  animation: fadeIn 0.4s ease-in-out;
   font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #faf3e8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .announcement-close {
   position: absolute;
-  right: 12px;
-  background: none;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 18px;
-  line-height: 1;
-  padding: 2px 6px;
+  color: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   cursor: pointer;
-  border-radius: 4px;
-  transition: color 0.15s ease, background-color 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .announcement-close:hover {
+  background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-50%) scale(1.1);
 }
 
-@keyframes fadeIn {
+@keyframes announcementSlideIn {
   from {
     opacity: 0;
-    transform: translateY(4px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes sparkleRotate {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(15deg) scale(1.15);
+  }
+}
+
+@media (max-width: 768px) {
+  .announcement-bar {
+    font-size: 12px;
+  }
+  .announcement-content {
+    gap: 8px;
+  }
+  .announcement-text {
+    max-width: 240px;
   }
 }
