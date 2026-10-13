@@ -1,51 +1,108 @@
 .profile-container {
   padding-top: 30px;
+  padding-bottom: 60px;
 }
 
 .profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .profile-header h2 {
   font-size: 34px;
+  color: var(--color-primary);
   margin-bottom: 4px;
+}
+
+.profile-header p {
+  color: var(--color-muted);
+  font-size: 14px;
+  margin: 0;
 }
 
 .profile-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
+  align-items: start;
 }
 
 .profile-card {
-  padding: 32px;
+  padding: 36px 32px;
   background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .card-top-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  border-bottom: 1px solid rgba(122, 31, 43, 0.1);
-  padding-bottom: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 14px;
 }
 
 .card-top-header h3 {
+  font-family: var(--font-heading);
   font-size: 22px;
+  color: var(--color-primary);
   margin: 0;
 }
 
 .security-badge {
-  background: #e0f2fe;
-  color: #0369a1;
+  background: #eff6ff;
+  color: #1d4ed8;
   font-size: 11px;
-  font-weight: 700;
-  padding: 3px 8px;
+  font-weight: 800;
+  padding: 4px 10px;
   border-radius: 999px;
+  border: 1px solid #bfdbfe;
+  text-transform: uppercase;
+}
+
+.profile-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.profile-card .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-card label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.profile-card input,
+.profile-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+
+.profile-card input:focus,
+.profile-card textarea:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 163, 71, 0.2);
+}
+
+.profile-card button[type="submit"] {
+  margin-top: 10px;
+  align-self: flex-start;
+  padding: 13px 28px;
 }
 
 @media (max-width: 850px) {
