@@ -152,6 +152,29 @@ export default function Checkout() {
 
   return (
     <div className="checkout-container container section">
+      {/* Multi-step Checkout Stepper */}
+      <div className="checkout-stepper-bar">
+        <div className="step-point completed">
+          <span className="step-num">✓</span>
+          <span className="step-text">Cart</span>
+        </div>
+        <div className="step-connector completed" />
+        <div className="step-point active">
+          <span className="step-num">2</span>
+          <span className="step-text">Delivery Details</span>
+        </div>
+        <div className="step-connector" />
+        <div className="step-point">
+          <span className="step-num">3</span>
+          <span className="step-text">Payment</span>
+        </div>
+        <div className="step-connector" />
+        <div className="step-point">
+          <span className="step-num">4</span>
+          <span className="step-text">Confirmation</span>
+        </div>
+      </div>
+
       <div className="checkout-header">
         <h2>Checkout & Delivery Details</h2>
         <p className="muted">Complete the recipient details for your bespoke hamper delivery</p>
