@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Gift, Sparkles, Check, Heart, Feather } from "lucide-react";
 import { GIFT_WRAP_OPTIONS } from "../../context/CartContext";
 import "./GiftWrapSelector.css";
 
@@ -28,18 +29,24 @@ export default function GiftWrapSelector({
   }
 
   return (
-    <div className="gift-wrap-selector card">
+    <div className={`gift-wrap-selector card ${value.enabled ? "enabled-active" : ""}`}>
       <div className="gift-wrap-header">
         <div className="gift-wrap-title-wrap">
-          <span className="gift-wrap-badge">Artisan Gift Wrapping</span>
-          <h3>Add Luxury Gift Packaging & Card</h3>
-          <p className="muted">
-            Deliver an unforgettable unwrapping experience with bespoke velvet ribbons and a handwritten card.
+          <div className="gift-badge-row">
+            <span className="gift-wrap-badge">
+              <Sparkles size={11} /> Bespoke Packaging
+            </span>
+            {value.enabled && <span className="active-pill-badge">Active</span>}
+          </div>
+          <h3 className="gift-wrap-headline">Add Luxury Velvet Gift Wrap & Keepsake Card</h3>
+          <p className="muted gift-wrap-sub">
+            Elevate your hamper with scented satin ribbons, wax seal stamp, and a personalized note.
           </p>
         </div>
+
         <button
           type="button"
-          className={`btn ${value.enabled ? "btn-primary" : "btn-secondary"} btn-sm`}
+          className={`btn ${value.enabled ? "btn-primary" : "btn-secondary"} btn-sm btn-wrap-toggle`}
           onClick={() => {
             const nextEnabled = !value.enabled;
             setIsOpen(nextEnabled);
@@ -50,13 +57,21 @@ export default function GiftWrapSelector({
             });
           }}
         >
-          {value.enabled ? "✓ Gift Wrapping Added" : "+ Add Gift Wrapping"}
+          {value.enabled ? (
+            <>
+              <Check size={14} /> Gift Wrap Included
+            </>
+          ) : (
+            <>
+              <Gift size={14} /> + Add Gift Wrapping
+            </>
+          )}
         </button>
       </div>
 
       {(value.enabled || isOpen) && (
         <div className="gift-wrap-body">
-          <label className="gift-wrap-label">Choose Packaging Style:</label>
+          <label className="gift-wrap-label">Select Packaging Style:</label>
           <div className="gift-options-grid">
             {GIFT_WRAP_OPTIONS.map((opt) => {
               const isSelected = value.optionId === opt.id;
@@ -67,7 +82,10 @@ export default function GiftWrapSelector({
                   onClick={() => handleOptionSelect(opt.id)}
                 >
                   <div className="gift-option-top">
-                    <h4>{opt.name}</h4>
+                    <div className="option-title-group">
+                      <span className="option-radio-dot">{isSelected && <Check size={10} />}</span>
+                      <h4>{opt.name}</h4>
+                    </div>
                     <span className="gift-option-price">
                       {opt.price === 0 ? "Free" : `+₹${opt.price}`}
                     </span>
@@ -83,14 +101,17 @@ export default function GiftWrapSelector({
               <label>Recipient Name (Optional)</label>
               <input
                 type="text"
-                placeholder="e.g. Ananya & Rohit"
+                placeholder="e.g. Ananya & Siddharth"
                 value={value.recipientName || ""}
                 onChange={(e) => handleFieldChange("recipientName", e.target.value)}
               />
             </div>
 
             <div className="form-group">
-              <label>Personalized Handwritten Gift Note (Optional)</label>
+              <div className="label-with-icon">
+                <Feather size={14} />
+                <label>Personalized Handwritten Gift Note (Optional)</label>
+              </div>
               <textarea
                 rows="3"
                 placeholder="Write your heartfelt message here (max 200 characters)..."
@@ -98,10 +119,27 @@ export default function GiftWrapSelector({
                 value={value.message || ""}
                 onChange={(e) => handleFieldChange("message", e.target.value)}
               />
-              <span className="char-count muted">
-                {(value.message || "").length}/200 characters
-              </span>
+              <div className="char-count-row">
+                <span className="calligraphy-hint">✒️ Written in gold ink on textured ivory cardstock</span>
+                <span className="char-count muted">
+                  {(value.message || "").length}/200 characters
+                </span>
+              </div>
             </div>
+
+            {/* Live Gift Note Card Preview */}
+            {value.message && (
+              <div className="live-card-preview">
+                <div className="card-preview-wax-seal">★</div>
+                <div className="card-preview-inner">
+                  {value.recipientName && (
+                    <div className="card-preview-recipient">Dearest {value.recipientName},</div>
+                  )}
+                  <p className="card-preview-text">"{value.message}"</p>
+                  <div className="card-preview-signoff">With Warmest Wishes • Kavya Gifting</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
