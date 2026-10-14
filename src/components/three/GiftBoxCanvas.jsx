@@ -14,7 +14,9 @@ import { RotateCw, Sparkles, Box } from "lucide-react";
 export default function GiftBoxCanvas({ autoRotate = true, interactive = true }) {
   const mountRef = useRef(null);
   const [isRotating, setIsRotating] = useState(autoRotate);
+  const [webglError, setWebglError] = useState(false);
   const isRotatingRef = useRef(isRotating);
+  const resetOrientationRef = useRef(null);
 
   useEffect(() => {
     isRotatingRef.current = isRotating;
@@ -27,17 +29,18 @@ export default function GiftBoxCanvas({ autoRotate = true, interactive = true })
     const width = container.clientWidth || 440;
     const height = container.clientHeight || 440;
 
-    // 1. Scene, Camera, Renderer
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    // Angle matching the reference photo (isometric perspective)
-    camera.position.set(3.4, 3.2, 4.4);
-
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      powerPreference: "high-performance",
-    });
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+        powerPreference: "high-performance",
+      });
+    } catch (e) {
+      console.warn("WebGL initialization failed, using visual fallback:", e);
+      setWebglError(true);
+      return;
+    }
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -439,6 +442,22 @@ export default function GiftBoxCanvas({ autoRotate = true, interactive = true })
       renderer.dispose();
     };
   }, [interactive]);
+
+  if (webglError) {
+    return (
+      <div className="mosaic-3d-wrapper" style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "380px" }}>
+        <div style={{ textAlign: "center", padding: "30px" }}>
+          <span style={{ fontSize: "56px", display: "block", marginBottom: "12px" }}>🎁</span>
+          <span className="mosaic-tag-pill" style={{ display: "inline-block", marginBottom: "8px" }}>
+            ✨ Handcrafted Mosaic Hamper Box
+          </span>
+          <p className="muted" style={{ fontSize: "13.5px", maxWidth: "320px", margin: "0 auto" }}>
+            Artisan geometric relief tiles with metallic rose-copper satin ribbon
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mosaic-3d-wrapper">
