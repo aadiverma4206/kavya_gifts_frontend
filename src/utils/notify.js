@@ -54,14 +54,59 @@ export function getFriendlyErrorMessage(error, fallback = "Something went wrong.
   return msg || fallback;
 }
 
+// Gentle mobile vibration helper on critical actions
+function triggerHaptic(type = "light") {
+  if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+    try {
+      if (type === "error") navigator.vibrate([40, 60, 40]);
+      else navigator.vibrate(25);
+    } catch {
+      // Ignore vibration errors on unsupported hardware
+    }
+  }
+}
+
 export const notify = {
-  success: (message, options) => toast.success(message, options),
-  error: (err, fallback = "An error occurred", options) => {
-    const text = getFriendlyErrorMessage(err, fallback);
-    toast.error(text, options);
+  success: (message, options = {}) => {
+    triggerHaptic("light");
+    return toast.success(message, {
+      duration: 3500,
+      ...options,
+    });
   },
-  info: (message, options) => toast.info(message, options),
-  warning: (message, options) => toast.warning(message, options),
+
+  error: (err, fallback = "An error occurred", options = {}) => {
+    triggerHaptic("error");
+    const text = getFriendlyErrorMessage(err, fallback);
+    return toast.error(text, {
+      duration: 5000,
+      ...options,
+    });
+  },
+
+  info: (message, options = {}) => {
+    return toast.info(message, {
+      duration: 3500,
+      ...options,
+    });
+  },
+
+  warning: (message, options = {}) => {
+    triggerHaptic("light");
+    return toast.warning(message, {
+      duration: 4000,
+      ...options,
+    });
+  },
+
+  promise: (promise, messages = {}) => {
+    return toast.promise(promise, {
+      loading: messages.loading || "Processing...",
+      success: messages.success || "Operation complete!",
+      error: (err) => getFriendlyErrorMessage(err, messages.error || "Operation failed."),
+      ...messages.options,
+    });
+  },
 };
 
 export default notify;
