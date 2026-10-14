@@ -1,46 +1,73 @@
 .not-found-page {
-  min-height: 65vh;
+  min-height: 75vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px 24px;
-  background: radial-gradient(circle at center, #ffffff 0%, var(--color-bg) 100%);
+  background: radial-gradient(circle at center, #ffffff 0%, #fbf3e7 100%);
+  position: relative;
+  overflow: hidden;
 }
 
 .not-found-container {
-  max-width: 520px;
+  max-width: 580px;
+  width: 100%;
   text-align: center;
-  background: #ffffff;
-  padding: 48px 36px;
-  border-radius: var(--radius-card);
-  box-shadow: 0 10px 30px rgba(42, 24, 21, 0.08);
-  border: 1px solid rgba(122, 31, 43, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 52px 40px;
+  border-radius: var(--radius-card, 20px);
+  box-shadow: 0 20px 50px rgba(122, 31, 43, 0.08);
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  position: relative;
+  z-index: 2;
+}
+
+.not-found-floating-gift {
+  font-size: 64px;
+  margin-bottom: 20px;
+  display: inline-block;
+  animation: floatGift 3s ease-in-out infinite;
+  filter: drop-shadow(0 12px 20px rgba(122, 31, 43, 0.2));
+}
+
+@keyframes floatGift {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(4deg);
+  }
 }
 
 .not-found-badge {
   display: inline-block;
   background: rgba(122, 31, 43, 0.08);
-  color: var(--color-primary);
+  color: var(--color-primary, #7a1f2b);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 999px;
   margin-bottom: 16px;
+  border: 1px solid rgba(122, 31, 43, 0.15);
 }
 
 .not-found-title {
-  font-size: 38px;
-  margin-bottom: 14px;
-  color: var(--color-primary);
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 36px;
+  margin-bottom: 12px;
+  color: var(--color-primary, #7a1f2b);
+  letter-spacing: -0.5px;
 }
 
 .not-found-subtitle {
-  color: var(--color-muted);
-  font-size: 16px;
+  color: #6b554e;
+  font-size: 15.5px;
   line-height: 1.6;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
 .not-found-actions {
@@ -48,4 +75,36 @@
   gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.not-found-collections-nav {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed rgba(122, 31, 43, 0.15);
+}
+
+.collection-pills-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.collection-pill-link {
+  background: #ffffff;
+  border: 1px solid rgba(122, 31, 43, 0.18);
+  color: var(--color-primary, #7a1f2b);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.collection-pill-link:hover {
+  background: var(--color-primary, #7a1f2b);
+  color: #ffffff;
+  transform: translateY(-1px);
 }
