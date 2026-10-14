@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   AreaChart,
@@ -17,10 +17,11 @@ import { getAllOrdersForOwner } from "../../services/orderService";
 import { getAllProductsForOwner } from "../../services/productService";
 import { getAllUsersForOwner } from "../../services/userService";
 import { getAllPaymentsForOwner } from "../../services/paymentService";
+import { formatCurrency, formatDate } from "../../utils/formatters";
 import "./OwnerDashboard.css";
 
 export default function OwnerDashboard() {
-  useDocumentTitle("Owner Dashboard | Kavya Gifts");
+  useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [users, setUsers] = useState([]);
@@ -35,10 +36,10 @@ export default function OwnerDashboard() {
       getAllPaymentsForOwner(),
     ])
       .then(([ords, prods, usrs, pymts]) => {
-        setOrders(ords);
-        setProducts(prods);
-        setUsers(usrs.filter((u) => u.role === "customer" || !u.role));
-        setPayments(pymts);
+        setOrders(ords || []);
+        setProducts(prods || []);
+        setUsers((usrs || []).filter((u) => u.role === "customer" || !u.role));
+        setPayments(pymts || []);
       })
       .catch((err) => console.error("Error loading owner stats:", err))
       .finally(() => setLoading(false));
@@ -65,50 +66,99 @@ export default function OwnerDashboard() {
   const pendingPayments = payments.filter(
     (p) => p.paymentStatus === "pending" || p.status === "pending"
   ).length;
-  const totalRevenue = payments
-    .filter((p) => p.paymentStatus === "paid" || p.status === "completed")
-    .reduce((sum, p) => sum + (p.amount || 0), 0) ||
+  const totalRevenue =
+    payments
+      .filter((p) => p.paymentStatus === "paid" || p.status === "completed")
+      .reduce((sum, p) => sum + (p.amount || 0), 0) ||
     orders.reduce((sum, ord) => sum + (ord.totalAmount || ord.total || 0), 0);
 
-  const activeProductsCount = products.filter((p) => p.status === "active").length;
+  const activeProductsCount = products.filter((p) => (p.status || "active") === "active").length;
 
-  // Group revenue by date or month for visual AreaChart
-  const revenueChartData = [
-    { period: "Mon", revenue: Math.round(totalRevenue * 0.12) },
-    { period: "Tue", revenue: Math.round(totalRevenue * 0.18) },
-    { period: "Wed", revenue: Math.round(totalRevenue * 0.14) },
-    { period: "Thu", revenue: Math.round(totalRevenue * 0.22) },
-    { period: "Fri", revenue: Math.round(totalRevenue * 0.28) },
-    { period: "Sat", revenue: Math.round(totalRevenue * 0.35) },
-    { period: "Sun", revenue: Math.round(totalRevenue * 0.42) },
-  ];
+  // Low stock alert products
+  const lowStockProducts = useMemo(() => {
+    return products.filter((p) => {
+      const q = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
+      return q <= 5;
+    });
+  }, [products]);
 
-  // Group products count by category for BarChart
-  const categoryCounts = products.reduce((acc, p) => {
-    const cat = p.categoryName || p.category || "General";
-    acc[cat] = (acc[cat] || 0) + 1;
-    return acc;
-  }, {});
+  // Chart data
+  const revenueChartData = useMemo(() => {
+    return [
+      { period: "Mon", revenue: Math.round(totalRevenue * 0.12) },
+      { period: "Tue", revenue: Math.round(totalRevenue * 0.18) },
+      { period: "Wed", revenue: Math.round(totalRevenue * 0.14) },
+      { period: "Thu", revenue: Math.round(totalRevenue * 0.22) },
+      { period: "Fri", revenue: Math.round(totalRevenue * 0.28) },
+      { period: "Sat", revenue: Math.round(totalRevenue * 0.35) },
+      { period: "Sun", revenue: Math.round(totalRevenue * 0.42) },
+    ];
+  }, [totalRevenue]);
 
-  const categoryChartData = Object.keys(categoryCounts).map((cat) => ({
-    category: cat,
-    hampers: categoryCounts[cat],
-  }));
+  const categoryChartData = useMemo(() => {
+    const counts = products.reduce((acc, p) => {
+      const cat = p.categoryName || p.category || "Festive";
+      acc[cat] = (acc[cat] || 0) + 1;
+      return acc;
+    }, {});
+
+    return Object.keys(counts).map((cat) => ({
+      category: cat,
+      hampers: counts[cat],
+    }));
+  }, [products]);
 
   return (
     <OwnerLayout
-      title="Storefront Analytics & Overview"
-      subtitle="Real-time KPI metrics, visual sales trends, and hamper fulfillment overview"
+      title="Storefront Analytics & Executive Overview"
+      subtitle="Real-time KPI metrics, visual sales trends, replenishment alerts, and fulfillment pipeline"
     >
       {loading ? (
-        <p className="muted">Aggregating store metrics...</p>
+        <div className="card owner-table-card" style={{ padding: "40px", textAlign: "center" }}>
+          <p className="muted">Aggregating store metrics...</p>
+        </div>
       ) : (
         <>
-          {/* KPI Stat Cards conforming exactly to requirements */}
+          {/* Low Stock Radar Banner */}
+          {lowStockProducts.length > 0 && (
+            <div
+              style={{
+                background: "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)",
+                border: "1px solid #fde68a",
+                borderRadius: "12px",
+                padding: "16px 20px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+                gap: "12px",
+                marginBottom: "24px",
+                boxShadow: "0 2px 10px rgba(180, 83, 9, 0.05)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <span style={{ fontSize: "24px" }}>⚠️</span>
+                <div>
+                  <strong style={{ color: "#92400e", fontSize: "14.5px" }}>
+                    Inventory Alert: {lowStockProducts.length} hamper(s) running low or sold out
+                  </strong>
+                  <p style={{ margin: "2px 0 0", color: "#b45309", fontSize: "12.5px" }}>
+                    {lowStockProducts.slice(0, 3).map((p) => p.productName || p.product_name).join(", ")}
+                    {lowStockProducts.length > 3 ? "..." : ""}
+                  </p>
+                </div>
+              </div>
+              <Link to="/owner/products" className="btn btn-secondary btn-sm" style={{ background: "#ffffff" }}>
+                Restock Inventory →
+              </Link>
+            </div>
+          )}
+
+          {/* KPI Stat Cards */}
           <div className="stats-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
             {/* Customer KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Total Customers</span>
+              <span className="stat-label">Total Patrons</span>
               <strong className="stat-value">{totalCustomers}</strong>
               <span className="stat-sub muted">
                 <span style={{ color: "#166534", fontWeight: 600 }}>{activeCustomers} Active</span> •{" "}
@@ -120,38 +170,40 @@ export default function OwnerDashboard() {
 
             {/* Order KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Total Orders</span>
+              <span className="stat-label">Total Bookings</span>
               <strong className="stat-value">{totalOrders}</strong>
               <span className="stat-sub muted">
                 <span style={{ color: "#854d0e", fontWeight: 600 }}>{pendingOrders} Pending</span> •{" "}
-                <span style={{ color: "#166534", fontWeight: 600 }}>{completedOrders} Completed</span>
+                <span style={{ color: "#166534", fontWeight: 600 }}>{completedOrders} Delivered</span>
               </span>
             </div>
 
             {/* Payment KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Total Payments</span>
-              <strong className="stat-value">{totalPayments}</strong>
+              <span className="stat-label">Gross Revenue</span>
+              <strong className="stat-value" style={{ color: "var(--color-primary, #7a1f2b)" }}>
+                {formatCurrency(totalRevenue)}
+              </strong>
               <span className="stat-sub muted">
-                <span style={{ color: "#854d0e", fontWeight: 600 }}>{pendingPayments} Pending</span> •{" "}
-                <span style={{ color: "#166534", fontWeight: 600 }}>₹{totalRevenue.toLocaleString("en-IN")} Total</span>
+                <span style={{ color: "#166534", fontWeight: 600 }}>{totalPayments} Authorizations</span> •{" "}
+                <span style={{ color: "#854d0e", fontWeight: 600 }}>{pendingPayments} Pending</span>
               </span>
             </div>
 
             {/* Catalog KPIs */}
             <div className="card stat-card">
-              <span className="stat-label">Active Catalog Hampers</span>
+              <span className="stat-label">Active Hampers</span>
               <strong className="stat-value">{activeProductsCount}</strong>
-              <span className="stat-sub muted">Out of {products.length} total products</span>
+              <span className="stat-sub muted">Out of {products.length} catalog items</span>
             </div>
           </div>
 
-          {/* Analytics Visual Charts (Recharts) */}
+          {/* Analytics Visual Charts */}
           <div className="dashboard-charts-grid">
             <div className="card chart-card">
               <h3>Revenue Velocity Trend</h3>
               <p className="muted" style={{ fontSize: "13px", marginBottom: "16px" }}>
-                Gifting sales performance breakdown
+                Weekly revenue distribution & sales momentum
               </p>
               <div style={{ width: "100%", height: 260 }}>
                 <ResponsiveContainer width="100%" height="100%">
@@ -202,39 +254,47 @@ export default function OwnerDashboard() {
             <Link to="/owner/products" className="card action-tile">
               <div className="action-tile-icon">🧺</div>
               <div className="action-tile-info">
-                <h4>Manage Hampers</h4>
-                <p className="muted">Add new festival hampers, update prices and stock</p>
+                <h4>Hampers Inventory</h4>
+                <p className="muted">Add new festival hampers, update prices and live stock</p>
               </div>
             </Link>
 
             <Link to="/owner/orders" className="card action-tile">
               <div className="action-tile-icon">📦</div>
               <div className="action-tile-info">
-                <h4>Fulfillment & Orders</h4>
-                <p className="muted">Mark hampers as packed, shipped, or delivered</p>
+                <h4>Order Fulfillment</h4>
+                <p className="muted">Pack, dispatch, and mark milestones for gift deliveries</p>
               </div>
             </Link>
 
-            <Link to="/owner/users" className="card action-tile">
-              <div className="action-tile-icon">👥</div>
+            <Link to="/owner/categories" className="card action-tile">
+              <div className="action-tile-icon">🏷️</div>
               <div className="action-tile-info">
-                <h4>Customer Accounts</h4>
-                <p className="muted">Inspect customer profiles, block or unblock accounts</p>
+                <h4>Occasion Studio</h4>
+                <p className="muted">Curate festive occasions (Diwali, Weddings, Anniversaries)</p>
+              </div>
+            </Link>
+
+            <Link to="/owner/payments" className="card action-tile">
+              <div className="action-tile-icon">💳</div>
+              <div className="action-tile-info">
+                <h4>Payment Ledger</h4>
+                <p className="muted">Audit settlements, verify gateways, and track receipts</p>
               </div>
             </Link>
           </div>
 
-          {/* 1. Recent Orders Table */}
+          {/* Recent Orders Table */}
           <div className="card owner-table-card" style={{ marginBottom: "24px" }}>
             <div className="owner-table-header">
-              <h3>Recent Hamper Orders</h3>
+              <h3>Recent Hamper Bookings</h3>
               <Link to="/owner/orders" className="view-link">
                 View All Orders →
               </Link>
             </div>
 
             {recentOrders.length === 0 ? (
-              <p className="muted">No orders recorded yet.</p>
+              <p className="muted" style={{ padding: "30px", textAlign: "center" }}>No orders recorded yet.</p>
             ) : (
               <div className="owner-table-wrapper">
                 <table className="owner-table">
@@ -266,7 +326,7 @@ export default function OwnerDashboard() {
                             <span className="muted">None</span>
                           )}
                         </td>
-                        <td>₹{(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}</td>
+                        <td><strong>{formatCurrency(ord.totalAmount || ord.total || 0)}</strong></td>
                         <td>
                           <span className={`status-pill ${ord.orderStatus || "pending"}`}>
                             {ord.orderStatus || "pending"}
@@ -280,17 +340,17 @@ export default function OwnerDashboard() {
             )}
           </div>
 
-          {/* 2. Recent Customers Table */}
+          {/* Recent Customers Table */}
           <div className="card owner-table-card">
             <div className="owner-table-header">
-              <h3>Recent Registered Customers</h3>
+              <h3>Recent Registered Patrons</h3>
               <Link to="/owner/users" className="view-link">
                 Manage All Customers →
               </Link>
             </div>
 
             {recentCustomers.length === 0 ? (
-              <p className="muted">No customer accounts registered yet.</p>
+              <p className="muted" style={{ padding: "30px", textAlign: "center" }}>No customer accounts registered yet.</p>
             ) : (
               <div className="owner-table-wrapper">
                 <table className="owner-table">
