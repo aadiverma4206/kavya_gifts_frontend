@@ -34,10 +34,20 @@ export default function Header() {
       if (e.key === "Escape" && mobileMenuOpen) {
         setMobileMenuOpen(false);
       }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
+        if (searchInput) {
+          searchInput.focus();
+          searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          navigate("/#catalog");
+        }
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, navigate]);
 
   useEffect(() => {
     let isMounted = true;
@@ -113,6 +123,25 @@ export default function Header() {
 
         {/* Actions & Profile */}
         <div className="header-actions">
+          <button
+            type="button"
+            className="header-sublink hide-mobile"
+            style={{ border: "1px solid rgba(122, 31, 43, 0.15)", borderRadius: "999px", width: "auto", padding: "0 10px", gap: "6px", fontSize: "12px", height: "32px" }}
+            onClick={() => {
+              const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
+              if (searchInput) {
+                searchInput.focus();
+                searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+              } else {
+                navigate("/#catalog");
+              }
+            }}
+            title="Search hampers (Ctrl + K)"
+          >
+            <span>🔍</span>
+            <span className="muted" style={{ fontSize: "11px", fontWeight: 600 }}>Ctrl+K</span>
+          </button>
+
           {currentUser ? (
             <div className="header-auth-group">
               {isOwner ? (
