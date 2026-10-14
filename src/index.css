@@ -311,3 +311,61 @@ select:focus {
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite;
 }
+
+/* Custom Text Selection */
+::selection {
+  background: var(--color-primary, #7a1f2b);
+  color: #ffffff;
+}
+
+/* Luxury Gradient Text Utility */
+.gold-gradient-text {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Sonner Toast Luxury Overrides */
+[data-sonner-toaster] {
+  font-family: var(--font-body, "Plus Jakarta Sans", sans-serif) !important;
+}
+
+[data-sonner-toast] {
+  border-radius: 12px !important;
+  box-shadow: 0 12px 30px rgba(42, 24, 21, 0.12) !important;
+  border: 1px solid rgba(122, 31, 43, 0.12) !important;
+}
+
+/* Print Stylesheet for Invoices & Orders */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .site-header,
+  .announcement-bar,
+  .site-footer,
+  .owner-topbar,
+  .modal-backdrop button,
+  .btn,
+  .owner-quick-actions,
+  .category-controls-bar {
+    display: none !important;
+  }
+
+  .modal-backdrop {
+    position: static !important;
+    background: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+  }
+
+  .modal-card {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}
