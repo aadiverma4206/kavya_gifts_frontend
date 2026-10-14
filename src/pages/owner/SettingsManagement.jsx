@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import OwnerLayout from "../../components/owner/OwnerLayout";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { useAuth } from "../../context/AuthContext";
 import { getOwnerSettings, updateOwnerSettings } from "../../services/settingsService";
+import { notify } from "../../utils/notify";
+import "./SettingsManagement.css";
 
 export default function SettingsManagement() {
-  const { currentUser, userProfile } = useAuth();
+  useDocumentTitle("Store Configuration - Owner Portal");
+  const { currentUser } = useAuth();
+  const [activeTab, setActiveTab] = useState("brand"); // 'brand' | 'shipping' | 'announcement' | 'security'
   const [settings, setSettings] = useState({
     storeName: "Kavya Gifting",
     storeEmail: "care@kavyagifting.com",
@@ -17,7 +22,6 @@ export default function SettingsManagement() {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [feedback, setFeedback] = useState("");
 
   useEffect(() => {
     getOwnerSettings()
@@ -27,6 +31,9 @@ export default function SettingsManagement() {
           ...data,
           ownerEmail: currentUser?.email || data.ownerEmail || "aadiverma4206@gmail.com",
         }));
+      })
+      .catch((err) => {
+        console.error("Failed to load settings:", err);
       })
       .finally(() => setLoading(false));
   }, [currentUser]);
@@ -38,13 +45,12 @@ export default function SettingsManagement() {
   async function handleSave(e) {
     e.preventDefault();
     setSaving(true);
-    setFeedback("");
     try {
       await updateOwnerSettings(settings);
-      setFeedback("Store configuration and parameters successfully updated!");
+      notify.success("Store configuration and parameters successfully updated!");
     } catch (err) {
       console.error("Save settings error:", err);
-      alert("Failed to save settings: " + err.message);
+      notify.error("Failed to save settings: " + err.message);
     } finally {
       setSaving(false);
     }
@@ -52,156 +58,211 @@ export default function SettingsManagement() {
 
   return (
     <OwnerLayout
-      title="Store Settings & Configuration"
-      subtitle="Manage boutique store parameters, contact details, delivery policies, and administrative credentials"
+      title="Store Configuration & Policies Studio"
+      subtitle="Manage boutique store parameters, contact details, free shipping threshold, and live announcement banner"
     >
-      {feedback && <div className="auth-alert success">{feedback}</div>}
+      <div className="settings-studio-container">
+        {/* Studio Tabs */}
+        <div className="settings-tabs-bar">
+          <button
+            type="button"
+            className={`settings-tab-btn ${activeTab === "brand" ? "active" : ""}`}
+            onClick={() => setActiveTab("brand")}
+          >
+            <span>🏪</span> Brand & Contact Info
+          </button>
+          <button
+            type="button"
+            className={`settings-tab-btn ${activeTab === "shipping" ? "active" : ""}`}
+            onClick={() => setActiveTab("shipping")}
+          >
+            <span>🚚</span> Shipping & Deliveries
+          </button>
+          <button
+            type="button"
+            className={`settings-tab-btn ${activeTab === "announcement" ? "active" : ""}`}
+            onClick={() => setActiveTab("announcement")}
+          >
+            <span>📢</span> Announcement Ribbon
+          </button>
+          <button
+            type="button"
+            className={`settings-tab-btn ${activeTab === "security" ? "active" : ""}`}
+            onClick={() => setActiveTab("security")}
+          >
+            <span>🛡️</span> Admin Security
+          </button>
+        </div>
 
-      {loading ? (
-        <p className="muted">Loading store settings...</p>
-      ) : (
-        <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {/* Card 1: Administrative Account Overview (Read-Only Security Card) */}
-          <div className="card owner-table-card">
-            <h3>Administrative Access Account</h3>
-            <p className="muted" style={{ fontSize: "13.5px", margin: "4px 0 16px" }}>
-              Owner authentication is secured through Firebase Authentication with role-based Firestore rules.
-            </p>
-
-            <div style={{ background: "#fdfaf6", padding: "16px", borderRadius: "8px", border: "1px solid #f0e6d2", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
-              <div>
-                <span className="muted" style={{ fontSize: "12px", display: "block" }}>Configured Owner Email</span>
-                <strong style={{ fontSize: "15px", color: "var(--color-primary)" }}>
-                  {settings.ownerEmail || currentUser?.email || "aadiverma4206@gmail.com"}
-                </strong>
-                <span style={{ display: "block", fontSize: "11px", color: "#166534", marginTop: "2px", fontWeight: 600 }}>
-                  ✓ Primary Administrative Account
-                </span>
-              </div>
-
-              <div>
-                <span className="muted" style={{ fontSize: "12px", display: "block" }}>Access Privilege</span>
-                <span className="auth-tag" style={{ fontSize: "12px", padding: "3px 10px", display: "inline-block", marginTop: "2px" }}>
-                  Store Owner (Full Administrative Rights)
-                </span>
-              </div>
-
-              <div>
-                <span className="muted" style={{ fontSize: "12px", display: "block" }}>Access Control Level</span>
-                <span style={{ fontSize: "13px", fontWeight: 600, color: "#1e3a8a", display: "block", marginTop: "2px" }}>
-                  Role-Based Security Guard Active
-                </span>
-                <span className="muted" style={{ fontSize: "11px" }}>
-                  Customers and non-owners are strictly blocked from owner endpoints.
-                </span>
-              </div>
-            </div>
+        {loading ? (
+          <div className="card owner-table-card" style={{ padding: "40px", textAlign: "center" }}>
+            <p className="muted">Loading store settings...</p>
           </div>
+        ) : (
+          <form onSubmit={handleSave}>
+            {/* Tab 1: Brand & Contact */}
+            {activeTab === "brand" && (
+              <div className="settings-card-panel">
+                <h3 className="settings-panel-title">Brand Identity & Customer Support</h3>
+                <p className="settings-panel-desc">
+                  These details appear in email confirmations, packaging slips, and customer support pages.
+                </p>
 
-          {/* Card 2: Store Identity & Contact */}
-          <div className="card owner-table-card">
-            <h3>Storefront Identity & Contact Information</h3>
-            <p className="muted" style={{ fontSize: "13.5px", margin: "4px 0 16px" }}>
-              Information displayed to customers on storefront footers, receipts, and order invoices.
-            </p>
+                <div className="form-row">
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Boutique Store Name *</label>
+                    <input
+                      type="text"
+                      value={settings.storeName}
+                      onChange={(e) => handleChange("storeName", e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Customer Support Email *</label>
+                    <input
+                      type="email"
+                      value={settings.storeEmail}
+                      onChange={(e) => handleChange("storeEmail", e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Boutique Store Name *</label>
-                <input
-                  type="text"
-                  value={settings.storeName}
-                  onChange={(e) => handleChange("storeName", e.target.value)}
-                  required
-                />
+                <div className="form-row">
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Helpline / WhatsApp Contact Number</label>
+                    <input
+                      type="text"
+                      value={settings.contactNumber}
+                      onChange={(e) => handleChange("contactNumber", e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Atelier & Studio Address</label>
+                    <input
+                      type="text"
+                      value={settings.address}
+                      onChange={(e) => handleChange("address", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" className="btn btn-primary" disabled={saving} style={{ marginTop: "16px" }}>
+                  {saving ? "Saving Changes..." : "Save Brand Settings"}
+                </button>
               </div>
+            )}
 
-              <div className="form-group">
-                <label>Customer Support Email *</label>
-                <input
-                  type="email"
-                  value={settings.storeEmail}
-                  onChange={(e) => handleChange("storeEmail", e.target.value)}
-                  required
-                />
+            {/* Tab 2: Shipping */}
+            {activeTab === "shipping" && (
+              <div className="settings-card-panel">
+                <h3 className="settings-panel-title">Fulfillment & Shipping Thresholds</h3>
+                <p className="settings-panel-desc">
+                  Configure delivery timelines, free delivery threshold, and courier notes.
+                </p>
+
+                <div className="form-row">
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Free Shipping Minimum Cart Value (₹)</label>
+                    <input
+                      type="number"
+                      value={settings.freeShippingThreshold}
+                      onChange={(e) => handleChange("freeShippingThreshold", Number(e.target.value) || 0)}
+                      required
+                    />
+                    <span className="muted" style={{ fontSize: "12px", marginTop: "4px", display: "block" }}>
+                      Orders above this amount qualify for complimentary expedited shipping.
+                    </span>
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Estimated Transit Timeline</label>
+                    <input
+                      type="text"
+                      value={settings.deliveryEstimate}
+                      onChange={(e) => handleChange("deliveryEstimate", e.target.value)}
+                      placeholder="e.g. 2 - 4 Business Days"
+                    />
+                  </div>
+                </div>
+
+                <button type="submit" className="btn btn-primary" disabled={saving} style={{ marginTop: "16px" }}>
+                  {saving ? "Saving Changes..." : "Save Shipping Policies"}
+                </button>
               </div>
-            </div>
+            )}
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Customer Support Hotline / WhatsApp *</label>
-                <input
-                  type="text"
-                  value={settings.contactNumber}
-                  onChange={(e) => handleChange("contactNumber", e.target.value)}
-                  required
-                />
+            {/* Tab 3: Announcement */}
+            {activeTab === "announcement" && (
+              <div className="settings-card-panel">
+                <h3 className="settings-panel-title">Top Announcement Ribbon</h3>
+                <p className="settings-panel-desc">
+                  The marquee ribbon visible at the very top of all customer storefront pages.
+                </p>
+
+                <label style={{ fontSize: "12.5px", fontWeight: 600, color: "#6b7280", display: "block", marginBottom: "6px" }}>
+                  Live Storefront Preview:
+                </label>
+                <div className="banner-live-preview">
+                  <span>✨</span>
+                  <span>{settings.announcementText || "Special festive gifting announcement!"}</span>
+                </div>
+
+                <div className="form-group">
+                  <label>Announcement Ribbon Text *</label>
+                  <textarea
+                    rows={3}
+                    value={settings.announcementText}
+                    onChange={(e) => handleChange("announcementText", e.target.value)}
+                    style={{
+                      width: "100%",
+                      padding: "12px",
+                      borderRadius: "8px",
+                      border: "1px solid #d1d5db",
+                      fontFamily: "inherit",
+                      fontSize: "14px",
+                    }}
+                    required
+                  />
+                </div>
+
+                <button type="submit" className="btn btn-primary" disabled={saving} style={{ marginTop: "16px" }}>
+                  {saving ? "Saving Changes..." : "Update Announcement Bar"}
+                </button>
               </div>
+            )}
 
-              <div className="form-group">
-                <label>Physical Studio / Dispatch Address *</label>
-                <input
-                  type="text"
-                  value={settings.address}
-                  onChange={(e) => handleChange("address", e.target.value)}
-                  required
-                />
+            {/* Tab 4: Security */}
+            {activeTab === "security" && (
+              <div className="settings-card-panel">
+                <h3 className="settings-panel-title">Administrative Access & Security Guard</h3>
+                <p className="settings-panel-desc">
+                  Authentication is strictly enforced by Firebase Auth and role-based Firestore guards.
+                </p>
+
+                <div style={{ background: "#fdfaf6", padding: "18px", borderRadius: "10px", border: "1px solid #f0e6d2", display: "flex", flexDirection: "column", gap: "12px" }}>
+                  <div>
+                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Configured Primary Owner Email</span>
+                    <strong style={{ fontSize: "16px", color: "var(--color-primary, #7a1f2b)" }}>
+                      {settings.ownerEmail || currentUser?.email || "aadiverma4206@gmail.com"}
+                    </strong>
+                    <span style={{ display: "block", fontSize: "12px", color: "#166534", marginTop: "2px", fontWeight: 600 }}>
+                      ✓ Verified Firebase Administrator
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Access Control Level</span>
+                    <span style={{ fontSize: "13px", fontWeight: 600, color: "#1e3a8a" }}>
+                      Executive Owner (Full Storefront & Inventory Permissions)
+                    </span>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Card 3: Storefront Delivery & Announcement Parameters */}
-          <div className="card owner-table-card">
-            <h3>Delivery & Announcement Parameters</h3>
-            <p className="muted" style={{ fontSize: "13.5px", margin: "4px 0 16px" }}>
-              Configure customer delivery estimates and top-bar announcement banner text.
-            </p>
-
-            <div className="form-group">
-              <label>Top Announcement Bar Message</label>
-              <input
-                type="text"
-                placeholder="e.g. Free pan-India delivery on orders above ₹2,999"
-                value={settings.announcementText}
-                onChange={(e) => handleChange("announcementText", e.target.value)}
-              />
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label>Standard Delivery Estimate</label>
-                <input
-                  type="text"
-                  placeholder="e.g. 2 - 4 Business Days"
-                  value={settings.deliveryEstimate}
-                  onChange={(e) => handleChange("deliveryEstimate", e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Free Shipping / Ribbon Threshold (₹ INR)</label>
-                <input
-                  type="number"
-                  placeholder="2999"
-                  value={settings.freeShippingThreshold}
-                  onChange={(e) => handleChange("freeShippingThreshold", e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div style={{ marginTop: "16px", display: "flex", justifyContent: "flex-end" }}>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={saving}
-                style={{ padding: "10px 28px" }}
-              >
-                {saving ? "Saving Changes..." : "Save Store Settings"}
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
+            )}
+          </form>
+        )}
+      </div>
     </OwnerLayout>
   );
 }

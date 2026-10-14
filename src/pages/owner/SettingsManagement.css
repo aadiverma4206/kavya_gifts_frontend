@@ -1,0 +1,78 @@
+.settings-studio-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.settings-tabs-bar {
+  display: flex;
+  gap: 8px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(122, 31, 43, 0.1);
+  overflow-x: auto;
+}
+
+.settings-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.settings-tab-btn:hover {
+  color: var(--color-primary, #7a1f2b);
+  background: rgba(122, 31, 43, 0.05);
+}
+
+.settings-tab-btn.active {
+  background: var(--color-primary, #7a1f2b);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(122, 31, 43, 0.2);
+}
+
+.settings-card-panel {
+  background: #ffffff;
+  border-radius: var(--radius-card, 16px);
+  padding: 28px 32px;
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  box-shadow: 0 4px 20px rgba(42, 24, 21, 0.04);
+}
+
+.settings-panel-title {
+  font-family: var(--font-heading, "Playfair Display", serif);
+  font-size: 20px;
+  color: var(--color-primary, #7a1f2b);
+  margin: 0 0 6px;
+}
+
+.settings-panel-desc {
+  font-size: 13.5px;
+  color: #6b7280;
+  margin: 0 0 24px;
+}
+
+.banner-live-preview {
+  background: linear-gradient(135deg, #7a1f2b 0%, #4a0d16 100%);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(122, 31, 43, 0.25);
+}
