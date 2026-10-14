@@ -1,9 +1,13 @@
 /**
  * Safe LocalStorage & SessionStorage wrapper to prevent crashes in private browsing,
  * SSR, quota exceeded, or restricted iframe environments.
+ * Includes in-memory Map fallback and TTL (time-to-live) expiration support.
  */
 
 function createStorageWrapper(type) {
+  // In-memory fallback dictionary if storage is disabled or quota is breached
+  const memoryFallback = new Map();
+
   const isAvailable = () => {
     try {
       if (typeof window === "undefined") return false;
@@ -18,12 +22,18 @@ function createStorageWrapper(type) {
     }
   };
 
+  const hasStorage = isAvailable();
+
   return {
     get: (key, defaultValue = null) => {
       try {
-        if (typeof window === "undefined" || !window[type]) return defaultValue;
+        if (!hasStorage || typeof window === "undefined" || !window[type]) {
+          return memoryFallback.has(key) ? memoryFallback.get(key) : defaultValue;
+        }
         const item = window[type].getItem(key);
-        if (item === null) return defaultValue;
+        if (item === null) {
+          return memoryFallback.has(key) ? memoryFallback.get(key) : defaultValue;
+        }
         try {
           return JSON.parse(item);
         } catch {
@@ -31,29 +41,54 @@ function createStorageWrapper(type) {
         }
       } catch (err) {
         console.warn(`[${type}] Could not read "${key}":`, err);
-        return defaultValue;
+        return memoryFallback.has(key) ? memoryFallback.get(key) : defaultValue;
       }
     },
 
     set: (key, value) => {
       try {
-        if (typeof window === "undefined" || !window[type]) return false;
         if (value === undefined) {
-          window[type].removeItem(key);
+          memoryFallback.delete(key);
+          if (hasStorage && window[type]) window[type].removeItem(key);
           return true;
         }
-        const serialized = typeof value === "string" ? value : JSON.stringify(value);
-        window[type].setItem(key, serialized);
+        memoryFallback.set(key, value);
+        if (hasStorage && window[type]) {
+          const serialized = typeof value === "string" ? value : JSON.stringify(value);
+          window[type].setItem(key, serialized);
+        }
         return true;
       } catch (err) {
-        console.warn(`[${type}] Could not write "${key}":`, err);
-        return false;
+        console.warn(`[${type}] Storage write failed, caching in memory for "${key}":`, err);
+        memoryFallback.set(key, value);
+        return true;
       }
     },
 
+    setWithExpiry: (key, value, ttlMs = 86400000) => {
+      const itemWithExpiry = {
+        value,
+        expiry: Date.now() + ttlMs,
+      };
+      return createStorageWrapper(type).set(key, itemWithExpiry);
+    },
+
+    getWithExpiry: (key, defaultValue = null) => {
+      const raw = createStorageWrapper(type).get(key, null);
+      if (!raw || typeof raw !== "object" || !raw.expiry) {
+        return raw !== null ? raw : defaultValue;
+      }
+      if (Date.now() > raw.expiry) {
+        createStorageWrapper(type).remove(key);
+        return defaultValue;
+      }
+      return raw.value;
+    },
+
     has: (key) => {
+      if (memoryFallback.has(key)) return true;
       try {
-        if (typeof window === "undefined" || !window[type]) return false;
+        if (!hasStorage || typeof window === "undefined" || !window[type]) return false;
         return window[type].getItem(key) !== null;
       } catch {
         return false;
@@ -61,9 +96,11 @@ function createStorageWrapper(type) {
     },
 
     remove: (key) => {
+      memoryFallback.delete(key);
       try {
-        if (typeof window === "undefined" || !window[type]) return false;
-        window[type].removeItem(key);
+        if (hasStorage && window[type]) {
+          window[type].removeItem(key);
+        }
         return true;
       } catch (err) {
         console.warn(`[${type}] Could not remove "${key}":`, err);
@@ -72,9 +109,11 @@ function createStorageWrapper(type) {
     },
 
     clear: () => {
+      memoryFallback.clear();
       try {
-        if (typeof window === "undefined" || !window[type]) return false;
-        window[type].clear();
+        if (hasStorage && window[type]) {
+          window[type].clear();
+        }
         return true;
       } catch (err) {
         console.warn(`[${type}] Could not clear:`, err);
@@ -90,4 +129,3 @@ export const safeStorage = createStorageWrapper("localStorage");
 export const safeSessionStorage = createStorageWrapper("sessionStorage");
 
 export default safeStorage;
-
