@@ -32,3 +32,6 @@ firebase-debug.log*
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Vite temporary files
+*.timestamp-*.mjs
