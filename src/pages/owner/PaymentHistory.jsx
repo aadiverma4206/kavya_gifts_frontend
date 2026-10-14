@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import OwnerLayout from "../../components/owner/OwnerLayout";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 import { getAllPaymentsForOwner } from "../../services/paymentService";
+import { formatCurrency, formatDate } from "../../utils/formatters";
+import { notify } from "../../utils/notify";
+import "./PaymentHistory.css";
 
 export default function PaymentHistory() {
+  useDocumentTitle("Payment Audit Ledger - Owner Portal");
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -12,7 +17,11 @@ export default function PaymentHistory() {
   function loadPayments() {
     setLoading(true);
     getAllPaymentsForOwner()
-      .then((data) => setPayments(data))
+      .then((data) => setPayments(data || []))
+      .catch((err) => {
+        console.error("Error loading payments:", err);
+        notify.error("Could not load payment audit logs.");
+      })
       .finally(() => setLoading(false));
   }
 
@@ -20,251 +29,276 @@ export default function PaymentHistory() {
     loadPayments();
   }, []);
 
-  const totalCollected = payments
-    .filter((p) => p.status === "completed" || p.status === "paid" || p.paymentStatus === "paid")
-    .reduce((sum, p) => sum + (p.amount || 0), 0);
+  const metrics = useMemo(() => {
+    let collected = 0;
+    let completedCount = 0;
+    let pendingCount = 0;
+    let failedCount = 0;
 
-  const filteredPayments = payments.filter((p) => {
-    // Status filter
-    if (statusFilter !== "all") {
+    payments.forEach((p) => {
       const st = (p.status || p.paymentStatus || "").toLowerCase();
-      if (statusFilter === "paid" || statusFilter === "completed") {
-        if (st !== "paid" && st !== "completed") return false;
-      } else if (st !== statusFilter) {
-        return false;
+      const amt = Number(p.amount) || 0;
+      if (st === "completed" || st === "paid") {
+        collected += amt;
+        completedCount++;
+      } else if (st === "pending") {
+        pendingCount++;
+      } else if (st === "failed") {
+        failedCount++;
       }
+    });
+
+    const aov = completedCount > 0 ? Math.round(collected / completedCount) : 0;
+    return { collected, completedCount, pendingCount, failedCount, aov };
+  }, [payments]);
+
+  const filteredPayments = useMemo(() => {
+    return payments.filter((p) => {
+      if (statusFilter !== "all") {
+        const st = (p.status || p.paymentStatus || "").toLowerCase();
+        if (statusFilter === "paid") {
+          if (st !== "paid" && st !== "completed") return false;
+        } else if (st !== statusFilter) {
+          return false;
+        }
+      }
+
+      if (!searchTerm.trim()) return true;
+      const term = searchTerm.toLowerCase();
+      const pid = (p.paymentId || "").toLowerCase();
+      const oid = (p.orderId || "").toLowerCase();
+      const cid = (p.customerId || "").toLowerCase();
+      const method = (p.method || "").toLowerCase();
+      const provider = (p.provider || "").toLowerCase();
+
+      return pid.includes(term) || oid.includes(term) || cid.includes(term) || method.includes(term) || provider.includes(term);
+    });
+  }, [payments, statusFilter, searchTerm]);
+
+  function getMethodChip(method = "") {
+    const m = method.toLowerCase();
+    if (m.includes("upi")) return <span className="payment-method-chip method-upi">⚡ UPI</span>;
+    if (m.includes("card") || m.includes("credit") || m.includes("debit")) {
+      return <span className="payment-method-chip method-card">💳 Card</span>;
     }
-
-    // Search filter
-    if (!searchTerm.trim()) return true;
-    const term = searchTerm.toLowerCase();
-    const pid = (p.paymentId || "").toLowerCase();
-    const oid = (p.orderId || "").toLowerCase();
-    const cid = (p.customerId || "").toLowerCase();
-    const method = (p.method || "").toLowerCase();
-    const provider = (p.provider || "").toLowerCase();
-
-    return pid.includes(term) || oid.includes(term) || cid.includes(term) || method.includes(term) || provider.includes(term);
-  });
+    if (m.includes("net") || m.includes("bank")) {
+      return <span className="payment-method-chip method-netbanking">🏦 NetBanking</span>;
+    }
+    if (m.includes("cod") || m.includes("delivery")) {
+      return <span className="payment-method-chip method-cod">💵 COD</span>;
+    }
+    return <span className="payment-method-chip">{method || "Direct"}</span>;
+  }
 
   return (
     <OwnerLayout
-      title="Payment Transaction History"
-      subtitle="Audit log of customer payment authorizations, transaction verification and collections"
+      title="Payment Transactions & Settlement Ledger"
+      subtitle="Comprehensive audit trail of customer authorizations, gateway verifications, and collections"
       actionButton={
-        <div style={{ textAlign: "right" }}>
-          <span className="muted" style={{ fontSize: "12px", display: "block" }}>Total Collected:</span>
-          <strong style={{ fontSize: "20px", color: "var(--color-primary)" }}>
-            ₹{totalCollected.toLocaleString("en-IN")}
-          </strong>
-        </div>
-      }
-    >
-      {/* Search & Filter Header Bar */}
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-        <div style={{ display: "flex", gap: "12px", flex: 1, maxWidth: "580px" }}>
-          <input
-            type="text"
-            placeholder="Search by Payment ID (PAY-...), Order ID, Customer ID, or Method..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ flex: 1, padding: "8px 14px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px" }}
-          />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ padding: "8px 12px", borderRadius: "8px", border: "1px solid #d1d5db", fontSize: "14px" }}
-          >
-            <option value="all">All Payments ({payments.length})</option>
-            <option value="paid">Paid / Completed</option>
-            <option value="pending">Pending</option>
-            <option value="failed">Failed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </div>
-
         <button onClick={loadPayments} className="btn btn-secondary btn-sm">
           🔄 Refresh Ledger
         </button>
-      </div>
-
-      {loading ? (
-        <p className="muted">Loading payment audit log...</p>
-      ) : (
-        <div className="card owner-table-card">
-          {filteredPayments.length === 0 ? (
-            <p className="muted" style={{ padding: "40px 0", textAlign: "center" }}>
-              No payments match your filter criteria.
-            </p>
-          ) : (
-            <div className="owner-table-wrapper">
-              <table className="owner-table">
-                <thead>
-                  <tr>
-                    <th>Payment ID</th>
-                    <th>Linked Order</th>
-                    <th>Customer ID</th>
-                    <th>Method & Provider</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Timestamp</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredPayments.map((p) => {
-                    const isSuccess = p.status === "completed" || p.status === "paid" || p.paymentStatus === "paid";
-                    return (
-                      <tr key={p.id}>
-                        <td><strong>{p.paymentId || p.id}</strong></td>
-                        <td>
-                          <strong style={{ color: "var(--color-primary)" }}>{p.orderId || "—"}</strong>
-                        </td>
-                        <td>{p.customerId || "Guest"}</td>
-                        <td>
-                          <div style={{ textTransform: "capitalize" }}>{p.method || "card"}</div>
-                          <span className="muted" style={{ fontSize: "11.5px" }}>
-                            {p.provider || "Gateway"}
-                          </span>
-                        </td>
-                        <td><strong>₹{p.amount?.toLocaleString("en-IN")}</strong></td>
-                        <td>
-                          <span
-                            className={`status-pill ${
-                              isSuccess ? "delivered" : p.status === "failed" ? "cancelled" : "placed"
-                            }`}
-                          >
-                            {p.status || p.paymentStatus || "pending"}
-                          </span>
-                        </td>
-                        <td className="muted" style={{ fontSize: "12.5px" }}>
-                          {p.createdAt?.toDate
-                            ? p.createdAt.toDate().toLocaleString("en-IN")
-                            : p.createdAt?.seconds
-                            ? new Date(p.createdAt.seconds * 1000).toLocaleString("en-IN")
-                            : "Recently logged"}
-                        </td>
-                        <td>
-                          <button
-                            type="button"
-                            onClick={() => setSelectedPayment(p)}
-                            className="btn btn-secondary btn-sm"
-                          >
-                            Inspect
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+      }
+    >
+      <div className="payment-mgmt-container">
+        {/* Metric Cards */}
+        <div className="payment-stats-grid">
+          <div className="payment-stat-card">
+            <div className="payment-stat-icon" style={{ background: "#ecfdf5", color: "#166534" }}>₹</div>
+            <div className="payment-stat-info">
+              <h4>Total Revenue Collected</h4>
+              <p className="payment-stat-val" style={{ color: "var(--color-primary, #7a1f2b)" }}>
+                {formatCurrency(metrics.collected)}
+              </p>
             </div>
-          )}
-        </div>
-      )}
+          </div>
 
-      {/* Payment Details Inspection Modal */}
-      {selectedPayment && (
-        <div className="modal-backdrop">
-          <div className="card modal-card" style={{ maxWidth: "580px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <h3>Payment Record: {selectedPayment.paymentId || selectedPayment.id}</h3>
-              <button
-                type="button"
-                onClick={() => setSelectedPayment(null)}
-                style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer" }}
-              >
-                ✕
-              </button>
+          <div className="payment-stat-card">
+            <div className="payment-stat-icon" style={{ background: "#eff6ff", color: "#1d4ed8" }}>✓</div>
+            <div className="payment-stat-info">
+              <h4>Settled Transactions</h4>
+              <p className="payment-stat-val" style={{ color: "#1d4ed8" }}>{metrics.completedCount}</p>
             </div>
+          </div>
 
-            <div style={{ marginTop: "18px", display: "flex", flexDirection: "column", gap: "16px", fontSize: "14px" }}>
-              <div style={{ background: "#fdfaf6", padding: "16px", borderRadius: "8px", border: "1px solid #f0e6d2" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Payment ID</span>
-                    <strong>{selectedPayment.paymentId || selectedPayment.id}</strong>
-                  </div>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Linked Order ID</span>
-                    <strong style={{ color: "var(--color-primary)" }}>{selectedPayment.orderId || "None"}</strong>
-                  </div>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Customer ID</span>
-                    <span>{selectedPayment.customerId || "Guest / Unregistered"}</span>
-                  </div>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Payment Status</span>
-                    <span
-                      className={`status-pill ${
-                        selectedPayment.status === "completed" || selectedPayment.status === "paid"
-                          ? "delivered"
-                          : selectedPayment.status === "failed"
-                          ? "cancelled"
-                          : "placed"
-                      }`}
-                    >
-                      {selectedPayment.status || selectedPayment.paymentStatus || "pending"}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Payment Method</span>
-                    <strong style={{ textTransform: "capitalize" }}>{selectedPayment.method || "card"}</strong>
-                  </div>
-                  <div>
-                    <span className="muted" style={{ fontSize: "12px", display: "block" }}>Payment Gateway / Provider</span>
-                    <span>{selectedPayment.provider || "Direct / Gateway"}</span>
-                  </div>
-                </div>
+          <div className="payment-stat-card">
+            <div className="payment-stat-icon" style={{ background: "#fffbeb", color: "#b45309" }}>⏳</div>
+            <div className="payment-stat-info">
+              <h4>Pending Verifications</h4>
+              <p className="payment-stat-val" style={{ color: "#b45309" }}>{metrics.pendingCount}</p>
+            </div>
+          </div>
 
-                <hr style={{ border: "none", borderTop: "1px solid #e5e7eb", margin: "14px 0" }} />
-
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span style={{ fontSize: "15px", fontWeight: 600 }}>Total Authorized & Charged:</span>
-                  <strong style={{ fontSize: "20px", color: "var(--color-primary)" }}>
-                    ₹{selectedPayment.amount?.toLocaleString("en-IN")}
-                  </strong>
-                </div>
-              </div>
-
-              {/* Security & Verification Metadata */}
-              <div style={{ background: "#f8fafc", padding: "14px", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                <h4 style={{ margin: "0 0 8px 0" }}>Security & Verification Audit</h4>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "13px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span className="muted">Backend Signature Verified:</span>
-                    <span style={{ color: "#166534", fontWeight: 600 }}>✓ Verified Architecture</span>
-                  </div>
-                  {selectedPayment.transactionRef && (
-                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                      <span className="muted">Provider Transaction Ref:</span>
-                      <code>{selectedPayment.transactionRef}</code>
-                    </div>
-                  )}
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
-                    <span className="muted">Logged Timestamp:</span>
-                    <span>
-                      {selectedPayment.createdAt?.toDate
-                        ? selectedPayment.createdAt.toDate().toLocaleString("en-IN")
-                        : selectedPayment.createdAt?.seconds
-                        ? new Date(selectedPayment.createdAt.seconds * 1000).toLocaleString("en-IN")
-                        : "Instant"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSelectedPayment(null)}
-                className="btn btn-primary btn-block"
-              >
-                Close Payment Details
-              </button>
+          <div className="payment-stat-card">
+            <div className="payment-stat-icon" style={{ background: "#fdf2f8", color: "#9d174d" }}>📊</div>
+            <div className="payment-stat-info">
+              <h4>Average Hamper Value</h4>
+              <p className="payment-stat-val" style={{ color: "#9d174d" }}>
+                {formatCurrency(metrics.aov)}
+              </p>
             </div>
           </div>
         </div>
-      )}
+
+        {/* Filter and Search Bar */}
+        <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: "12px", flex: 1, maxWidth: "580px" }}>
+            <input
+              type="text"
+              placeholder="🔍 Search by Payment ID (PAY-...), Order ID, or Method..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ flex: 1, padding: "10px 16px", borderRadius: "999px", border: "1px solid rgba(122, 31, 43, 0.2)", fontSize: "14px" }}
+            />
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              style={{ padding: "10px 14px", borderRadius: "999px", border: "1px solid rgba(122, 31, 43, 0.2)", fontSize: "13px" }}
+            >
+              <option value="all">All Transactions ({payments.length})</option>
+              <option value="paid">Paid / Settled</option>
+              <option value="pending">Pending</option>
+              <option value="failed">Failed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+
+          <span className="muted" style={{ fontSize: "13px" }}>
+            Showing {filteredPayments.length} transactions
+          </span>
+        </div>
+
+        {/* Table Card */}
+        {loading ? (
+          <div className="card owner-table-card" style={{ padding: "40px", textAlign: "center" }}>
+            <p className="muted">Loading transaction records...</p>
+          </div>
+        ) : (
+          <div className="card owner-table-card">
+            {filteredPayments.length === 0 ? (
+              <p className="muted" style={{ padding: "40px 0", textAlign: "center" }}>
+                No payment transactions found.
+              </p>
+            ) : (
+              <div className="owner-table-wrapper">
+                <table className="owner-table">
+                  <thead>
+                    <tr>
+                      <th>Transaction ID & Time</th>
+                      <th>Linked Order</th>
+                      <th>Method</th>
+                      <th>Amount</th>
+                      <th>Gateway Status</th>
+                      <th style={{ textAlign: "right" }}>Receipt</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredPayments.map((p) => {
+                      const isSettled = p.status === "completed" || p.status === "paid" || p.paymentStatus === "paid";
+                      return (
+                        <tr key={p.id || p.paymentId}>
+                          <td>
+                            <strong style={{ fontFamily: "monospace", fontSize: "13px" }}>{p.paymentId || p.id}</strong>
+                            <span className="muted" style={{ display: "block", fontSize: "11px", marginTop: "2px" }}>
+                              {formatDate(p.createdAt || p.timestamp)}
+                            </span>
+                          </td>
+                          <td>
+                            <span style={{ fontFamily: "monospace", fontWeight: 600, color: "var(--color-primary, #7a1f2b)" }}>
+                              {p.orderId || "—"}
+                            </span>
+                          </td>
+                          <td>{getMethodChip(p.method || p.paymentMethod || "UPI")}</td>
+                          <td>
+                            <strong style={{ fontSize: "14px", color: isSettled ? "#166534" : "#991b1b" }}>
+                              {formatCurrency(p.amount || 0)}
+                            </strong>
+                          </td>
+                          <td>
+                            <span className={`status-pill ${isSettled ? "delivered" : p.status === "pending" ? "placed" : "cancelled"}`}>
+                              {p.status || p.paymentStatus || "pending"}
+                            </span>
+                          </td>
+                          <td style={{ textAlign: "right" }}>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPayment(p)}
+                              className="btn btn-secondary btn-sm"
+                            >
+                              Verify
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Verification Modal */}
+        {selectedPayment && (
+          <div className="modal-backdrop" onClick={() => setSelectedPayment(null)}>
+            <div className="modal-card" style={{ maxWidth: "560px" }} onClick={(e) => e.stopPropagation()}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ margin: 0, color: "var(--color-primary, #7a1f2b)" }}>
+                  Transaction Verification
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPayment(null)}
+                  style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#6b7280" }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="payment-receipt-box">
+                <div className="receipt-field-grid">
+                  <div className="receipt-field-item">
+                    <label>Payment Reference</label>
+                    <strong>{selectedPayment.paymentId || selectedPayment.id}</strong>
+                  </div>
+                  <div className="receipt-field-item">
+                    <label>Order Reference</label>
+                    <strong>{selectedPayment.orderId}</strong>
+                  </div>
+                  <div className="receipt-field-item">
+                    <label>Payment Amount</label>
+                    <strong style={{ fontSize: "18px", color: "var(--color-primary)" }}>
+                      {formatCurrency(selectedPayment.amount || 0)}
+                    </strong>
+                  </div>
+                  <div className="receipt-field-item">
+                    <label>Payment Method</label>
+                    <div>{getMethodChip(selectedPayment.method || selectedPayment.paymentMethod)}</div>
+                  </div>
+                  <div className="receipt-field-item">
+                    <label>Gateway Provider</label>
+                    <strong>{selectedPayment.provider || "Razorpay Direct / Stripe"}</strong>
+                  </div>
+                  <div className="receipt-field-item">
+                    <label>Timestamp</label>
+                    <strong>{formatDate(selectedPayment.createdAt || selectedPayment.timestamp)}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedPayment(null)}
+                  className="btn btn-secondary"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </OwnerLayout>
   );
 }
