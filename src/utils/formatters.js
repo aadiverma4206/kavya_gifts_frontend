@@ -50,6 +50,35 @@ export function formatDate(dateInput) {
 }
 
 /**
+ * Formats a timestamp into relative time string ("Just now", "2 hours ago", "Yesterday")
+ * @param {string|number|Date|object} dateInput
+ * @returns {string}
+ */
+export function formatRelativeTime(dateInput) {
+  if (!dateInput) return "Recently";
+  let dateObj;
+  if (typeof dateInput === "object" && typeof dateInput.toDate === "function") {
+    dateObj = dateInput.toDate();
+  } else if (typeof dateInput === "object" && (dateInput.seconds || dateInput._seconds)) {
+    dateObj = new Date((dateInput.seconds || dateInput._seconds) * 1000);
+  } else {
+    dateObj = new Date(dateInput);
+  }
+  if (isNaN(dateObj.getTime())) return "Recently";
+
+  const diffSec = Math.floor((Date.now() - dateObj.getTime()) / 1000);
+  if (diffSec < 60) return "Just now";
+  const diffMin = Math.floor(diffSec / 60);
+  if (diffMin < 60) return `${diffMin}m ago`;
+  const diffHours = Math.floor(diffMin / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return formatShortDate(dateObj);
+}
+
+/**
  * Truncates long text gracefully with an ellipsis.
  * @param {string} text
  * @param {number} maxLen
@@ -145,3 +174,37 @@ export function formatShortDate(dateInput) {
   }).format(dateObj);
 }
 
+/**
+ * Calculates delivery estimation date from business days.
+ * @param {number} businessDays
+ * @returns {string} e.g. "Arrives by Fri, 17 Oct"
+ */
+export function formatEstimatedDelivery(businessDays = 3) {
+  const date = new Date();
+  let added = 0;
+  while (added < businessDays) {
+    date.setDate(date.getDate() + 1);
+    const day = date.getDay();
+    if (day !== 0 && day !== 6) {
+      added++;
+    }
+  }
+  return new Intl.DateTimeFormat("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  }).format(date);
+}
+
+/**
+ * Calculates discount percentage between original price and sale price.
+ * @param {number} original
+ * @param {number} sale
+ * @returns {number}
+ */
+export function calculateDiscountPercent(original, sale) {
+  const orig = Number(original) || 0;
+  const curr = Number(sale) || 0;
+  if (orig <= curr || orig === 0) return 0;
+  return Math.round(((orig - curr) / orig) * 100);
+}
