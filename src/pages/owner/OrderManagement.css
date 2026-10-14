@@ -1,0 +1,220 @@
+.order-mgmt-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.order-filter-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.order-search-box {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  max-width: 620px;
+}
+
+.order-search-box input {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 31, 43, 0.2);
+  background: #ffffff;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.order-search-box input:focus {
+  outline: none;
+  border-color: var(--color-primary, #7a1f2b);
+  box-shadow: 0 0 0 3px rgba(122, 31, 43, 0.12);
+}
+
+.order-status-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.order-tab-btn {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.order-tab-btn:hover {
+  border-color: var(--color-primary, #7a1f2b);
+  color: var(--color-primary, #7a1f2b);
+}
+
+.order-tab-btn.active {
+  background: var(--color-primary, #7a1f2b);
+  color: #ffffff;
+  border-color: var(--color-primary, #7a1f2b);
+}
+
+.order-id-badge {
+  font-family: monospace;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--color-primary, #7a1f2b);
+}
+
+.customer-meta-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.customer-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.customer-contact-link {
+  font-size: 12px;
+  color: #6b7280;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.customer-contact-link:hover {
+  color: var(--color-primary, #7a1f2b);
+}
+
+.wrap-cell-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fdf2f8;
+  color: #9d174d;
+  border: 1px solid #fbcfe8;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.wrap-preview-quote {
+  font-size: 11px;
+  color: #831843;
+  font-style: italic;
+  margin: 4px 0 0;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-dropdown-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+}
+
+/* Inspection Modal Details */
+.order-modal-dialog {
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.order-stepper-tracker {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 24px;
+  position: relative;
+}
+
+.order-stepper-tracker::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: #e5e7eb;
+  z-index: 1;
+}
+
+.step-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #d1d5db;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+}
+
+.step-node.completed .step-circle {
+  background: #166534;
+  border-color: #166534;
+  color: #ffffff;
+}
+
+.step-node.current .step-circle {
+  background: var(--color-primary, #7a1f2b);
+  border-color: var(--color-primary, #7a1f2b);
+  color: #ffffff;
+}
+
+.step-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: capitalize;
+}
+
+.order-items-receipt {
+  background: #fdfaf7;
+  border: 1px solid rgba(122, 31, 43, 0.12);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+  font-size: 13.5px;
+}
+
+.receipt-item-row:last-child {
+  border-bottom: none;
+}
