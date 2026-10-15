@@ -89,3 +89,7 @@ Generates an optimized bundle in the `dist` directory.
 ## Deployment Guidelines
 - Vercel deployment preconfigured via `vercel.json`
 - Firebase Hosting configuration via `firebase.json`
+
+## License & Acknowledgements
+- Proprietary license for Gifting Website project
+- Developed with modern web best practices and high visual aesthetics.
