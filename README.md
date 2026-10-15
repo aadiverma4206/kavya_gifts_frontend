@@ -22,3 +22,8 @@ A premium e-commerce web application for personalized gifting experiences.
 - Modular component-based directory structure
 - Global state and context hooks for cart and user sessions
 - Responsive layouts tailored for mobile, tablet, and desktop
+
+## Firebase Configuration
+- Client SDK initialized via `src/firebase.js`
+- Firebase Auth for customer and administrator sessions
+- Cloud Firestore collections for products, orders, and reviews
