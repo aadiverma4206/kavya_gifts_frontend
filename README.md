@@ -81,3 +81,7 @@ Generates an optimized bundle in the `dist` directory.
 ## Automated Test Suites
 - End-to-end integration tests for workflows: cart, auth, checkout, and dashboard
 - Verification scripts to ensure Firestore schema integrity
+
+## Data Privacy & Transparency
+- Conforms to modern privacy standards
+- Comprehensive data transparency audit documentation included in repository
