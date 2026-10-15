@@ -37,3 +37,9 @@ A premium e-commerce web application for personalized gifting experiences.
 ```bash
 npm install
 ```
+
+## Local Development
+```bash
+npm run dev
+```
+Access the local server at `http://localhost:5173`.
