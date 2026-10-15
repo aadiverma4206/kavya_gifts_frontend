@@ -32,3 +32,8 @@ A premium e-commerce web application for personalized gifting experiences.
 - `VITE_FIREBASE_API_KEY`: Firebase API Key
 - `VITE_FIREBASE_PROJECT_ID`: Target project identifier
 - `VITE_FIREBASE_STORAGE_BUCKET`: Storage bucket URL
+
+## Installation & Setup
+```bash
+npm install
+```
