@@ -49,3 +49,8 @@ Access the local server at `http://localhost:5173`.
 npm run build
 ```
 Generates an optimized bundle in the `dist` directory.
+
+## Firestore Security Rules
+- Granular collection rules in `firestore.rules`
+- Role-based access control protecting administrative endpoints
+- Public read permissions for active catalog listings
