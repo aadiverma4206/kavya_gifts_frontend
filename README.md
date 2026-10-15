@@ -68,3 +68,7 @@ Generates an optimized bundle in the `dist` directory.
 - Persistent local cart state synchronization
 - Real-time subtotal, discount, and tax calculations
 - Streamlined multi-step checkout form with validation
+
+## Payment Gateway Integration
+- Secure client-side payment workflow simulation and verification
+- Order receipt generation and printable invoice view
