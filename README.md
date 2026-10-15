@@ -43,3 +43,9 @@ npm install
 npm run dev
 ```
 Access the local server at `http://localhost:5173`.
+
+## Production Build
+```bash
+npm run build
+```
+Generates an optimized bundle in the `dist` directory.
