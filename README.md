@@ -63,3 +63,8 @@ Generates an optimized bundle in the `dist` directory.
 - Dynamic hero banners with curated gift collections
 - Search and filter by occasion, recipient, and price range
 - High-resolution product previews with customer reviews
+
+## Cart & Checkout Experience
+- Persistent local cart state synchronization
+- Real-time subtotal, discount, and tax calculations
+- Streamlined multi-step checkout form with validation
