@@ -85,3 +85,7 @@ Generates an optimized bundle in the `dist` directory.
 ## Data Privacy & Transparency
 - Conforms to modern privacy standards
 - Comprehensive data transparency audit documentation included in repository
+
+## Deployment Guidelines
+- Vercel deployment preconfigured via `vercel.json`
+- Firebase Hosting configuration via `firebase.json`
