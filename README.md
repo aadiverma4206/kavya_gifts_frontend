@@ -11,3 +11,9 @@ A premium e-commerce web application for personalized gifting experiences.
 - Interactive product catalog with category and price filters
 - Real-time cart management and instant checkout
 - Secure authentication for customers and store owners
+
+## Tech Stack
+- **Frontend**: React 18, React Router DOM, Vite
+- **Database**: Cloud Firestore
+- **Analytics/Charts**: Chart.js, Three.js 3D visuals
+- **Hosting**: Firebase / Vercel
