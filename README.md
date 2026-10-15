@@ -54,3 +54,7 @@ Generates an optimized bundle in the `dist` directory.
 - Granular collection rules in `firestore.rules`
 - Role-based access control protecting administrative endpoints
 - Public read permissions for active catalog listings
+
+## Asset & Image Management
+- Dynamic image optimization utilities in `src/utils/driveImage.js`
+- Support for Google Drive shared image links and direct CDN hosting
