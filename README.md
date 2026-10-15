@@ -77,3 +77,7 @@ Generates an optimized bundle in the `dist` directory.
 - Centralized dashboard at `/owner/dashboard`
 - Real-time sales metrics, order fulfillment statuses, and inventory management
 - Interactive revenue analytics charts
+
+## Automated Test Suites
+- End-to-end integration tests for workflows: cart, auth, checkout, and dashboard
+- Verification scripts to ensure Firestore schema integrity
