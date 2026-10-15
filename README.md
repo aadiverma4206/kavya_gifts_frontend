@@ -17,3 +17,8 @@ A premium e-commerce web application for personalized gifting experiences.
 - **Database**: Cloud Firestore
 - **Analytics/Charts**: Chart.js, Three.js 3D visuals
 - **Hosting**: Firebase / Vercel
+
+## Architecture Overview
+- Modular component-based directory structure
+- Global state and context hooks for cart and user sessions
+- Responsive layouts tailored for mobile, tablet, and desktop
