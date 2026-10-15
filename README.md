@@ -72,3 +72,8 @@ Generates an optimized bundle in the `dist` directory.
 ## Payment Gateway Integration
 - Secure client-side payment workflow simulation and verification
 - Order receipt generation and printable invoice view
+
+## Owner & Admin Dashboard
+- Centralized dashboard at `/owner/dashboard`
+- Real-time sales metrics, order fulfillment statuses, and inventory management
+- Interactive revenue analytics charts
