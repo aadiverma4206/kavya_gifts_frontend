@@ -58,3 +58,8 @@ Generates an optimized bundle in the `dist` directory.
 ## Asset & Image Management
 - Dynamic image optimization utilities in `src/utils/driveImage.js`
 - Support for Google Drive shared image links and direct CDN hosting
+
+## Customer Storefront Workflow
+- Dynamic hero banners with curated gift collections
+- Search and filter by occasion, recipient, and price range
+- High-resolution product previews with customer reviews
