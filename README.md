@@ -99,3 +99,18 @@ Generates an optimized bundle in the `dist` directory.
 - npm >= 9.0.0 or yarn >= 1.22.0
 - Modern Chromium or WebKit browser with ES2022 support
 - Active Firebase project with Firestore and Authentication enabled
+
+## Project Structure
+```
+client/
+├── src/
+│   ├── assets/          # Static logos, icons, and hero artwork
+│   ├── components/      # Reusable UI components (Navbar, Cart, Cards, Modals)
+│   ├── context/         # React Context state providers (Auth, Cart, Theme)
+│   ├── pages/           # Customer and Owner view controllers
+│   ├── styles/          # Global styles, variables, and utility classes
+│   └── utils/           # Helper functions, formatters, and Firebase client
+├── public/              # Public static assets served at root
+├── index.html           # Single-page application entry HTML
+└── vite.config.js       # Vite build and dev-server configuration
+```
