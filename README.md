@@ -174,3 +174,8 @@ client/
 - First Contentful Paint (FCP) < 1.2s and Largest Contentful Paint (LCP) < 2.0s.
 - Code-splitting with dynamic `React.lazy()` component imports for dashboard views.
 - Cumulative Layout Shift (CLS) near zero using aspect-ratio image containers.
+
+## Media Optimization & Asset Caching
+- Native `loading="lazy"` attributes on non-critical catalog images.
+- Cache-Control headers configured for immutable static assets in production.
+- Google Drive image URL resolution with automatic thumbnail dimensions fallback.
