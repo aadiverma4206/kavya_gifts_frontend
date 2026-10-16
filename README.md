@@ -144,3 +144,8 @@ client/
 - Profile management suite (`ProfileManagement.jsx`) with multi-address management.
 - Default billing and shipping destination persistence.
 - Order history review with downloadable PDF invoices.
+
+## Product Reviews & Social Proof
+- Verified customer reviews with 5-star rating breakdowns.
+- Media upload support for customer gift unwrapping photos.
+- Aggregated average rating calculation and sentiment highlights.
