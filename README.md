@@ -154,3 +154,8 @@ client/
 - Real-time stock decrement upon confirmed order placement.
 - Visual low-stock thresholds and restock warning badges on the Owner Dashboard.
 - Quick product edit modal for batch price updates and stock replenishment.
+
+## Sales Analytics & Reporting
+- Daily, weekly, and monthly sales graphs powered by Chart.js.
+- Best-selling product leaderboards and revenue per category breakdown.
+- Exportable CSV report generation for offline accounting.
