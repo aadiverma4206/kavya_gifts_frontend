@@ -206,3 +206,8 @@ client/
 2. Adhere to ESLint and Prettier formatting conventions.
 3. Write clean, atomic commit messages following Conventional Commits format.
 4. Submit Pull Request with detailed description and test verification steps.
+
+## Future Roadmap Milestones
+- **Q3**: AI-powered gift recommendation assistant based on recipient interests.
+- **Q4**: Multi-currency support and international shipping integrations.
+- **Q1**: Augmented Reality (AR) 3D gift preview directly in the mobile browser.
