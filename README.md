@@ -164,3 +164,8 @@ client/
 - Semantic CSS variables for primary, secondary, surface, and accent color palettes.
 - Frosted glassmorphism card styling with subtle backdrop-blur filters.
 - Standardized typography scale and fluid spacing utilities across all modules.
+
+## Responsive Design & Breakpoints
+- Mobile (<640px), Tablet (640px-1024px), and Desktop (>1024px) adaptive layouts.
+- Touch-friendly tap targets and gesture-friendly carousel navigation on mobile viewports.
+- Tested across modern iOS Safari, Android Chrome, Edge, and Firefox.
