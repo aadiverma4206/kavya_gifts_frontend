@@ -139,3 +139,8 @@ client/
 - Distinct order lifecycle phases: `Order Placed` -> `Processing` -> `Packed` -> `Shipped` -> `Delivered`.
 - Customer order tracking lookup page with tracking ID lookup and interactive timeline.
 - Timestamped updates stored per order in the Firestore orders collection.
+
+## Customer Profile & Address Book
+- Profile management suite (`ProfileManagement.jsx`) with multi-address management.
+- Default billing and shipping destination persistence.
+- Order history review with downloadable PDF invoices.
