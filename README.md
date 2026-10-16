@@ -149,3 +149,8 @@ client/
 - Verified customer reviews with 5-star rating breakdowns.
 - Media upload support for customer gift unwrapping photos.
 - Aggregated average rating calculation and sentiment highlights.
+
+## Owner Inventory Management
+- Real-time stock decrement upon confirmed order placement.
+- Visual low-stock thresholds and restock warning badges on the Owner Dashboard.
+- Quick product edit modal for batch price updates and stock replenishment.
