@@ -114,3 +114,8 @@ client/
 ├── index.html           # Single-page application entry HTML
 └── vite.config.js       # Vite build and dev-server configuration
 ```
+
+## Authentication & Protected Routes
+- Customer login via email/password and Firebase OAuth providers.
+- Role-based route guard (`ProtectedRoute.jsx`) validates owner role claims.
+- Automated session token renewal and graceful unauthenticated redirect handling.
