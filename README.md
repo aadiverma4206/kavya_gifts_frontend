@@ -169,3 +169,8 @@ client/
 - Mobile (<640px), Tablet (640px-1024px), and Desktop (>1024px) adaptive layouts.
 - Touch-friendly tap targets and gesture-friendly carousel navigation on mobile viewports.
 - Tested across modern iOS Safari, Android Chrome, Edge, and Firefox.
+
+## Performance Benchmarks & Core Web Vitals
+- First Contentful Paint (FCP) < 1.2s and Largest Contentful Paint (LCP) < 2.0s.
+- Code-splitting with dynamic `React.lazy()` component imports for dashboard views.
+- Cumulative Layout Shift (CLS) near zero using aspect-ratio image containers.
