@@ -119,3 +119,8 @@ client/
 - Customer login via email/password and Firebase OAuth providers.
 - Role-based route guard (`ProtectedRoute.jsx`) validates owner role claims.
 - Automated session token renewal and graceful unauthenticated redirect handling.
+
+## Search & Filtering Engine
+- Multi-parameter search supporting category, recipient, price bracket, and occasion tags.
+- Client-side fuzzy search scoring for quick keyword matching across titles and descriptions.
+- Instant reactive filtering without unnecessary network roundtrips.
