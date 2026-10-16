@@ -93,3 +93,9 @@ Generates an optimized bundle in the `dist` directory.
 ## License & Acknowledgements
 - Proprietary license for Gifting Website project
 - Developed with modern web best practices and high visual aesthetics.
+
+## System Prerequisites
+- Node.js >= 18.0.0 (LTS recommended)
+- npm >= 9.0.0 or yarn >= 1.22.0
+- Modern Chromium or WebKit browser with ES2022 support
+- Active Firebase project with Firestore and Authentication enabled
