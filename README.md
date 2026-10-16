@@ -179,3 +179,8 @@ client/
 - Native `loading="lazy"` attributes on non-critical catalog images.
 - Cache-Control headers configured for immutable static assets in production.
 - Google Drive image URL resolution with automatic thumbnail dimensions fallback.
+
+## Accessibility & Usability Standards
+- Full keyboard navigability (Tab, Enter, Escape) for modals and dropdown menus.
+- High contrast ratios adhering to WCAG 2.1 AA specifications.
+- Descriptive `aria-label` attributes on icon-only buttons and navigation items.
