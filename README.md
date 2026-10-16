@@ -189,3 +189,8 @@ client/
 - Global error boundary catches unexpected render crashes gracefully.
 - Automatic exponential backoff retries on transient network disconnects.
 - Friendly toast notification system informing users of action statuses.
+
+## Developer Troubleshooting FAQ
+- **Firebase Permission Denied**: Verify rule deployment with `firebase deploy --only firestore:rules`.
+- **Environment variables undefined**: Ensure variables begin with `VITE_` prefix and reload dev server.
+- **Port 5173 occupied**: Vite will automatically select next available port or use `npm run dev -- --port 3000`.
