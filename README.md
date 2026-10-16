@@ -129,3 +129,8 @@ client/
 - Interactive wrap selector (`GiftWrapSelector.jsx`) during the checkout flow.
 - Multiple paper textures, personalized ribbons, and custom greeting card text previews.
 - Transparent price calculation with live dynamic add-on recalculation.
+
+## Coupons & Promotions Engine
+- Instant coupon code validation against active promo campaign rules in Firestore.
+- Supports percentage discounts, flat cash rebates, and free shipping thresholds.
+- Visual feedback on applied savings directly in the cart subtotal summary.
