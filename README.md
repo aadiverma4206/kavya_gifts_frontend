@@ -159,3 +159,8 @@ client/
 - Daily, weekly, and monthly sales graphs powered by Chart.js.
 - Best-selling product leaderboards and revenue per category breakdown.
 - Exportable CSV report generation for offline accounting.
+
+## Design System & Styling Architecture
+- Semantic CSS variables for primary, secondary, surface, and accent color palettes.
+- Frosted glassmorphism card styling with subtle backdrop-blur filters.
+- Standardized typography scale and fluid spacing utilities across all modules.
