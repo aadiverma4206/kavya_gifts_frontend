@@ -200,3 +200,9 @@ client/
 - `orders`: `{ id, userId, items[], total, shippingAddress, status, createdAt }`
 - `users`: `{ uid, email, role, addresses[], createdAt }`
 - `coupons`: `{ code, discountPercent, active, expiresAt }`
+
+## Contribution Guidelines & Workflow
+1. Fork and create feature branch (`git checkout -b feat/feature-name`).
+2. Adhere to ESLint and Prettier formatting conventions.
+3. Write clean, atomic commit messages following Conventional Commits format.
+4. Submit Pull Request with detailed description and test verification steps.
