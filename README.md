@@ -184,3 +184,8 @@ client/
 - Full keyboard navigability (Tab, Enter, Escape) for modals and dropdown menus.
 - High contrast ratios adhering to WCAG 2.1 AA specifications.
 - Descriptive `aria-label` attributes on icon-only buttons and navigation items.
+
+## Error Handling & Resilient UI
+- Global error boundary catches unexpected render crashes gracefully.
+- Automatic exponential backoff retries on transient network disconnects.
+- Friendly toast notification system informing users of action statuses.
