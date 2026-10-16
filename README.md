@@ -194,3 +194,9 @@ client/
 - **Firebase Permission Denied**: Verify rule deployment with `firebase deploy --only firestore:rules`.
 - **Environment variables undefined**: Ensure variables begin with `VITE_` prefix and reload dev server.
 - **Port 5173 occupied**: Vite will automatically select next available port or use `npm run dev -- --port 3000`.
+
+## Firestore Collection Schema Reference
+- `products`: `{ id, title, price, category, stock, images[], rating, description }`
+- `orders`: `{ id, userId, items[], total, shippingAddress, status, createdAt }`
+- `users`: `{ uid, email, role, addresses[], createdAt }`
+- `coupons`: `{ code, discountPercent, active, expiresAt }`
