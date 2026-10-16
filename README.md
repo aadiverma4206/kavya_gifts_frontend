@@ -134,3 +134,8 @@ client/
 - Instant coupon code validation against active promo campaign rules in Firestore.
 - Supports percentage discounts, flat cash rebates, and free shipping thresholds.
 - Visual feedback on applied savings directly in the cart subtotal summary.
+
+## Order Tracking & Fulfillment Lifecycle
+- Distinct order lifecycle phases: `Order Placed` -> `Processing` -> `Packed` -> `Shipped` -> `Delivered`.
+- Customer order tracking lookup page with tracking ID lookup and interactive timeline.
+- Timestamped updates stored per order in the Firestore orders collection.
