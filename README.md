@@ -229,3 +229,9 @@ client/
 - Compound components pattern utilized for complex widgets like multi-step checkout and review cards.
 - Pure presentation components decoupled from Firebase SDK network queries for maximum testability.
 - Strict layout separation with global header, announcement ticker, responsive body, and interactive footer.
+
+## Frontend Security Best Practices & Content Sanitation
+- Strict DOM sanitization preventing cross-site scripting (XSS) on customer review submissions.
+- Secure storage practices: sensitive session tokens isolated from vulnerable browser storage vectors.
+- Content Security Policy (CSP) headers protecting external image and script execution sources.
+- Comprehensive client-side input validation and payload sanitization prior to Firestore dispatch.
