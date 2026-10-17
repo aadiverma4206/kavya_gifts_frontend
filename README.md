@@ -223,3 +223,9 @@ client/
 - `CartContext` manages optimistic shopping cart mutations, local storage persistence, and promo calculations.
 - Dedicated custom hooks (`useAuth`, `useCart`) provide type-safe, decoupled state access across components.
 - Avoids prop drilling while maintaining predictable render performance and minimal re-render footprints.
+
+## Component Hierarchy & Modular Design Patterns
+- Atomic UI design separating foundational elements (`Button`, `Modal`, `Input`) from composite page sections.
+- Compound components pattern utilized for complex widgets like multi-step checkout and review cards.
+- Pure presentation components decoupled from Firebase SDK network queries for maximum testability.
+- Strict layout separation with global header, announcement ticker, responsive body, and interactive footer.
