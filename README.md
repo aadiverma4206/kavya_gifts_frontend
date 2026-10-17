@@ -283,3 +283,9 @@ client/
 - Efficient cursor-based pagination utilizing `startAfter` query bounds to minimize read costs.
 - Projection queries selecting only essential document fields for listing card views.
 - Denormalized summary fields reducing redundant cross-collection lookups for order history totals.
+
+## Inventory Alerts & Low-Stock Webhooks
+- Automated threshold checks trigger notifications when product inventory falls below 5 units.
+- Webhook endpoints dispatch alerts to merchant Slack or Discord channels for immediate restocking.
+- Visual warning indicators displayed on the merchant dashboard catalog table for rapid identification.
+- Automatic catalog flag switching to "Out of Stock" preventing overselling on depleted gift items.
