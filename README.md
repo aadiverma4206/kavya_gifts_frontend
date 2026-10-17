@@ -241,3 +241,9 @@ client/
 - Product catalog documents allow global public read while restricting mutations strictly to verified admin UIDs.
 - Field schema validation guarantees data integrity on every write, preventing malformed document injection.
 - Rate-limiting constraints enforce maximum review submission frequency per authenticated customer.
+
+## Internationalization (i18n) & Multi-Currency Architecture
+- Extensible localization engine architecture ready for multi-language string tables and RTL support.
+- Dynamic currency formatter utility supporting INR (₹), USD ($), EUR (€), and GBP (£) rates.
+- Localized date and time formatting powered by native `Intl.DateTimeFormat` APIs.
+- Locale persistence stored in customer preference cookies with automatic browser language fallback.
