@@ -235,3 +235,9 @@ client/
 - Secure storage practices: sensitive session tokens isolated from vulnerable browser storage vectors.
 - Content Security Policy (CSP) headers protecting external image and script execution sources.
 - Comprehensive client-side input validation and payload sanitization prior to Firestore dispatch.
+
+## Cloud Firestore Security Rules Deep Dive
+- Strict declarative rules enforce customer data isolation: users can only read and write their own orders.
+- Product catalog documents allow global public read while restricting mutations strictly to verified admin UIDs.
+- Field schema validation guarantees data integrity on every write, preventing malformed document injection.
+- Rate-limiting constraints enforce maximum review submission frequency per authenticated customer.
