@@ -277,3 +277,9 @@ client/
 - Automatic detection of user system preferences via CSS `prefers-color-scheme` media queries.
 - Persisted theme selection stored in browser storage to maintain consistency across user sessions.
 - Tested against high-contrast display standards ensuring clear readability of product text and prices.
+
+## Database Indexing & Firestore Query Optimization
+- Composite index definitions in `firestore.indexes.json` for multi-field filtering and sorting.
+- Efficient cursor-based pagination utilizing `startAfter` query bounds to minimize read costs.
+- Projection queries selecting only essential document fields for listing card views.
+- Denormalized summary fields reducing redundant cross-collection lookups for order history totals.
