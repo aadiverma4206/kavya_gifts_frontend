@@ -253,3 +253,9 @@ client/
 - Open Graph (OG) and Twitter Card tags ensure engaging link preview cards across messaging platforms.
 - Canonical link tags prevent duplicate content indexing on paginated and filtered listing views.
 - JSON-LD structured data schemas for e-commerce products, ratings, and merchant business information.
+
+## Progressive Web App (PWA) & Offline Caching Architecture
+- Web App Manifest configured for mobile home screen installation with custom app splash icons.
+- Service Worker caching strategy delivering offline fallback shells during network interruptions.
+- Cache-first strategy for static assets, fonts, and stylesheets for near-instant repeat page loads.
+- Background sync capabilities for queuing shopping cart updates and submitting actions when connectivity resumes.
