@@ -259,3 +259,9 @@ client/
 - Service Worker caching strategy delivering offline fallback shells during network interruptions.
 - Cache-first strategy for static assets, fonts, and stylesheets for near-instant repeat page loads.
 - Background sync capabilities for queuing shopping cart updates and submitting actions when connectivity resumes.
+
+## Email Notification & Order Receipt Dispatching
+- Cloud Functions trigger automated transactional emails upon Firestore order document creation.
+- Responsive HTML email templates for order confirmation, shipment tracking dispatch, and digital receipts.
+- Direct delivery tracking links embedded into transactional messages for customer convenience.
+- Secure unsubscribe and email preference management respecting consumer privacy preferences.
