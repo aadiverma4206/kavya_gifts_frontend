@@ -295,3 +295,9 @@ client/
 - Funnel drop-off analytics tracking customer progress through the multi-stage checkout flow.
 - Anonymized visitor tracking respecting cookie consent banners and Do Not Track (DNT) headers.
 - Custom dashboard conversion metrics calculating average order value (AOV) and cart abandonment rates.
+
+## Order Cancellation & Automated Refund Lifecycle
+- 1-hour grace cancellation window available directly from customer profile for unfulfilled orders.
+- Automated status transition to `Cancelled` updating inventory quantities back to active stock.
+- Automated refund receipt generation with clear turnaround estimates for the customer.
+- Owner override capabilities allowing manual order adjustments, cancellations, and credit issuance.
