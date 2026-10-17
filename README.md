@@ -217,3 +217,9 @@ client/
 - Validates Node.js 18.x and 20.x runtime compatibility matrix across diverse environments.
 - Runs ESLint static analysis, dependency vulnerability scans, and Vite production bundle builds.
 - Prevents regressions by executing headless end-to-end integration test suites before merges.
+
+## State Management & Context API Architecture
+- Centralized `AuthContext` provides authenticated user profile, auth token, and owner role verification.
+- `CartContext` manages optimistic shopping cart mutations, local storage persistence, and promo calculations.
+- Dedicated custom hooks (`useAuth`, `useCart`) provide type-safe, decoupled state access across components.
+- Avoids prop drilling while maintaining predictable render performance and minimal re-render footprints.
