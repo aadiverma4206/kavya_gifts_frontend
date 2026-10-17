@@ -301,3 +301,9 @@ client/
 - Automated status transition to `Cancelled` updating inventory quantities back to active stock.
 - Automated refund receipt generation with clear turnaround estimates for the customer.
 - Owner override capabilities allowing manual order adjustments, cancellations, and credit issuance.
+
+## Code Quality, Linting & Git Pre-commit Hooks
+- Unified ESLint rules verifying React hooks dependencies, unused imports, and syntax consistency.
+- Prettier configuration enforcing standardized 2-space indentation, single quotes, and trailing commas.
+- Pre-commit hooks via Husky and lint-staged validating staged files prior to commit creation.
+- Strict build verification ensuring zero TypeScript/ESLint warnings before production releases.
