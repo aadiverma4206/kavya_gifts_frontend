@@ -319,3 +319,9 @@ client/
 - Automated uptime monitoring pinging the storefront every 5 minutes from distributed global nodes.
 - Incident escalation webhooks triggering on unexpected downtime or elevated error rate thresholds.
 - Public status dashboard integration tracking service latency, availability, and scheduled maintenance.
+
+## Performance Profiling & React DevTools Diagnostics
+- React Profiler benchmarks identifying and eliminating unnecessary component re-renders.
+- Memoization strategies using `useMemo` and `useCallback` for expensive cart recalculations.
+- Virtualized lists implemented for extensive gift catalogs with hundreds of simultaneous items.
+- Bundle analysis via `rollup-plugin-visualizer` keeping vendor chunks modular and lightweight.
