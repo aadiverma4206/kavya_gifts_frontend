@@ -331,3 +331,9 @@ client/
 - Multi-region database replication ensuring 99.999% availability during regional outages.
 - Point-in-time recovery (PITR) procedures allowing rapid rollback of unintended data deletions.
 - Documented disaster recovery runbook detailing step-by-step restoration verification workflows.
+
+## Changelog, Semantic Versioning & Release Governance
+- Strict adherence to Semantic Versioning (SemVer: `MAJOR.MINOR.PATCH`) for all public releases.
+- Automated changelog generation documenting new features, bug fixes, and security patches per release.
+- Tagged Git releases on GitHub matching production deployment milestones.
+- Clear deprecation policy providing notice before removing legacy API interfaces or styling themes.
