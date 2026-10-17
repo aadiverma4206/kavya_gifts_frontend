@@ -289,3 +289,9 @@ client/
 - Webhook endpoints dispatch alerts to merchant Slack or Discord channels for immediate restocking.
 - Visual warning indicators displayed on the merchant dashboard catalog table for rapid identification.
 - Automatic catalog flag switching to "Out of Stock" preventing overselling on depleted gift items.
+
+## Web Analytics & E-commerce Conversion Tracking
+- Google Analytics 4 (GA4) e-commerce event measurement: `view_item`, `add_to_cart`, and `purchase`.
+- Funnel drop-off analytics tracking customer progress through the multi-stage checkout flow.
+- Anonymized visitor tracking respecting cookie consent banners and Do Not Track (DNT) headers.
+- Custom dashboard conversion metrics calculating average order value (AOV) and cart abandonment rates.
