@@ -271,3 +271,9 @@ client/
 - Automated ticketing system routing pre-order inquiries and return requests directly to store admins.
 - Real-time customer support availability badges indicating live response time expectations.
 - Context-aware support triggers automatically attaching the customer's active cart or order ID.
+
+## Dark Mode & High-Contrast Theme System
+- CSS custom property design tokens allowing seamless light and dark mode toggling.
+- Automatic detection of user system preferences via CSS `prefers-color-scheme` media queries.
+- Persisted theme selection stored in browser storage to maintain consistency across user sessions.
+- Tested against high-contrast display standards ensuring clear readability of product text and prices.
