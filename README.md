@@ -265,3 +265,9 @@ client/
 - Responsive HTML email templates for order confirmation, shipment tracking dispatch, and digital receipts.
 - Direct delivery tracking links embedded into transactional messages for customer convenience.
 - Secure unsubscribe and email preference management respecting consumer privacy preferences.
+
+## Customer Support Helpdesk & Live Chat Widget
+- Floating customer help desk widget with instant FAQ search and WhatsApp live chat redirection.
+- Automated ticketing system routing pre-order inquiries and return requests directly to store admins.
+- Real-time customer support availability badges indicating live response time expectations.
+- Context-aware support triggers automatically attaching the customer's active cart or order ID.
