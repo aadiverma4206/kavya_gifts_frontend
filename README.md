@@ -325,3 +325,9 @@ client/
 - Memoization strategies using `useMemo` and `useCallback` for expensive cart recalculations.
 - Virtualized lists implemented for extensive gift catalogs with hundreds of simultaneous items.
 - Bundle analysis via `rollup-plugin-visualizer` keeping vendor chunks modular and lightweight.
+
+## Backup, Disaster Recovery & Cloud Firestore Replication
+- Scheduled daily Cloud Firestore database exports to Google Cloud Storage (GCS) cold buckets.
+- Multi-region database replication ensuring 99.999% availability during regional outages.
+- Point-in-time recovery (PITR) procedures allowing rapid rollback of unintended data deletions.
+- Documented disaster recovery runbook detailing step-by-step restoration verification workflows.
