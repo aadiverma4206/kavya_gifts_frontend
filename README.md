@@ -307,3 +307,9 @@ client/
 - Prettier configuration enforcing standardized 2-space indentation, single quotes, and trailing commas.
 - Pre-commit hooks via Husky and lint-staged validating staged files prior to commit creation.
 - Strict build verification ensuring zero TypeScript/ESLint warnings before production releases.
+
+## Docker Containerization & Multi-Stage Production Build
+- Multi-stage Dockerfile: Node.js 20 build stage compiling production assets followed by minimal Nginx runner.
+- Highly optimized final image footprint (<30MB) minimizing resource consumption and cold starts.
+- Preconfigured Nginx configuration handling SPA client-side route rewrites and gzip compression.
+- Standardized `docker-compose.yml` for unified local staging and rapid developer onboarding.
