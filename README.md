@@ -313,3 +313,9 @@ client/
 - Highly optimized final image footprint (<30MB) minimizing resource consumption and cold starts.
 - Preconfigured Nginx configuration handling SPA client-side route rewrites and gzip compression.
 - Standardized `docker-compose.yml` for unified local staging and rapid developer onboarding.
+
+## Application Health Checks & Uptime Monitoring
+- Lightweight health check endpoint verifying client bundle delivery and Firebase connectivity.
+- Automated uptime monitoring pinging the storefront every 5 minutes from distributed global nodes.
+- Incident escalation webhooks triggering on unexpected downtime or elevated error rate thresholds.
+- Public status dashboard integration tracking service latency, availability, and scheduled maintenance.
