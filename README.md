@@ -247,3 +247,9 @@ client/
 - Dynamic currency formatter utility supporting INR (₹), USD ($), EUR (€), and GBP (£) rates.
 - Localized date and time formatting powered by native `Intl.DateTimeFormat` APIs.
 - Locale persistence stored in customer preference cookies with automatic browser language fallback.
+
+## Search Engine Optimization (SEO) & Social Meta Tags
+- Dynamic `<head>` tag management rendering unique titles and meta descriptions per product catalog page.
+- Open Graph (OG) and Twitter Card tags ensure engaging link preview cards across messaging platforms.
+- Canonical link tags prevent duplicate content indexing on paginated and filtered listing views.
+- JSON-LD structured data schemas for e-commerce products, ratings, and merchant business information.
