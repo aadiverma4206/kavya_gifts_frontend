@@ -211,3 +211,9 @@ client/
 - **Q3**: AI-powered gift recommendation assistant based on recipient interests.
 - **Q4**: Multi-currency support and international shipping integrations.
 - **Q1**: Augmented Reality (AR) 3D gift preview directly in the mobile browser.
+
+## Continuous Integration & Automated Testing Pipeline
+- Automated GitHub Actions workflow triggers on all pull requests and pushes to `main`.
+- Validates Node.js 18.x and 20.x runtime compatibility matrix across diverse environments.
+- Runs ESLint static analysis, dependency vulnerability scans, and Vite production bundle builds.
+- Prevents regressions by executing headless end-to-end integration test suites before merges.
