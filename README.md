@@ -379,3 +379,9 @@ client/
 - Dual authentication layers verifying Firebase Auth ID tokens and custom user role claims in Firestore.
 - Automatic redirection to login screen with preserved intended destination URL for seamless post-auth return.
 - Granular component-level permission checks restricting sensitive management buttons strictly to verified owners.
+
+## Product Catalog Search, Autocomplete & Fuzzy Filtering
+- Client-side indexing providing instantaneous search across titles, categories, tags, and product descriptions.
+- Debounced search input handler (300ms) optimizing keystroke performance and avoiding excessive recalculation.
+- Fuzzy matching algorithm accommodating customer spelling typos and variant search phrases.
+- Multi-attribute filtering suite allowing simultaneous filtering by price range, category, and customer rating.
