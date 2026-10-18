@@ -409,3 +409,9 @@ client/
 - Real-time point balance display on customer profile and integrated slider for point redemption at checkout.
 - Audit ledger tracking points earned, expired, and redeemed per order transaction in Firestore.
 - Automated milestone notifications celebrating customer tier upgrades and exclusive member perks.
+
+## Automated Invoice PDF Generation & Print Layouts
+- On-demand PDF invoice generation (`jsPDF` / HTML-to-canvas) directly from the customer order history dashboard.
+- Formatted tax invoices compliant with Indian GST requirements, displaying HSN codes, SGST/CGST, and tax IDs.
+- Print-optimized CSS media queries (`@media print`) rendering clean, high-contrast receipts without UI chrome.
+- Merchant copy generation for order packing slips with itemized SKU picklists and customer delivery notes.
