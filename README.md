@@ -463,3 +463,9 @@ client/
 - Cryptographically secure 16-character alphanumeric voucher code generation with balance tracking in Firestore.
 - Partial redemption support allowing gift card balances to span across multiple distinct purchases.
 - Merchant balance lookup and manual reload utility accessible from the store administrative portal.
+
+## High Availability Architecture & Production Launch Checklist
+- Pre-launch validation protocol covering SSL certificate installation, custom domain DNS, and Firebase security rules.
+- 99.99% uptime target backed by Firebase multi-region infrastructure and automated failover capabilities.
+- Error budget and synthetic ping monitors configured with immediate PagerDuty/Slack on-call alerts.
+- Comprehensive smoke testing runbook verifying the full end-to-end user journey before cutting DNS to production.
