@@ -415,3 +415,9 @@ client/
 - Formatted tax invoices compliant with Indian GST requirements, displaying HSN codes, SGST/CGST, and tax IDs.
 - Print-optimized CSS media queries (`@media print`) rendering clean, high-contrast receipts without UI chrome.
 - Merchant copy generation for order packing slips with itemized SKU picklists and customer delivery notes.
+
+## Abandoned Cart Tracking & Automated Recovery Reminders
+- Background telemetry recording uncompleted cart sessions with customer contact details after 30 minutes of inactivity.
+- Automated Cloud Function dispatching gentle reminder notifications with direct one-click cart restoration links.
+- Dynamic incentive injection offering limited-time discount codes to boost checkout conversion rates.
+- Unsubscribe and compliance handling honoring customer preferences for transactional communications.
