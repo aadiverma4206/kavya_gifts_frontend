@@ -445,3 +445,9 @@ client/
 - Cloudflare Web Application Firewall (WAF) filtering malicious bot traffic, credential stuffing, and SQL/NoSQL injection.
 - Firestore write throttling preventing abusive review spam or coupon brute-forcing attempts.
 - Client-side button throttling disabling repeated submission clicks until server responses resolve.
+
+## Micro-Animations & Fluid Interface Transitions
+- Subtle CSS keyframe animations and Framer Motion micro-interactions enhancing user engagement across pages.
+- Smooth sliding cart drawer animation with backdrop dimming and intuitive swipe-to-close gestures.
+- Tactile button press feedback using scale transforms and subtle ripple effects on interactive elements.
+- Skeleton placeholder shimmer animations replacing layout jumps during initial product catalog loading.
