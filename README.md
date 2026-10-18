@@ -433,3 +433,9 @@ client/
 - Cache-Control header strategy with immutable cache-busting hashes on JS/CSS assets and revalidation on index.html.
 - HTTP/2 multiplexing enabling concurrent asset streaming over a single TCP connection.
 - Modern Brotli and Gzip compression algorithms reducing total transferred bundle payload by over 65%.
+
+## GDPR & Consumer Data Privacy Compliance Framework
+- Transparent cookie consent management banner allowing granular acceptance of analytics vs essential cookies.
+- Automated data export utility enabling customers to download their entire order and profile history in JSON format.
+- Right-to-be-Forgotten workflows providing self-service account deletion and Firestore record anonymization.
+- Strict data minimization principles ensuring no non-essential Personally Identifiable Information (PII) is stored.
