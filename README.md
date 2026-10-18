@@ -343,3 +343,9 @@ client/
 - Webhook listeners verify cryptographically signed HMAC SHA256 signatures before updating order payment status.
 - Graceful failure handling providing immediate user feedback on card declines or network timeouts.
 - Automated idempotent transaction reconciliation avoiding duplicate order generation on network retries.
+
+## Coupon & Promotional Discount Engine
+- Dynamic discount calculation supporting percentage off, flat currency discounts, and free shipping promos.
+- Configurable validation rules including minimum order subtotal, expiry timestamp, and usage count limits.
+- Real-time coupon verification against Firestore `coupons` collection with instant UI error feedback.
+- Anti-stacking protection preventing overlapping discount codes unless explicitly configured by store owners.
