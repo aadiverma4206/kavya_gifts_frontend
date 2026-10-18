@@ -361,3 +361,9 @@ client/
 - REST API integration with logistics aggregators (Shiprocket / Delhivery) for automated courier allocation.
 - Serviceability verification during checkout alerting customers if express delivery is unavailable in their area.
 - Automated air waybill (AWB) generation and dispatch label printing for merchant fulfillment workflows.
+
+## Customer Wishlist & Persistent Saved Items
+- Dedicated `wishlists` Firestore collection syncing saved items across authenticated desktop and mobile sessions.
+- Local storage fallback for unauthenticated guest shoppers enabling seamless migration upon account sign-up.
+- One-click 'Move to Cart' functionality with automatic stock verification prior to transfer.
+- Optimistic UI toggling providing instant visual heart animation feedback on product cards.
