@@ -439,3 +439,9 @@ client/
 - Automated data export utility enabling customers to download their entire order and profile history in JSON format.
 - Right-to-be-Forgotten workflows providing self-service account deletion and Firestore record anonymization.
 - Strict data minimization principles ensuring no non-essential Personally Identifiable Information (PII) is stored.
+
+## API Rate Limiting & Denial of Service Safeguards
+- IP-based and UID-based rate limiting on sensitive checkout, coupon application, and authentication endpoints.
+- Cloudflare Web Application Firewall (WAF) filtering malicious bot traffic, credential stuffing, and SQL/NoSQL injection.
+- Firestore write throttling preventing abusive review spam or coupon brute-forcing attempts.
+- Client-side button throttling disabling repeated submission clicks until server responses resolve.
