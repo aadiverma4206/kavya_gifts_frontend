@@ -373,3 +373,9 @@ client/
 - Real-time input validation ensuring accurate 10-digit mobile numbers, valid email addresses, and postal codes.
 - Sticky order summary panel detailing subtotal, applicable taxes (GST), shipping fees, and coupon savings.
 - Navigation state guards preventing customers from skipping ahead without completing prior mandatory fields.
+
+## Role-Based Access Control (RBAC) & Route Guards
+- Secure client-side route protection (`ProtectedRoute.jsx`) preventing unauthorized access to admin dashboards.
+- Dual authentication layers verifying Firebase Auth ID tokens and custom user role claims in Firestore.
+- Automatic redirection to login screen with preserved intended destination URL for seamless post-auth return.
+- Granular component-level permission checks restricting sensitive management buttons strictly to verified owners.
