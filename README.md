@@ -397,3 +397,9 @@ client/
 - Instant notifications for order status transitions (Confirmed, Packed, Shipped, Delivered, Cancelled).
 - Configurable toast notification system displaying transient success, warning, and error popups.
 - Mark-as-read and clear-all capabilities stored persistently in user preference records.
+
+## Bulk Product Import & Catalog CSV Synchronization
+- Merchant utility for bulk uploading hundreds of gift inventory items via standardized CSV spreadsheets.
+- Client-side validation parser detecting missing headers, duplicate SKUs, invalid price formats, and broken URLs.
+- Batch Firestore writes processing products in atomic chunks of 450 documents adhering to database quotas.
+- Downloadable CSV template and comprehensive formatting guidelines for store inventory managers.
