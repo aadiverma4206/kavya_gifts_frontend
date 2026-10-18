@@ -391,3 +391,9 @@ client/
 - In-browser image compression utilizing Canvas API resizing images prior to upload, reducing payload sizes by 70%.
 - Strict file type whitelist restricting uploads strictly to JPEG, PNG, and WebP formats under 5MB.
 - Automatic responsive thumbnail generation for lightning-fast gallery previews on product detail pages.
+
+## Real-Time Notification Center & Alert Dispatcher
+- Interactive notification bell component featuring unread counter badges and real-time Firestore listeners.
+- Instant notifications for order status transitions (Confirmed, Packed, Shipped, Delivered, Cancelled).
+- Configurable toast notification system displaying transient success, warning, and error popups.
+- Mark-as-read and clear-all capabilities stored persistently in user preference records.
