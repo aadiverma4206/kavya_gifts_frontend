@@ -403,3 +403,9 @@ client/
 - Client-side validation parser detecting missing headers, duplicate SKUs, invalid price formats, and broken URLs.
 - Batch Firestore writes processing products in atomic chunks of 450 documents adhering to database quotas.
 - Downloadable CSV template and comprehensive formatting guidelines for store inventory managers.
+
+## Customer Loyalty Rewards & Points Redemption Engine
+- Tiered loyalty program (Bronze, Silver, Gold) rewarding points on every completed purchase (1 INR = 1 point).
+- Real-time point balance display on customer profile and integrated slider for point redemption at checkout.
+- Audit ledger tracking points earned, expired, and redeemed per order transaction in Firestore.
+- Automated milestone notifications celebrating customer tier upgrades and exclusive member perks.
