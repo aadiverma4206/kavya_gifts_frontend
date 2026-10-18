@@ -475,3 +475,9 @@ client/
 - Headless execution in continuous integration testing environment simulating realistic user interaction patterns.
 - Automated visual regression testing capturing viewport snapshots across key breakpoints and themes.
 - Mock service workers simulating Firebase backend responses for deterministic and isolated test runs.
+
+## Web Vitals Telemetry & Real User Monitoring (RUM)
+- Client-side performance beacon collecting Core Web Vitals (LCP, FID, CLS, INP) directly from real users.
+- Automated anomaly detection flagging performance degradation across specific device categories or browsers.
+- Real-time performance dashboard visualizing 75th percentile loading metrics for production storefront traffic.
+- Continuous optimization loop identifying render bottlenecks and heavy DOM elements in real-time.
