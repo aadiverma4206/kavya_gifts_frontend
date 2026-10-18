@@ -469,3 +469,9 @@ client/
 - 99.99% uptime target backed by Firebase multi-region infrastructure and automated failover capabilities.
 - Error budget and synthetic ping monitors configured with immediate PagerDuty/Slack on-call alerts.
 - Comprehensive smoke testing runbook verifying the full end-to-end user journey before cutting DNS to production.
+
+## End-to-End Automated Testing & Cypress Suite
+- Comprehensive Cypress E2E test specs verifying complete user purchasing journeys and payment flows.
+- Headless execution in continuous integration testing environment simulating realistic user interaction patterns.
+- Automated visual regression testing capturing viewport snapshots across key breakpoints and themes.
+- Mock service workers simulating Firebase backend responses for deterministic and isolated test runs.
