@@ -349,3 +349,9 @@ client/
 - Configurable validation rules including minimum order subtotal, expiry timestamp, and usage count limits.
 - Real-time coupon verification against Firestore `coupons` collection with instant UI error feedback.
 - Anti-stacking protection preventing overlapping discount codes unless explicitly configured by store owners.
+
+## 3D Custom Gift Box Customizer & Three.js Architecture
+- Interactive Three.js canvas (`GiftBoxCanvas.jsx`) rendering realistic 3D gift boxes with customizable wrapping.
+- Real-time material texture mapping allowing customers to preview patterned wrapping paper and ribbon ties.
+- OrbitControls integration for 360-degree interactive rotation, zoom, and tilt inspection in real-time.
+- WebGL fallback mechanism rendering high-resolution 2D mockups for older devices with hardware limitations.
