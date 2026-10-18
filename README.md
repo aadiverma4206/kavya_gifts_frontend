@@ -337,3 +337,9 @@ client/
 - Automated changelog generation documenting new features, bug fixes, and security patches per release.
 - Tagged Git releases on GitHub matching production deployment milestones.
 - Clear deprecation policy providing notice before removing legacy API interfaces or styling themes.
+
+## Payment Gateway Integration & Transaction Verification
+- Direct integration with Razorpay and Stripe checkout APIs for secure, PCI-compliant card and UPI payments.
+- Webhook listeners verify cryptographically signed HMAC SHA256 signatures before updating order payment status.
+- Graceful failure handling providing immediate user feedback on card declines or network timeouts.
+- Automated idempotent transaction reconciliation avoiding duplicate order generation on network retries.
