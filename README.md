@@ -421,3 +421,9 @@ client/
 - Automated Cloud Function dispatching gentle reminder notifications with direct one-click cart restoration links.
 - Dynamic incentive injection offering limited-time discount codes to boost checkout conversion rates.
 - Unsubscribe and compliance handling honoring customer preferences for transactional communications.
+
+## Cross-Browser Compatibility & Legacy Polyfill Strategy
+- Exhaustive testing matrix across Chromium (Chrome, Edge, Brave), WebKit (Safari iOS/macOS), and Gecko (Firefox).
+- Target configuration compiling down to ES2020 with polyfills for modern JavaScript APIs (`ResizeObserver`, `fetch`).
+- CSS Autoprefixer integration ensuring cross-vendor prefixing for CSS Grid, Flexbox, and backdrop filters.
+- Safari-specific date parsing sanitization preventing `Invalid Date` rendering on ISO timestamp strings.
