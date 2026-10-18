@@ -355,3 +355,9 @@ client/
 - Real-time material texture mapping allowing customers to preview patterned wrapping paper and ribbon ties.
 - OrbitControls integration for 360-degree interactive rotation, zoom, and tilt inspection in real-time.
 - WebGL fallback mechanism rendering high-resolution 2D mockups for older devices with hardware limitations.
+
+## Logistics Partner Integration & Automated Shipping Calculator
+- Real-time shipping rate calculation dynamically based on package volumetric weight and destination pin code.
+- REST API integration with logistics aggregators (Shiprocket / Delhivery) for automated courier allocation.
+- Serviceability verification during checkout alerting customers if express delivery is unavailable in their area.
+- Automated air waybill (AWB) generation and dispatch label printing for merchant fulfillment workflows.
