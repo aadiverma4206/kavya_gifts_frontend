@@ -367,3 +367,9 @@ client/
 - Local storage fallback for unauthenticated guest shoppers enabling seamless migration upon account sign-up.
 - One-click 'Move to Cart' functionality with automatic stock verification prior to transfer.
 - Optimistic UI toggling providing instant visual heart animation feedback on product cards.
+
+## Multi-Stage Checkout Flow & Client-Side Validation
+- Multi-step guided checkout flow (`Checkout.jsx`) separating Shipping Address, Delivery Method, and Payment.
+- Real-time input validation ensuring accurate 10-digit mobile numbers, valid email addresses, and postal codes.
+- Sticky order summary panel detailing subtotal, applicable taxes (GST), shipping fees, and coupon savings.
+- Navigation state guards preventing customers from skipping ahead without completing prior mandatory fields.
