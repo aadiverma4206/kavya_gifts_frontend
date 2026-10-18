@@ -457,3 +457,9 @@ client/
 - Detailed financial ledger breaking down gross revenue, gateway transaction fees, shipping charges, and net payout.
 - Dispute and chargeback management dashboard displaying flagged transactions with document evidence upload.
 - Monthly accounting reports exportable to Excel/CSV for effortless merchant tax filing.
+
+## Digital Gift Card Issuance & Voucher Lifecycle
+- Purchase and instant email delivery of digital gift cards with custom recipient messages and delivery scheduling.
+- Cryptographically secure 16-character alphanumeric voucher code generation with balance tracking in Firestore.
+- Partial redemption support allowing gift card balances to span across multiple distinct purchases.
+- Merchant balance lookup and manual reload utility accessible from the store administrative portal.
