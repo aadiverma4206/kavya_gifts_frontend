@@ -451,3 +451,9 @@ client/
 - Smooth sliding cart drawer animation with backdrop dimming and intuitive swipe-to-close gestures.
 - Tactile button press feedback using scale transforms and subtle ripple effects on interactive elements.
 - Skeleton placeholder shimmer animations replacing layout jumps during initial product catalog loading.
+
+## Merchant Payment Settlement & Financial Reconciliation Ledger
+- Automated daily settlement tracking reconciling gateway payouts with fulfilled merchant orders.
+- Detailed financial ledger breaking down gross revenue, gateway transaction fees, shipping charges, and net payout.
+- Dispute and chargeback management dashboard displaying flagged transactions with document evidence upload.
+- Monthly accounting reports exportable to Excel/CSV for effortless merchant tax filing.
