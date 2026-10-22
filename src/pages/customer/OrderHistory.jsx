@@ -113,6 +113,34 @@ export default function OrderHistory() {
     }
   };
 
+  const handleExportCSV = () => {
+    if (!orders || orders.length === 0) {
+      showToast("No orders available to export.");
+      return;
+    }
+    const headers = ["Order ID", "Date", "Status", "Payment Status", "Items Count", "Total Amount (INR)", "Recipient"];
+    const rows = orders.map((o) => [
+      `"${o.orderId || o.id || ""}"`,
+      `"${formatShortDate(o.createdAt)}"`,
+      `"${o.orderStatus || "pending"}"`,
+      `"${o.paymentStatus || "pending"}"`,
+      `"${o.items?.length || 0}"`,
+      `"${o.totalAmount || o.total || 0}"`,
+      `"${(o.customer?.name || o.customerSnapshot?.name || "").replace(/"/g, '""')}"`,
+    ]);
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `kavya_orders_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast("Order history exported to CSV!");
+  };
+
   const hasActiveFilters =
     Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all";
 
@@ -320,6 +348,16 @@ export default function OrderHistory() {
                   <option value="amount_desc">Amount: High to Low</option>
                   <option value="amount_asc">Amount: Low to High</option>
                 </select>
+
+                {/* Export CSV Action */}
+                <button
+                  type="button"
+                  className="btn-order-action"
+                  onClick={handleExportCSV}
+                  title="Export orders to CSV spreadsheet"
+                >
+                  📥 Export CSV
+                </button>
               </div>
             </div>
 
