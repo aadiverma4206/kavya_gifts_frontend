@@ -39,6 +39,14 @@ export default function OrderHistory() {
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [toastMessage, setToastMessage] = useState("");
+  const [collapsedOrders, setCollapsedOrders] = useState({});
+
+  const toggleOrderItems = (orderKey) => {
+    setCollapsedOrders((prev) => ({
+      ...prev,
+      [orderKey]: !prev[orderKey],
+    }));
+  };
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -434,41 +442,87 @@ export default function OrderHistory() {
                 </div>
               )}
 
-              {/* Items List */}
-              <div className="order-items-grid">
-                {ord.items?.map((item, idx) => {
-                  const pId = item.productId || item.product_id;
-                  const pName = item.productName || item.product_name || "Gift Hamper";
-                  const pImg = item.thumbnail || item.image || item.image_url || (Array.isArray(item.images) && item.images[0]);
-                  return (
-                    <div key={idx} className="order-item-tile">
-                      <img
-                        src={toDirectImageUrl(pImg) || "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E"}
-                        alt={pName}
-                        onError={(e) => {
-                          e.currentTarget.onerror = null;
-                          e.currentTarget.src = "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
-                        }}
-                      />
-                      <div className="order-item-desc">
-                        <h4>{pName}</h4>
-                        <p className="muted">
-                          Qty: {item.quantity} • ₹{Number(item.price || 0).toLocaleString("en-IN")} each
-                        </p>
-                        {pId && (
-                          <Link
-                            to={`/review/${pId}`}
-                            state={{ productName: pName, orderId: ord.orderId }}
-                            className="review-btn-link"
-                          >
-                            ★ Write Product Review
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
+              {/* Items List Header & Toggle */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  margin: "14px 0 8px",
+                  paddingBottom: "4px",
+                  borderBottom: "1px dashed var(--color-border)",
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    color: "var(--color-primary)",
+                  }}
+                >
+                  Hampers in this Order ({ord.items?.length || 0})
+                </span>
+                <button
+                  type="button"
+                  onClick={() => toggleOrderItems(ord.orderId || oIdx)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    fontSize: "12.5px",
+                    fontWeight: 600,
+                    color: "#92400e",
+                    cursor: "pointer",
+                  }}
+                >
+                  {collapsedOrders[ord.orderId || oIdx] ? "▾ Show Hampers" : "▴ Hide Hampers"}
+                </button>
               </div>
+
+              {!collapsedOrders[ord.orderId || oIdx] && (
+                <div className="order-items-grid">
+                  {ord.items?.map((item, idx) => {
+                    const pId = item.productId || item.product_id;
+                    const pName = item.productName || item.product_name || "Gift Hamper";
+                    const pImg =
+                      item.thumbnail ||
+                      item.image ||
+                      item.image_url ||
+                      (Array.isArray(item.images) && item.images[0]);
+                    return (
+                      <div key={idx} className="order-item-tile">
+                        <img
+                          src={
+                            toDirectImageUrl(pImg) ||
+                            "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E"
+                          }
+                          alt={pName}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src =
+                              "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
+                          }}
+                        />
+                        <div className="order-item-desc">
+                          <h4>{pName}</h4>
+                          <p className="muted">
+                            Qty: {item.quantity} • ₹
+                            {Number(item.price || 0).toLocaleString("en-IN")} each
+                          </p>
+                          {pId && (
+                            <Link
+                              to={`/review/${pId}`}
+                              state={{ productName: pName, orderId: ord.orderId }}
+                              className="review-btn-link"
+                            >
+                              ★ Write Product Review
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Card Footer */}
               <div className="order-card-footer">
