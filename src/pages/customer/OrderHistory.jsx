@@ -628,13 +628,21 @@ export default function OrderHistory() {
 
               {/* Gift Wrap Highlight */}
               {ord.giftWrap?.enabled && (
-                <div className="order-card-giftwrap">
-                  <span>🎁 Gift Wrap: <strong>{ord.giftWrap.optionName}</strong></span>
-                  {ord.giftWrap.recipientName && (
-                    <span> • Recipient: <strong>{ord.giftWrap.recipientName}</strong></span>
-                  )}
+                <div className="order-card-giftwrap" style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "6px" }}>
+                    <span>🎁 Bespoke Gift Wrapping: <strong>{ord.giftWrap.optionName}</strong></span>
+                    {ord.giftWrap.recipientName && (
+                      <span style={{ background: "rgba(212, 163, 71, 0.2)", padding: "2px 8px", borderRadius: "4px", fontSize: "12px", color: "#78350f" }}>
+                        For: <strong>{ord.giftWrap.recipientName}</strong>
+                      </span>
+                    )}
+                  </div>
                   {ord.giftWrap.message && (
-                    <p className="order-gift-msg">"{ord.giftWrap.message}"</p>
+                    <div style={{ marginTop: "4px", padding: "6px 12px", background: "rgba(255, 255, 255, 0.7)", borderRadius: "4px", borderLeft: "3px solid var(--color-primary)" }}>
+                      <p className="order-gift-msg" style={{ margin: 0, fontSize: "12.5px" }}>
+                        💌 <em>"{ord.giftWrap.message}"</em>
+                      </p>
+                    </div>
                   )}
                 </div>
               )}
