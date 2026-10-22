@@ -42,6 +42,46 @@ export default function OrderHistory() {
         </Link>
       </div>
 
+      {/* Customer Orders Overview Metrics Bar */}
+      {!loading && orders.length > 0 && (
+        <div className="orders-metrics-grid">
+          <div className="metric-tile">
+            <div className="metric-icon-wrap">🎁</div>
+            <div className="metric-info">
+              <span className="metric-val">{orders.length}</span>
+              <span className="metric-label">Total Hampers Ordered</span>
+            </div>
+          </div>
+          <div className="metric-tile">
+            <div className="metric-icon-wrap">💎</div>
+            <div className="metric-info">
+              <span className="metric-val">
+                {formatCurrency(
+                  orders.reduce((sum, o) => sum + Number(o.totalAmount || o.total || 0), 0)
+                )}
+              </span>
+              <span className="metric-label">Total Curated Value</span>
+            </div>
+          </div>
+          <div className="metric-tile">
+            <div className="metric-icon-wrap">🚚</div>
+            <div className="metric-info">
+              <span className="metric-val">
+                {
+                  orders.filter(
+                    (o) =>
+                      !["delivered", "cancelled", "refunded"].includes(
+                        (o.orderStatus || "").toLowerCase()
+                      )
+                  ).length
+                }
+              </span>
+              <span className="metric-label">Active Dispatches</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {loading && <p className="muted">Loading your orders...</p>}
 
       {!loading && orders.length === 0 && (
