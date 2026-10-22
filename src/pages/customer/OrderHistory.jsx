@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 import { getOrdersByCustomer } from "../../services/orderService";
 import { toDirectImageUrl } from "../../utils/driveImage";
 import { formatShortDate, formatCurrency } from "../../utils/formatters";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
-
+import "./"
 function getOrderStepIndex(status) {
   const s = (status || "pending").toLowerCase();
   if (s === "delivered") return 4;
@@ -32,6 +33,8 @@ function getEstimatedDeliveryDate(createdAt) {
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -40,6 +43,25 @@ export default function OrderHistory() {
   const [sortBy, setSortBy] = useState("newest");
   const [toastMessage, setToastMessage] = useState("");
   const [collapsedOrders, setCollapsedOrders] = useState({});
+
+  const handleBuyAgain = (ord) => {
+    if (!ord.items || ord.items.length === 0) return;
+    ord.items.forEach((item) => {
+      addToCart(
+        {
+          id: item.productId || item.product_id,
+          name: item.productName || item.product_name || "Gift Hamper",
+          price: Number(item.price || 0),
+          thumbnail: item.thumbnail || item.image || item.image_url,
+        },
+        item.quantity || 1
+      );
+    });
+    showToast("Selected hamper(s) added to your cart!");
+    setTimeout(() => {
+      navigate("/cart");
+    }, 700);
+  };
 
   const toggleOrderItems = (orderKey) => {
     setCollapsedOrders((prev) => ({
