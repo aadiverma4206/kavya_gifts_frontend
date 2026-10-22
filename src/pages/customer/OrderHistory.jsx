@@ -16,6 +16,19 @@ function getOrderStepIndex(status) {
   return 0; // pending / placed
 }
 
+function getEstimatedDeliveryDate(createdAt) {
+  if (!createdAt) return "Within 3 business days";
+  const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
+  if (isNaN(date.getTime())) return "Within 3 business days";
+  const eta = new Date(date);
+  eta.setDate(eta.getDate() + 3);
+  return eta.toLocaleDateString("en-IN", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
@@ -369,7 +382,7 @@ export default function OrderHistory() {
                     <span className="stepper-eta">
                       {ord.orderStatus === "delivered"
                         ? "✓ Successfully Delivered"
-                        : "🚚 Estimated Delivery: 2-4 business days"}
+                        : `🚚 Estimated Delivery by: ${getEstimatedDeliveryDate(ord.createdAt)}`}
                     </span>
                     <span className="stepper-track-num">
                       {ord.trackingNumber || `TRACK: TRK-${(ord.orderId || "KG").slice(-6)}`}
