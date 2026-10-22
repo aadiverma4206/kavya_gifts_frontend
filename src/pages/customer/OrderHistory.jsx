@@ -25,6 +25,25 @@ export default function OrderHistory() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
+  const [toastMessage, setToastMessage] = useState("");
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage("");
+    }, 3000);
+  };
+
+  const handleCopyOrderId = (id) => {
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard
+        .writeText(id)
+        .then(() => showToast(`Copied Order ID: ${id}`))
+        .catch(() => showToast(`Order ID: ${id}`));
+    } else {
+      showToast(`Order ID: ${id}`);
+    }
+  };
 
   const hasActiveFilters =
     Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all";
@@ -303,6 +322,22 @@ export default function OrderHistory() {
               <div className="order-card-header">
                 <div className="order-meta">
                   <span className="order-id-badge">{ord.orderId || `#KG-${oIdx + 1}`}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyOrderId(ord.orderId || `#KG-${oIdx + 1}`)}
+                    title="Copy Order ID to clipboard"
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      fontSize: "14px",
+                      padding: "2px 4px",
+                      opacity: 0.75,
+                    }}
+                    aria-label="Copy Order ID"
+                  >
+                    📋
+                  </button>
                   <span className="order-date muted">
                     {formatShortDate(ord.createdAt) !== "N/A"
                       ? formatShortDate(ord.createdAt)
@@ -438,6 +473,13 @@ export default function OrderHistory() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Floating Toast Notification */}
+      {toastMessage && (
+        <div className="orders-toast" role="status" aria-live="polite">
+          <span>📋</span> {toastMessage}
         </div>
       )}
     </div>
