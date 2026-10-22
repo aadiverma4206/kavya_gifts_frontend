@@ -369,7 +369,7 @@ export default function OrderHistory() {
             </div>
 
             {/* Status Filter Tabs */}
-            <div className="status-tabs-row">
+            <div className="status-tabs-row" role="tablist" aria-label="Filter orders by status">
               {[
                 { id: "all", label: "All Orders" },
                 { id: "pending", label: "Pending" },
@@ -381,6 +381,8 @@ export default function OrderHistory() {
                 <button
                   key={tab.id}
                   type="button"
+                  role="tab"
+                  aria-selected={statusFilter === tab.id}
                   className={`status-tab-btn ${statusFilter === tab.id ? "active" : ""}`}
                   onClick={() => setStatusFilter(tab.id)}
                 >
@@ -669,6 +671,8 @@ export default function OrderHistory() {
                 </span>
                 <button
                   type="button"
+                  aria-expanded={!collapsedOrders[ord.orderId || oIdx]}
+                  aria-label={collapsedOrders[ord.orderId || oIdx] ? "Expand hamper items" : "Collapse hamper items"}
                   onClick={() => toggleOrderItems(ord.orderId || oIdx)}
                   style={{
                     background: "none",
