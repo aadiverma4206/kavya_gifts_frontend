@@ -349,7 +349,65 @@ export default function OrderHistory() {
         </>
       )}
 
-      {loading && <p className="muted">Loading your orders...</p>}
+      {/* Skeleton Loading State */}
+      {loading && (
+        <div className="orders-cards-list" aria-busy="true" aria-label="Loading orders">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="card order-card skeleton-order-card">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "18px",
+                }}
+              >
+                <div
+                  className="skeleton-shimmer"
+                  style={{ width: "180px", height: "24px" }}
+                />
+                <div
+                  className="skeleton-shimmer"
+                  style={{ width: "95px", height: "24px" }}
+                />
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "16px",
+                  alignItems: "center",
+                  marginBottom: "18px",
+                }}
+              >
+                <div
+                  className="skeleton-shimmer"
+                  style={{ width: "56px", height: "56px", flexShrink: 0 }}
+                />
+                <div
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                  }}
+                >
+                  <div
+                    className="skeleton-shimmer"
+                    style={{ width: "55%", height: "18px" }}
+                  />
+                  <div
+                    className="skeleton-shimmer"
+                    style={{ width: "35%", height: "14px" }}
+                  />
+                </div>
+              </div>
+              <div
+                className="skeleton-shimmer"
+                style={{ width: "100%", height: "28px" }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {!loading && orders.length === 0 && (
         <div className="card empty-orders-card">
