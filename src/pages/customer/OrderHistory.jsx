@@ -17,6 +17,16 @@ export default function OrderHistory() {
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
+  const hasActiveFilters =
+    Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all";
+
+  const resetAllFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setPaymentFilter("all");
+    setSortBy("newest");
+  };
+
   useEffect(() => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
     if (idToQuery) {
@@ -31,6 +41,63 @@ export default function OrderHistory() {
       setLoading(false);
     }
   }, [currentUser, userProfile]);
+
+  const displayedOrders = orders
+    .filter((ord) => {
+      // Status filter
+      if (
+        statusFilter !== "all" &&
+        (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
+      ) {
+        return false;
+      }
+      // Payment filter
+      if (paymentFilter !== "all") {
+        const pStatus = (ord.paymentStatus || "pending").toLowerCase();
+        if (paymentFilter === "paid" && pStatus !== "paid" && pStatus !== "completed") {
+          return false;
+        }
+        if (paymentFilter !== "paid" && pStatus !== paymentFilter.toLowerCase()) {
+          return false;
+        }
+      }
+      // Search filter
+      if (!searchTerm.trim()) return true;
+      const term = searchTerm.toLowerCase();
+      const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
+      const itemMatch = ord.items?.some((it) =>
+        (it.productName || it.product_name || "").toLowerCase().includes(term)
+      );
+      const recipientMatch = (
+        ord.giftWrap?.recipientName ||
+        ord.customer?.name ||
+        ord.customerSnapshot?.name ||
+        ""
+      )
+        .toLowerCase()
+        .includes(term);
+      return idMatch || itemMatch || recipientMatch;
+    })
+    .sort((a, b) => {
+      if (sortBy === "amount_desc") {
+        return (
+          Number(b.totalAmount || b.total || 0) -
+          Number(a.totalAmount || a.total || 0)
+        );
+      }
+      if (sortBy === "amount_asc") {
+        return (
+          Number(a.totalAmount || a.total || 0) -
+          Number(b.totalAmount || b.total || 0)
+        );
+      }
+      const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+      const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+      if (sortBy === "oldest") {
+        return dateA - dateB;
+      }
+      return dateB - dateA;
+    });
 
   return (
     <div className="orders-container container section">
@@ -160,6 +227,30 @@ export default function OrderHistory() {
                 </button>
               ))}
             </div>
+
+            {/* Active Filters Clear Row */}
+            {hasActiveFilters && (
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "8px", borderTop: "1px dashed var(--color-border)" }}>
+                <span style={{ fontSize: "12.5px", color: "var(--color-muted)" }}>
+                  Showing {displayedOrders.length} of {orders.length} orders
+                </span>
+                <button
+                  type="button"
+                  onClick={resetAllFilters}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "var(--color-primary)",
+                    fontSize: "12.5px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    textDecoration: "underline"
+                  }}
+                >
+                  Reset all filters
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}
@@ -177,65 +268,27 @@ export default function OrderHistory() {
         </div>
       )}
 
-      {!loading && orders.length > 0 && (
+      {!loading && orders.length > 0 && displayedOrders.length === 0 && (
+        <div className="card empty-orders-card" style={{ padding: "40px 20px" }}>
+          <span style={{ fontSize: "36px" }}>🔍</span>
+          <h3>No Matching Orders Found</h3>
+          <p className="muted">
+            No orders match your current search or status filters.
+          </p>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            style={{ marginTop: "14px" }}
+            onClick={resetAllFilters}
+          >
+            Clear All Filters
+          </button>
+        </div>
+      )}
+
+      {!loading && displayedOrders.length > 0 && (
         <div className="orders-cards-list">
-          {orders
-            .filter((ord) => {
-              // Status filter
-              if (
-                statusFilter !== "all" &&
-                (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
-              ) {
-                return false;
-              }
-              // Payment filter
-              if (paymentFilter !== "all") {
-                const pStatus = (ord.paymentStatus || "pending").toLowerCase();
-                if (paymentFilter === "paid" && pStatus !== "paid" && pStatus !== "completed") {
-                  return false;
-                }
-                if (paymentFilter !== "paid" && pStatus !== paymentFilter.toLowerCase()) {
-                  return false;
-                }
-              }
-              // Search filter
-              if (!searchTerm.trim()) return true;
-              const term = searchTerm.toLowerCase();
-              const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
-              const itemMatch = ord.items?.some((it) =>
-                (it.productName || it.product_name || "").toLowerCase().includes(term)
-              );
-              const recipientMatch = (
-                ord.giftWrap?.recipientName ||
-                ord.customer?.name ||
-                ord.customerSnapshot?.name ||
-                ""
-              )
-                .toLowerCase()
-                .includes(term);
-              return idMatch || itemMatch || recipientMatch;
-            })
-            .sort((a, b) => {
-              if (sortBy === "amount_desc") {
-                return (
-                  Number(b.totalAmount || b.total || 0) -
-                  Number(a.totalAmount || a.total || 0)
-                );
-              }
-              if (sortBy === "amount_asc") {
-                return (
-                  Number(a.totalAmount || a.total || 0) -
-                  Number(b.totalAmount || b.total || 0)
-                );
-              }
-              const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-              const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-              if (sortBy === "oldest") {
-                return dateA - dateB;
-              }
-              return dateB - dateA;
-            })
-            .map((ord, oIdx) => (
+          {displayedOrders.map((ord, oIdx) => (
             <div key={ord.id || ord.orderId || oIdx} className="card order-card">
               {/* Card Header */}
               <div className="order-card-header">
