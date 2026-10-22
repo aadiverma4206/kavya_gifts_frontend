@@ -15,6 +15,7 @@ export default function OrderHistory() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
 
   useEffect(() => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
@@ -123,6 +124,19 @@ export default function OrderHistory() {
                   <option value="failed">Payment: Failed</option>
                   <option value="cancelled">Payment: Cancelled</option>
                 </select>
+
+                {/* Sort Order Dropdown */}
+                <select
+                  className="filter-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sort orders"
+                >
+                  <option value="newest">Sort: Newest First</option>
+                  <option value="oldest">Sort: Oldest First</option>
+                  <option value="amount_desc">Amount: High to Low</option>
+                  <option value="amount_asc">Amount: Low to High</option>
+                </select>
               </div>
             </div>
 
@@ -200,6 +214,26 @@ export default function OrderHistory() {
                 .toLowerCase()
                 .includes(term);
               return idMatch || itemMatch || recipientMatch;
+            })
+            .sort((a, b) => {
+              if (sortBy === "amount_desc") {
+                return (
+                  Number(b.totalAmount || b.total || 0) -
+                  Number(a.totalAmount || a.total || 0)
+                );
+              }
+              if (sortBy === "amount_asc") {
+                return (
+                  Number(a.totalAmount || a.total || 0) -
+                  Number(b.totalAmount || b.total || 0)
+                );
+              }
+              const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+              const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+              if (sortBy === "oldest") {
+                return dateA - dateB;
+              }
+              return dateB - dateA;
             })
             .map((ord, oIdx) => (
             <div key={ord.id || ord.orderId || oIdx} className="card order-card">
