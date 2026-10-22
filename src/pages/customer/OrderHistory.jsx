@@ -14,6 +14,7 @@ export default function OrderHistory() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [paymentFilter, setPaymentFilter] = useState("all");
 
   useEffect(() => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
@@ -107,6 +108,22 @@ export default function OrderHistory() {
                   </button>
                 )}
               </div>
+
+              {/* Payment Filter Dropdown */}
+              <div className="filter-controls-group">
+                <select
+                  className="filter-select"
+                  value={paymentFilter}
+                  onChange={(e) => setPaymentFilter(e.target.value)}
+                  aria-label="Filter by payment status"
+                >
+                  <option value="all">Payment: All</option>
+                  <option value="paid">Payment: Paid</option>
+                  <option value="pending">Payment: Pending</option>
+                  <option value="failed">Payment: Failed</option>
+                  <option value="cancelled">Payment: Cancelled</option>
+                </select>
+              </div>
             </div>
 
             {/* Status Filter Tabs */}
@@ -156,6 +173,16 @@ export default function OrderHistory() {
                 (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
               ) {
                 return false;
+              }
+              // Payment filter
+              if (paymentFilter !== "all") {
+                const pStatus = (ord.paymentStatus || "pending").toLowerCase();
+                if (paymentFilter === "paid" && pStatus !== "paid" && pStatus !== "completed") {
+                  return false;
+                }
+                if (paymentFilter !== "paid" && pStatus !== paymentFilter.toLowerCase()) {
+                  return false;
+                }
               }
               // Search filter
               if (!searchTerm.trim()) return true;
