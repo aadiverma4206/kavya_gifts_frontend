@@ -7,7 +7,6 @@ import { toDirectImageUrl } from "../../utils/driveImage";
 import { formatShortDate, formatCurrency } from "../../utils/formatters";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
-import "./"
 function getOrderStepIndex(status) {
   const s = (status || "pending").toLowerCase();
   if (s === "delivered") return 4;
