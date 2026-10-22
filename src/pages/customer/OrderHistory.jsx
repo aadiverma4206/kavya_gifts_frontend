@@ -12,6 +12,7 @@ export default function OrderHistory() {
   const { currentUser, userProfile } = useAuth();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
@@ -44,42 +45,70 @@ export default function OrderHistory() {
 
       {/* Customer Orders Overview Metrics Bar */}
       {!loading && orders.length > 0 && (
-        <div className="orders-metrics-grid">
-          <div className="metric-tile">
-            <div className="metric-icon-wrap">🎁</div>
-            <div className="metric-info">
-              <span className="metric-val">{orders.length}</span>
-              <span className="metric-label">Total Hampers Ordered</span>
+        <>
+          <div className="orders-metrics-grid">
+            <div className="metric-tile">
+              <div className="metric-icon-wrap">🎁</div>
+              <div className="metric-info">
+                <span className="metric-val">{orders.length}</span>
+                <span className="metric-label">Total Hampers Ordered</span>
+              </div>
+            </div>
+            <div className="metric-tile">
+              <div className="metric-icon-wrap">💎</div>
+              <div className="metric-info">
+                <span className="metric-val">
+                  {formatCurrency(
+                    orders.reduce((sum, o) => sum + Number(o.totalAmount || o.total || 0), 0)
+                  )}
+                </span>
+                <span className="metric-label">Total Curated Value</span>
+              </div>
+            </div>
+            <div className="metric-tile">
+              <div className="metric-icon-wrap">🚚</div>
+              <div className="metric-info">
+                <span className="metric-val">
+                  {
+                    orders.filter(
+                      (o) =>
+                        !["delivered", "cancelled", "refunded"].includes(
+                          (o.orderStatus || "").toLowerCase()
+                        )
+                    ).length
+                  }
+                </span>
+                <span className="metric-label">Active Dispatches</span>
+              </div>
             </div>
           </div>
-          <div className="metric-tile">
-            <div className="metric-icon-wrap">💎</div>
-            <div className="metric-info">
-              <span className="metric-val">
-                {formatCurrency(
-                  orders.reduce((sum, o) => sum + Number(o.totalAmount || o.total || 0), 0)
+
+          {/* Search Controls */}
+          <div className="orders-filter-section">
+            <div className="filter-top-row">
+              <div className="orders-search-box">
+                <span className="search-icon-inside">🔍</span>
+                <input
+                  type="text"
+                  className="orders-search-input"
+                  placeholder="Search by Order ID (#KG-...), hamper name, or recipient..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                {searchTerm && (
+                  <button
+                    type="button"
+                    className="search-clear-btn"
+                    onClick={() => setSearchTerm("")}
+                    title="Clear search"
+                  >
+                    ✕
+                  </button>
                 )}
-              </span>
-              <span className="metric-label">Total Curated Value</span>
+              </div>
             </div>
           </div>
-          <div className="metric-tile">
-            <div className="metric-icon-wrap">🚚</div>
-            <div className="metric-info">
-              <span className="metric-val">
-                {
-                  orders.filter(
-                    (o) =>
-                      !["delivered", "cancelled", "refunded"].includes(
-                        (o.orderStatus || "").toLowerCase()
-                      )
-                  ).length
-                }
-              </span>
-              <span className="metric-label">Active Dispatches</span>
-            </div>
-          </div>
-        </div>
+        </>
       )}
 
       {loading && <p className="muted">Loading your orders...</p>}
@@ -97,7 +126,25 @@ export default function OrderHistory() {
 
       {!loading && orders.length > 0 && (
         <div className="orders-cards-list">
-          {orders.map((ord, oIdx) => (
+          {orders
+            .filter((ord) => {
+              if (!searchTerm.trim()) return true;
+              const term = searchTerm.toLowerCase();
+              const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
+              const itemMatch = ord.items?.some((it) =>
+                (it.productName || it.product_name || "").toLowerCase().includes(term)
+              );
+              const recipientMatch = (
+                ord.giftWrap?.recipientName ||
+                ord.customer?.name ||
+                ord.customerSnapshot?.name ||
+                ""
+              )
+                .toLowerCase()
+                .includes(term);
+              return idMatch || itemMatch || recipientMatch;
+            })
+            .map((ord, oIdx) => (
             <div key={ord.id || ord.orderId || oIdx} className="card order-card">
               {/* Card Header */}
               <div className="order-card-header">
