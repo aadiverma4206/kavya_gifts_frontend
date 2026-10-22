@@ -7,6 +7,15 @@ import { formatShortDate, formatCurrency } from "../../utils/formatters";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
 
+function getOrderStepIndex(status) {
+  const s = (status || "pending").toLowerCase();
+  if (s === "delivered") return 4;
+  if (s === "shipped" || s === "out_for_delivery") return 3;
+  if (s === "processing" || s === "packed") return 2;
+  if (s === "confirmed") return 1;
+  return 0; // pending / placed
+}
+
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
@@ -317,6 +326,52 @@ export default function OrderHistory() {
                   </span>
                 </div>
               </div>
+
+              {/* Order Tracking Stepper */}
+              {ord.orderStatus !== "cancelled" && (
+                <div className="order-stepper-container">
+                  <div className="stepper-header-row">
+                    <span className="stepper-eta">
+                      {ord.orderStatus === "delivered"
+                        ? "✓ Successfully Delivered"
+                        : "🚚 Estimated Delivery: 2-4 business days"}
+                    </span>
+                    <span className="stepper-track-num">
+                      {ord.trackingNumber || `TRACK: TRK-${(ord.orderId || "KG").slice(-6)}`}
+                    </span>
+                  </div>
+                  <div className="stepper-steps">
+                    <div className="stepper-connector">
+                      <div
+                        className="stepper-connector-fill"
+                        style={{
+                          width: `${(getOrderStepIndex(ord.orderStatus) / 4) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    {["Placed", "Confirmed", "Packed", "Shipped", "Delivered"].map(
+                      (step, sIdx) => {
+                        const currentIdx = getOrderStepIndex(ord.orderStatus);
+                        const isCompleted = sIdx <= currentIdx;
+                        const isCurrent = sIdx === currentIdx;
+                        return (
+                          <div
+                            key={step}
+                            className={`stepper-item ${
+                              isCompleted ? "completed" : ""
+                            } ${isCurrent ? "current" : ""}`}
+                          >
+                            <div className="stepper-circle">
+                              {isCompleted ? "✓" : sIdx + 1}
+                            </div>
+                            <span className="stepper-label">{step}</span>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Gift Wrap Highlight */}
               {ord.giftWrap?.enabled && (
