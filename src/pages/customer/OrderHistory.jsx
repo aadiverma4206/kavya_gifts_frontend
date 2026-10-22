@@ -121,19 +121,28 @@ export default function OrderHistory() {
     setSortBy("newest");
   };
 
-  useEffect(() => {
+  const [fetchError, setFetchError] = useState(null);
+
+  const fetchOrders = () => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
     if (idToQuery) {
+      setLoading(true);
+      setFetchError(null);
       getOrdersByCustomer(idToQuery)
         .then((data) => setOrders(data || []))
         .catch((err) => {
           console.error("Error fetching order history:", err);
+          setFetchError("Unable to retrieve your order bookings. Please check your network connection.");
           setOrders([]);
         })
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
+  };
+
+  useEffect(() => {
+    fetchOrders();
   }, [currentUser, userProfile]);
 
   const displayedOrders = orders
@@ -409,7 +418,34 @@ export default function OrderHistory() {
         </div>
       )}
 
-      {!loading && orders.length === 0 && (
+      {/* Error Alert State */}
+      {!loading && fetchError && (
+        <div
+          className="card"
+          style={{
+            padding: "24px",
+            textAlign: "center",
+            background: "#fef2f2",
+            border: "1px solid #fecaca",
+            marginBottom: "20px",
+          }}
+        >
+          <span style={{ fontSize: "32px" }}>⚠️</span>
+          <h4 style={{ color: "#991b1b", margin: "8px 0" }}>Connection Issue</h4>
+          <p style={{ color: "#7f1d1d", fontSize: "13.5px", marginBottom: "14px" }}>
+            {fetchError}
+          </p>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm"
+            onClick={fetchOrders}
+          >
+            ↻ Retry Loading Orders
+          </button>
+        </div>
+      )}
+
+      {!loading && !fetchError && orders.length === 0 && (
         <div className="card empty-orders-card">
           <span style={{ fontSize: "40px" }}>🎁</span>
           <h3>No Orders Found</h3>
