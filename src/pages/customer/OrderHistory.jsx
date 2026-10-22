@@ -13,6 +13,7 @@ export default function OrderHistory() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   useEffect(() => {
     const idToQuery = userProfile?.customerId || currentUser?.uid;
@@ -107,6 +108,27 @@ export default function OrderHistory() {
                 )}
               </div>
             </div>
+
+            {/* Status Filter Tabs */}
+            <div className="status-tabs-row">
+              {[
+                { id: "all", label: "All Orders" },
+                { id: "pending", label: "Pending" },
+                { id: "confirmed", label: "Confirmed" },
+                { id: "shipped", label: "Shipped" },
+                { id: "delivered", label: "Delivered" },
+                { id: "cancelled", label: "Cancelled" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className={`status-tab-btn ${statusFilter === tab.id ? "active" : ""}`}
+                  onClick={() => setStatusFilter(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
         </>
       )}
@@ -128,6 +150,14 @@ export default function OrderHistory() {
         <div className="orders-cards-list">
           {orders
             .filter((ord) => {
+              // Status filter
+              if (
+                statusFilter !== "all" &&
+                (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
+              ) {
+                return false;
+              }
+              // Search filter
               if (!searchTerm.trim()) return true;
               const term = searchTerm.toLowerCase();
               const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
