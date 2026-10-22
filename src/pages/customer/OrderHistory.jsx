@@ -29,6 +29,13 @@ function getEstimatedDeliveryDate(createdAt) {
   });
 }
 
+function getCourierPartner(ord) {
+  if (ord?.courierPartner) return ord.courierPartner;
+  const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge"];
+  const charCode = (ord?.orderId || "KG").charCodeAt((ord?.orderId || "KG").length - 1);
+  return partners[charCode % partners.length];
+}
+
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
@@ -583,7 +590,7 @@ export default function OrderHistory() {
                         : `🚚 Estimated Delivery by: ${getEstimatedDeliveryDate(ord.createdAt)}`}
                     </span>
                     <span className="stepper-track-num">
-                      {ord.trackingNumber || `TRACK: TRK-${(ord.orderId || "KG").slice(-6)}`}
+                      📦 {getCourierPartner(ord)} | {ord.trackingNumber || `TRK-${(ord.orderId || "KG").slice(-6)}`}
                     </span>
                   </div>
                   <div className="stepper-steps">
