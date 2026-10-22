@@ -40,6 +40,8 @@ export default function OrderHistory() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
   const [collapsedOrders, setCollapsedOrders] = useState({});
   const [invoiceOrder, setInvoiceOrder] = useState(null);
@@ -201,6 +203,17 @@ export default function OrderHistory() {
       }
       return dateB - dateA;
     });
+
+  // Reset pagination on filter adjustments
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter, paymentFilter, sortBy]);
+
+  const totalPages = Math.max(1, Math.ceil(displayedOrders.length / pageSize));
+  const paginatedOrders = displayedOrders.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="orders-container container section">
@@ -476,7 +489,7 @@ export default function OrderHistory() {
 
       {!loading && displayedOrders.length > 0 && (
         <div className="orders-cards-list">
-          {displayedOrders.map((ord, oIdx) => (
+          {paginatedOrders.map((ord, oIdx) => (
             <div key={ord.id || ord.orderId || oIdx} className="card order-card">
               {/* Card Header */}
               <div className="order-card-header">
@@ -728,6 +741,46 @@ export default function OrderHistory() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {!loading && displayedOrders.length > 0 && totalPages > 1 && (
+        <div className="orders-pagination-bar" role="navigation" aria-label="Orders pagination">
+          <span style={{ fontSize: "13px", color: "var(--color-muted)" }}>
+            Showing {(currentPage - 1) * pageSize + 1} to{" "}
+            {Math.min(currentPage * pageSize, displayedOrders.length)} of {displayedOrders.length} hampers
+          </span>
+          <div className="pagination-pages">
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage <= 1}
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              aria-label="Previous page"
+            >
+              ‹
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                type="button"
+                className={`page-btn ${currentPage === num ? "active" : ""}`}
+                onClick={() => setCurrentPage(num)}
+              >
+                {num}
+              </button>
+            ))}
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              aria-label="Next page"
+            >
+              ›
+            </button>
+          </div>
         </div>
       )}
 
