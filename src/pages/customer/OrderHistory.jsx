@@ -44,6 +44,28 @@ export default function OrderHistory() {
   const [collapsedOrders, setCollapsedOrders] = useState({});
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [supportOrder, setSupportOrder] = useState(null);
+  const [cancelOrderTarget, setCancelOrderTarget] = useState(null);
+  const [cancelling, setCancelling] = useState(false);
+
+  const handleConfirmCancelOrder = async () => {
+    if (!cancelOrderTarget) return;
+    setCancelling(true);
+    try {
+      setOrders((prev) =>
+        prev.map((o) =>
+          (o.orderId || o.id) === (cancelOrderTarget.orderId || cancelOrderTarget.id)
+            ? { ...o, orderStatus: "cancelled" }
+            : o
+        )
+      );
+      showToast(`Order ${cancelOrderTarget.orderId} has been cancelled`);
+      setCancelOrderTarget(null);
+    } catch (err) {
+      showToast("Unable to cancel order: " + err.message);
+    } finally {
+      setCancelling(false);
+    }
+  };
 
   const handleBuyAgain = (ord) => {
     if (!ord.items || ord.items.length === 0) return;
@@ -589,6 +611,17 @@ export default function OrderHistory() {
                   >
                     💬 Concierge Help
                   </button>
+                  {ord.orderStatus === "pending" && (
+                    <button
+                      type="button"
+                      className="btn-order-action"
+                      style={{ color: "#b91c1c", borderColor: "#fca5a5" }}
+                      onClick={() => setCancelOrderTarget(ord)}
+                      title="Cancel this pending booking"
+                    >
+                      ✕ Cancel Order
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="btn-order-action primary"
@@ -783,6 +816,67 @@ export default function OrderHistory() {
               >
                 ✉️ Email Support Desk
               </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Order Confirmation Modal */}
+      {cancelOrderTarget && (
+        <div
+          className="order-modal-backdrop"
+          onClick={() => !cancelling && setCancelOrderTarget(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="order-modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-row">
+              <h3 style={{ margin: 0, color: "#b91c1c" }}>Cancel Order</h3>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => !cancelling && setCancelOrderTarget(null)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+            <p style={{ fontSize: "14px", lineHeight: "1.6" }}>
+              Are you sure you want to cancel Order <strong>{cancelOrderTarget.orderId}</strong>?
+              This will discontinue preparation of your bespoke gift hamper booking.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                marginTop: "24px",
+              }}
+            >
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                disabled={cancelling}
+                onClick={() => setCancelOrderTarget(null)}
+              >
+                Keep Order
+              </button>
+              <button
+                type="button"
+                className="btn btn-sm"
+                style={{
+                  background: "#b91c1c",
+                  color: "#ffffff",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "var(--radius-xs)",
+                  cursor: "pointer",
+                }}
+                disabled={cancelling}
+                onClick={handleConfirmCancelOrder}
+              >
+                {cancelling ? "Cancelling..." : "Yes, Cancel Order"}
+              </button>
             </div>
           </div>
         </div>
