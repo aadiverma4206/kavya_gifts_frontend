@@ -42,6 +42,8 @@ export default function OrderHistory() {
   const [sortBy, setSortBy] = useState("newest");
   const [toastMessage, setToastMessage] = useState("");
   const [collapsedOrders, setCollapsedOrders] = useState({});
+  const [invoiceOrder, setInvoiceOrder] = useState(null);
+  const [supportOrder, setSupportOrder] = useState(null);
 
   const handleBuyAgain = (ord) => {
     if (!ord.items || ord.items.length === 0) return;
@@ -558,9 +560,231 @@ export default function OrderHistory() {
                     ₹{Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}
                   </strong>
                 </div>
+
+                {/* Actions Bar */}
+                <div
+                  className="order-actions-bar"
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: "8px",
+                    paddingTop: "12px",
+                    borderTop: "1px dashed var(--color-border)",
+                  }}
+                >
+                  <button
+                    type="button"
+                    className="btn-order-action"
+                    onClick={() => setInvoiceOrder(ord)}
+                    title="View and print tax invoice"
+                  >
+                    📄 Invoice
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-order-action"
+                    onClick={() => setSupportOrder(ord)}
+                    title="Get order assistance"
+                  >
+                    💬 Concierge Help
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-order-action primary"
+                    onClick={() => handleBuyAgain(ord)}
+                    title="Add all hampers from this order to cart"
+                  >
+                    🔁 Buy Again
+                  </button>
+                </div>
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Official Tax Invoice / Receipt Modal */}
+      {invoiceOrder && (
+        <div
+          className="order-modal-backdrop"
+          onClick={() => setInvoiceOrder(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="order-modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-row">
+              <div>
+                <h3 style={{ margin: 0, color: "var(--color-primary)" }}>
+                  Tax Invoice / Receipt
+                </h3>
+                <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                  Order: {invoiceOrder.orderId}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setInvoiceOrder(null)}
+                aria-label="Close invoice"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ fontSize: "13px", lineHeight: "1.6", marginBottom: "16px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px" }}>
+                <div>
+                  <strong>Billed To:</strong>
+                  <br />
+                  {invoiceOrder.customer?.name ||
+                    invoiceOrder.customerSnapshot?.name ||
+                    "Valued Customer"}
+                  <br />
+                  {invoiceOrder.customer?.address ||
+                    invoiceOrder.customerSnapshot?.address ||
+                    "Shipping address on record"}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <strong>Invoice Date:</strong>
+                  <br />
+                  {formatShortDate(invoiceOrder.createdAt)}
+                  <br />
+                  <strong>Payment Status:</strong>{" "}
+                  <span style={{ textTransform: "capitalize" }}>
+                    {invoiceOrder.paymentStatus || "Completed"}
+                  </span>
+                </div>
+              </div>
+
+              <table
+                style={{
+                  width: "100%",
+                  borderCollapse: "collapse",
+                  margin: "16px 0",
+                  fontSize: "12.5px",
+                }}
+              >
+                <thead>
+                  <tr style={{ background: "#f8f6f2", borderBottom: "1px solid var(--color-border)" }}>
+                    <th style={{ textAlign: "left", padding: "8px" }}>Item Description</th>
+                    <th style={{ textAlign: "center", padding: "8px" }}>Qty</th>
+                    <th style={{ textAlign: "right", padding: "8px" }}>Price</th>
+                    <th style={{ textAlign: "right", padding: "8px" }}>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {invoiceOrder.items?.map((it, i) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #f0ede8" }}>
+                      <td style={{ padding: "8px" }}>
+                        {it.productName || it.product_name || "Gift Hamper"}
+                      </td>
+                      <td style={{ textAlign: "center", padding: "8px" }}>{it.quantity}</td>
+                      <td style={{ textAlign: "right", padding: "8px" }}>
+                        ₹{Number(it.price || 0).toLocaleString("en-IN")}
+                      </td>
+                      <td style={{ textAlign: "right", padding: "8px" }}>
+                        ₹{(Number(it.price || 0) * (it.quantity || 1)).toLocaleString("en-IN")}
+                      </td>
+                    </tr>
+                  ))}
+                  {invoiceOrder.giftWrap?.enabled && (
+                    <tr style={{ borderBottom: "1px solid #f0ede8" }}>
+                      <td style={{ padding: "8px" }} colSpan={3}>
+                        🎁 {invoiceOrder.giftWrap.optionName || "Signature Gift Wrapping"}
+                      </td>
+                      <td style={{ textAlign: "right", padding: "8px" }}>Included</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  paddingTop: "8px",
+                  fontSize: "15px",
+                  fontWeight: 800,
+                  color: "var(--color-primary)",
+                }}
+              >
+                <span>Grand Total: ₹{Number(invoiceOrder.totalAmount || invoiceOrder.total || 0).toLocaleString("en-IN")}</span>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "20px" }}>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => setInvoiceOrder(null)}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={() => window.print()}
+              >
+                🖨️ Print Receipt
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Customer Support Concierge Modal */}
+      {supportOrder && (
+        <div
+          className="order-modal-backdrop"
+          onClick={() => setSupportOrder(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="order-modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-row">
+              <div>
+                <h3 style={{ margin: 0, color: "var(--color-primary)" }}>
+                  Concierge Support Desk
+                </h3>
+                <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
+                  Regarding Order: {supportOrder.orderId}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="modal-close-btn"
+                onClick={() => setSupportOrder(null)}
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="muted" style={{ fontSize: "13.5px", lineHeight: "1.6" }}>
+              Need delivery rescheduling, custom packaging adjustments, or special instructions
+              for our artisans? Our concierge desk is dedicated to assisting you.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
+              <a
+                href={`https://wa.me/919999999999?text=Hello%20Kavya%20Luxury%20Gifts%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(supportOrder.orderId || "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ textAlign: "center", textDecoration: "none" }}
+              >
+                💬 Chat with Concierge on WhatsApp
+              </a>
+              <a
+                href={`mailto:concierge@kavyaluxurygifts.com?subject=Assistance%20for%20Order%20${encodeURIComponent(supportOrder.orderId || "")}`}
+                className="btn btn-secondary"
+                style={{ textAlign: "center", textDecoration: "none" }}
+              >
+                ✉️ Email Support Desk
+              </a>
+            </div>
+          </div>
         </div>
       )}
 
