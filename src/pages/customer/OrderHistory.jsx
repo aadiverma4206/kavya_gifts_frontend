@@ -774,10 +774,23 @@ export default function OrderHistory() {
                           color: badge.color,
                           display: "inline-flex",
                           alignItems: "center",
-                          gap: "4px",
+                          gap: "6px",
                           fontWeight: 600,
                         }}
                       >
+                        {!["delivered", "cancelled", "refunded"].includes((ord.orderStatus || "").toLowerCase()) && (
+                          <span
+                            style={{
+                              display: "inline-block",
+                              width: "6px",
+                              height: "6px",
+                              borderRadius: "50%",
+                              backgroundColor: badge.color,
+                              boxShadow: `0 0 6px ${badge.color}`,
+                            }}
+                            title="Active Order in fulfillment"
+                          />
+                        )}
                         <span>{badge.icon}</span> {badge.label}
                       </span>
                     );
