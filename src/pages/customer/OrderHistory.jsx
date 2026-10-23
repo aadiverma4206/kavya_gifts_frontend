@@ -7,6 +7,12 @@ import { toDirectImageUrl } from "../../utils/driveImage";
 import { formatShortDate, formatCurrency } from "../../utils/formatters";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderHistory.css";
+
+/**
+ * Maps order lifecycle fulfillment status to a numeric milestone index (0-4).
+ * @param {string} [status="pending"] - Order status string.
+ * @returns {number} Milestone index between 0 and 4.
+ */
 function getOrderStepIndex(status) {
   const s = (status || "pending").toLowerCase();
   if (s === "delivered") return 4;
@@ -109,6 +115,14 @@ function getStatusBadgeInfo(status) {
   }
 }
 
+/**
+ * OrderHistory - Customer dashboard view for tracking luxury gift hamper bookings.
+ * Features live order tracking stepper, multi-criteria filtering, CSV export,
+ * interactive tax invoices, concierge support desk, and seamless reordering.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Order History dashboard.
+ */
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
