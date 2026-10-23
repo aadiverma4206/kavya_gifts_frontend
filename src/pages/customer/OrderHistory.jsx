@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
@@ -50,11 +50,18 @@ export default function OrderHistory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
+  const toastTimerRef = useRef(null);
   const [collapsedOrders, setCollapsedOrders] = useState({});
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [supportOrder, setSupportOrder] = useState(null);
   const [cancelOrderTarget, setCancelOrderTarget] = useState(null);
   const [cancelling, setCancelling] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+    };
+  }, []);
 
   const handleConfirmCancelOrder = async () => {
     if (!cancelOrderTarget) return;
@@ -103,9 +110,11 @@ export default function OrderHistory() {
   };
 
   const showToast = (msg) => {
+    if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setToastMessage(msg);
-    setTimeout(() => {
+    toastTimerRef.current = setTimeout(() => {
       setToastMessage("");
+      toastTimerRef.current = null;
     }, 3000);
   };
 
