@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
@@ -316,77 +316,79 @@ export default function OrderHistory() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [invoiceOrder, supportOrder, cancelOrderTarget, cancelling]);
 
-  const displayedOrders = orders
-    .filter((ord) => {
-      // Status filter
-      if (
-        statusFilter !== "all" &&
-        (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
-      ) {
-        return false;
-      }
-      // Payment filter
-      if (paymentFilter !== "all") {
-        const pStatus = (ord.paymentStatus || "pending").toLowerCase();
-        if (paymentFilter === "paid" && pStatus !== "paid" && pStatus !== "completed") {
+  const displayedOrders = useMemo(() => {
+    return orders
+      .filter((ord) => {
+        // Status filter
+        if (
+          statusFilter !== "all" &&
+          (ord.orderStatus || "pending").toLowerCase() !== statusFilter.toLowerCase()
+        ) {
           return false;
         }
-        if (paymentFilter !== "paid" && pStatus !== paymentFilter.toLowerCase()) {
-          return false;
+        // Payment filter
+        if (paymentFilter !== "all") {
+          const pStatus = (ord.paymentStatus || "pending").toLowerCase();
+          if (paymentFilter === "paid" && pStatus !== "paid" && pStatus !== "completed") {
+            return false;
+          }
+          if (paymentFilter !== "paid" && pStatus !== paymentFilter.toLowerCase()) {
+            return false;
+          }
         }
-      }
-      // Date range filter
-      if (dateRangeFilter !== "all") {
-        const orderDate = ord.createdAt?.toDate ? ord.createdAt.toDate() : new Date(ord.createdAt || 0);
-        const now = new Date();
-        if (dateRangeFilter === "30_days") {
-          const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
-          if (orderDate < thirtyDaysAgo) return false;
-        } else if (dateRangeFilter === "6_months") {
-          const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
-          if (orderDate < sixMonthsAgo) return false;
-        } else if (dateRangeFilter === "this_year") {
-          const startOfYear = new Date(now.getFullYear(), 0, 1);
-          if (orderDate < startOfYear) return false;
+        // Date range filter
+        if (dateRangeFilter !== "all") {
+          const orderDate = ord.createdAt?.toDate ? ord.createdAt.toDate() : new Date(ord.createdAt || 0);
+          const now = new Date();
+          if (dateRangeFilter === "30_days") {
+            const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            if (orderDate < thirtyDaysAgo) return false;
+          } else if (dateRangeFilter === "6_months") {
+            const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
+            if (orderDate < sixMonthsAgo) return false;
+          } else if (dateRangeFilter === "this_year") {
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            if (orderDate < startOfYear) return false;
+          }
         }
-      }
-      // Search filter
-      if (!searchTerm.trim()) return true;
-      const term = searchTerm.toLowerCase();
-      const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
-      const itemMatch = ord.items?.some((it) =>
-        (it.productName || it.product_name || "").toLowerCase().includes(term)
-      );
-      const recipientMatch = (
-        ord.giftWrap?.recipientName ||
-        ord.customer?.name ||
-        ord.customerSnapshot?.name ||
-        ""
-      )
-        .toLowerCase()
-        .includes(term);
-      return idMatch || itemMatch || recipientMatch;
-    })
-    .sort((a, b) => {
-      if (sortBy === "amount_desc") {
-        return (
-          Number(b.totalAmount || b.total || 0) -
-          Number(a.totalAmount || a.total || 0)
+        // Search filter
+        if (!searchTerm.trim()) return true;
+        const term = searchTerm.toLowerCase();
+        const idMatch = (ord.orderId || ord.id || "").toLowerCase().includes(term);
+        const itemMatch = ord.items?.some((it) =>
+          (it.productName || it.product_name || "").toLowerCase().includes(term)
         );
-      }
-      if (sortBy === "amount_asc") {
-        return (
-          Number(a.totalAmount || a.total || 0) -
-          Number(b.totalAmount || b.total || 0)
-        );
-      }
-      const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-      const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
-      if (sortBy === "oldest") {
-        return dateA - dateB;
-      }
-      return dateB - dateA;
-    });
+        const recipientMatch = (
+          ord.giftWrap?.recipientName ||
+          ord.customer?.name ||
+          ord.customerSnapshot?.name ||
+          ""
+        )
+          .toLowerCase()
+          .includes(term);
+        return idMatch || itemMatch || recipientMatch;
+      })
+      .sort((a, b) => {
+        if (sortBy === "amount_desc") {
+          return (
+            Number(b.totalAmount || b.total || 0) -
+            Number(a.totalAmount || a.total || 0)
+          );
+        }
+        if (sortBy === "amount_asc") {
+          return (
+            Number(a.totalAmount || a.total || 0) -
+            Number(b.totalAmount || b.total || 0)
+          );
+        }
+        const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
+        const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
+        if (sortBy === "oldest") {
+          return dateA - dateB;
+        }
+        return dateB - dateA;
+      });
+  }, [orders, statusFilter, paymentFilter, dateRangeFilter, searchTerm, sortBy]);
 
   // Reset pagination on filter adjustments
   useEffect(() => {
@@ -394,10 +396,12 @@ export default function OrderHistory() {
   }, [searchTerm, statusFilter, paymentFilter, dateRangeFilter, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(displayedOrders.length / pageSize));
-  const paginatedOrders = displayedOrders.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const paginatedOrders = useMemo(() => {
+    return displayedOrders.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    );
+  }, [displayedOrders, currentPage, pageSize]);
 
   const handleToggleExpandAll = () => {
     const anyExpanded = paginatedOrders.some(
