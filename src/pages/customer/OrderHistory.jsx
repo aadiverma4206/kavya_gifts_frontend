@@ -36,6 +36,30 @@ function getCourierPartner(ord) {
   return partners[charCode % partners.length];
 }
 
+function renderHighlightedText(text, query) {
+  if (!text || !query || !query.trim()) return text;
+  const q = query.trim();
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = String(text).split(new RegExp(`(${escaped})`, "gi"));
+  return parts.map((part, i) =>
+    part.toLowerCase() === q.toLowerCase() ? (
+      <mark
+        key={i}
+        style={{
+          backgroundColor: "#fef08a",
+          color: "#854d0e",
+          padding: "0 2px",
+          borderRadius: "2px",
+        }}
+      >
+        {part}
+      </mark>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
@@ -576,7 +600,7 @@ export default function OrderHistory() {
               {/* Card Header */}
               <div className="order-card-header">
                 <div className="order-meta">
-                  <span className="order-id-badge">{ord.orderId || `#KG-${oIdx + 1}`}</span>
+                  <span className="order-id-badge">{renderHighlightedText(ord.orderId || `#KG-${oIdx + 1}`, searchTerm)}</span>
                   <button
                     type="button"
                     onClick={() => handleCopyOrderId(ord.orderId || `#KG-${oIdx + 1}`)}
@@ -762,7 +786,7 @@ export default function OrderHistory() {
                           }}
                         />
                         <div className="order-item-desc">
-                          <h4>{pName}</h4>
+                          <h4>{renderHighlightedText(pName, searchTerm)}</h4>
                           <p className="muted" style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
                             <span>Qty: <strong>{item.quantity}</strong></span>
                             <span>•</span>
