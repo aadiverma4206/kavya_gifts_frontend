@@ -100,6 +100,7 @@ export default function OrderHistory() {
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [supportOrder, setSupportOrder] = useState(null);
   const [cancelOrderTarget, setCancelOrderTarget] = useState(null);
+  const [cancelReason, setCancelReason] = useState("Changed mind / Ordered by mistake");
   const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function OrderHistory() {
       setOrders((prev) =>
         prev.map((o) =>
           (o.orderId || o.id) === (cancelOrderTarget.orderId || cancelOrderTarget.id)
-            ? { ...o, orderStatus: "cancelled" }
+            ? { ...o, orderStatus: "cancelled", cancellationReason: cancelReason }
             : o
         )
       );
@@ -1253,6 +1254,23 @@ export default function OrderHistory() {
               Are you sure you want to cancel Order <strong>{cancelOrderTarget.orderId}</strong>?
               This will discontinue preparation of your bespoke gift hamper booking.
             </p>
+            <div style={{ margin: "14px 0" }}>
+              <label style={{ display: "block", fontSize: "12px", fontWeight: 600, marginBottom: "6px", color: "var(--color-text)" }}>
+                Reason for cancellation:
+              </label>
+              <select
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                className="filter-select"
+                style={{ width: "100%", padding: "7px 10px", fontSize: "13px" }}
+              >
+                <option value="Changed mind / Ordered by mistake">Changed mind / Ordered by mistake</option>
+                <option value="Delivery date no longer suits">Delivery date no longer suits</option>
+                <option value="Want to change recipient details">Want to change recipient details</option>
+                <option value="Found alternative gift option">Found alternative gift option</option>
+                <option value="Other / Financial reason">Other / Financial reason</option>
+              </select>
+            </div>
             <div
               style={{
                 display: "flex",
