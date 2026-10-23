@@ -231,6 +231,29 @@ export default function OrderHistory() {
     showToast("Order history exported to CSV!");
   };
 
+  const handleCopyInvoiceSummary = (ord) => {
+    if (!ord) return;
+    const summary = [
+      `Kavya Luxury Gifts - Tax Invoice Summary`,
+      `Invoice ID: INV-${ord.orderId ? ord.orderId.replace(/[^a-zA-Z0-9]/g, "") : "KG"}`,
+      `Order Date: ${formatShortDate(ord.createdAt)}`,
+      `Recipient: ${ord.customer?.name || ord.customerSnapshot?.name || "Customer"}`,
+      `Total Amount: ₹${Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}`,
+      `Payment Status: ${ord.paymentStatus || "Completed"}`,
+      `Items:`,
+      ...(ord.items || []).map(
+        (it) => `- ${it.productName || it.product_name || "Hamper"} x ${it.quantity || 1}: ₹${(Number(it.price || 0) * (it.quantity || 1)).toLocaleString("en-IN")}`
+      ),
+    ].join("\n");
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(summary).then(() => {
+        showToast("Invoice summary copied to clipboard!");
+      });
+    } else {
+      showToast("Invoice summary generated.");
+    }
+  };
+
   const hasActiveFilters =
     Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all" || dateRangeFilter !== "all";
 
@@ -1185,7 +1208,15 @@ export default function OrderHistory() {
               </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "20px" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "20px", flexWrap: "wrap" }}>
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => handleCopyInvoiceSummary(invoiceOrder)}
+                title="Copy plain-text summary to clipboard"
+              >
+                📋 Copy Summary
+              </button>
               <button
                 type="button"
                 className="btn btn-secondary btn-sm"
