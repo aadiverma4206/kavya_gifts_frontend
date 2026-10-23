@@ -1008,7 +1008,7 @@ export default function OrderHistory() {
                   Tax Invoice / Receipt
                 </h3>
                 <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
-                  Order: {invoiceOrder.orderId}
+                  Invoice No: INV-{invoiceOrder.orderId ? invoiceOrder.orderId.replace(/[^a-zA-Z0-9]/g, "") : "KG"} • Order: {invoiceOrder.orderId}
                 </span>
               </div>
               <button
@@ -1019,6 +1019,23 @@ export default function OrderHistory() {
               >
                 ✕
               </button>
+            </div>
+
+            {/* Official Brand Letterhead */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", padding: "10px 0", borderBottom: "1px solid #e2d9cd", marginBottom: "14px" }}>
+              <div>
+                <strong style={{ fontSize: "14px", color: "var(--color-primary)" }}>Kavya Luxury Gifts Boutique</strong>
+                <div style={{ fontSize: "11.5px", color: "var(--color-muted)" }}>
+                  Handcrafted Luxury Hampers & Curated Keepsakes
+                  <br />
+                  GSTIN: 07AAAAA0000A1Z5 • support@kavyaluxurygifts.com
+                </div>
+              </div>
+              <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted)" }}>
+                <span>Official Booking Receipt</span>
+                <br />
+                <span style={{ color: "#166534", fontWeight: 600 }}>Verified Customer Order</span>
+              </div>
             </div>
 
             <div style={{ fontSize: "13px", lineHeight: "1.6", marginBottom: "16px" }}>
