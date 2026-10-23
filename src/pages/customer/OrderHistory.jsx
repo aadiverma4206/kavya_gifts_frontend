@@ -60,6 +60,26 @@ function renderHighlightedText(text, query) {
   );
 }
 
+function getStatusBadgeInfo(status) {
+  const s = (status || "pending").toLowerCase();
+  switch (s) {
+    case "delivered":
+      return { label: "Delivered", icon: "✓", color: "#166534", bg: "#dcfce7" };
+    case "shipped":
+    case "out_for_delivery":
+      return { label: "Dispatched", icon: "🚚", color: "#1e40af", bg: "#dbeafe" };
+    case "processing":
+    case "packed":
+      return { label: "Packaging", icon: "📦", color: "#854d0e", bg: "#fef9c3" };
+    case "confirmed":
+      return { label: "Confirmed", icon: "★", color: "#065f46", bg: "#d1fae5" };
+    case "cancelled":
+      return { label: "Cancelled", icon: "✕", color: "#991b1b", bg: "#fee2e2" };
+    default:
+      return { label: "Pending", icon: "⏳", color: "#9a3412", bg: "#ffedd5" };
+  }
+}
+
 export default function OrderHistory() {
   useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
@@ -639,9 +659,24 @@ export default function OrderHistory() {
                   )}
                 </div>
                 <div className="order-status-group">
-                  <span className={`status-pill ${ord.orderStatus || "pending"}`}>
-                    {ord.orderStatus === "confirmed" ? "✓ Confirmed" : `Status: ${ord.orderStatus || "pending"}`}
-                  </span>
+                  {(() => {
+                    const badge = getStatusBadgeInfo(ord.orderStatus);
+                    return (
+                      <span
+                        className={`status-pill ${ord.orderStatus || "pending"}`}
+                        style={{
+                          backgroundColor: badge.bg,
+                          color: badge.color,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        <span>{badge.icon}</span> {badge.label}
+                      </span>
+                    );
+                  })()}
                   <span className={`payment-pill ${ord.paymentStatus || "pending"}`}>
                     {ord.paymentStatus === "paid" || ord.paymentStatus === "completed"
                       ? "✓ Paid"
