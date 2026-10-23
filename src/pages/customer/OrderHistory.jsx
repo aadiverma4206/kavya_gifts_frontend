@@ -969,7 +969,12 @@ export default function OrderHistory() {
               <div className="order-card-footer">
                 <div className="delivery-summary">
                   <span className="muted">Delivering To:</span>{" "}
-                  <strong>{ord.customer?.name || ord.customerSnapshot?.name || "Customer"}</strong>,{" "}
+                  <strong>{ord.customer?.name || ord.customerSnapshot?.name || "Customer"}</strong>
+                  {Boolean(ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone) && (
+                    <span style={{ marginLeft: "6px", fontSize: "11.5px", background: "rgba(0,0,0,0.05)", padding: "1px 6px", borderRadius: "3px", color: "var(--color-muted)" }}>
+                      📞 {ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone}
+                    </span>
+                  )},{" "}
                   {ord.customer?.address || ord.customerSnapshot?.address || ord.deliveryAddress || "Address provided"}
                   {(ord.deliveryNotes || ord.specialInstructions || ord.notes) && (
                     <div style={{ marginTop: "4px", fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
