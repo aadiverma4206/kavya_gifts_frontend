@@ -182,6 +182,19 @@ export default function OrderHistory() {
     fetchOrders();
   }, [currentUser, userProfile]);
 
+  // Accessibility: Close active modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        if (invoiceOrder) setInvoiceOrder(null);
+        if (supportOrder) setSupportOrder(null);
+        if (cancelOrderTarget && !cancelling) setCancelOrderTarget(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [invoiceOrder, supportOrder, cancelOrderTarget, cancelling]);
+
   const displayedOrders = orders
     .filter((ord) => {
       // Status filter
