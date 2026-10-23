@@ -439,6 +439,19 @@ export default function OrderHistory() {
                   <option value="cancelled">Payment: Cancelled</option>
                 </select>
 
+                {/* Date Range Filter Dropdown */}
+                <select
+                  className="filter-select"
+                  value={dateRangeFilter}
+                  onChange={(e) => setDateRangeFilter(e.target.value)}
+                  aria-label="Filter by date range"
+                >
+                  <option value="all">Date: All Time</option>
+                  <option value="30_days">Date: Last 30 Days</option>
+                  <option value="6_months">Date: Last 6 Months</option>
+                  <option value="this_year">Date: This Year</option>
+                </select>
+
                 {/* Sort Order Dropdown */}
                 <select
                   className="filter-select"
