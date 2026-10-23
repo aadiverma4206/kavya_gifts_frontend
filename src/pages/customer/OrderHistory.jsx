@@ -29,6 +29,20 @@ function getEstimatedDeliveryDate(createdAt) {
   });
 }
 
+function formatRelativeTime(createdAt) {
+  if (!createdAt) return "Recently";
+  const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
+  if (isNaN(date.getTime())) return "Recently";
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "Today";
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return formatShortDate(createdAt);
+}
+
 function getCourierPartner(ord) {
   if (ord?.courierPartner) return ord.courierPartner;
   const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge"];
@@ -706,10 +720,11 @@ export default function OrderHistory() {
                   >
                     📋
                   </button>
-                  <span className="order-date muted">
-                    {formatShortDate(ord.createdAt) !== "N/A"
-                      ? formatShortDate(ord.createdAt)
-                      : "Recently placed"}
+                  <span
+                    className="order-date muted"
+                    title={`Placed on: ${formatShortDate(ord.createdAt)}`}
+                  >
+                    📅 {formatRelativeTime(ord.createdAt)}
                   </span>
                   {ord.orderStatus !== "delivered" && ord.orderStatus !== "cancelled" && (
                     <span
