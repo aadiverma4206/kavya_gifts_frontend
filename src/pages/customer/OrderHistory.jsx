@@ -102,6 +102,19 @@ export default function OrderHistory() {
     }, 700);
   };
 
+  const handleReorderSingleItem = (item) => {
+    addToCart(
+      {
+        id: item.productId || item.product_id,
+        name: item.productName || item.product_name || "Gift Hamper",
+        price: Number(item.price || 0),
+        thumbnail: item.thumbnail || item.image || item.image_url,
+      },
+      item.quantity || 1
+    );
+    showToast(`Added "${item.productName || item.product_name || "Hamper"}" to cart!`);
+  };
+
   const toggleOrderItems = (orderKey) => {
     setCollapsedOrders((prev) => ({
       ...prev,
@@ -744,15 +757,34 @@ export default function OrderHistory() {
                               Subtotal: {formatCurrency(Number(item.price || 0) * Number(item.quantity || 1))}
                             </span>
                           </p>
-                          {pId && (
-                            <Link
-                              to={`/review/${pId}`}
-                              state={{ productName: pName, orderId: ord.orderId }}
-                              className="review-btn-link"
+                          <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "6px", flexWrap: "wrap" }}>
+                            {pId && (
+                              <Link
+                                to={`/review/${pId}`}
+                                state={{ productName: pName, orderId: ord.orderId }}
+                                className="review-btn-link"
+                              >
+                                ★ Write Product Review
+                              </Link>
+                            )}
+                            <button
+                              type="button"
+                              onClick={() => handleReorderSingleItem(item)}
+                              style={{
+                                background: "none",
+                                border: "1px solid var(--color-border)",
+                                borderRadius: "4px",
+                                padding: "3px 8px",
+                                fontSize: "11.5px",
+                                color: "var(--color-primary)",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                              }}
+                              title="Add one more of this hamper to cart"
                             >
-                              ★ Write Product Review
-                            </Link>
-                          )}
+                              + Reorder This
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
