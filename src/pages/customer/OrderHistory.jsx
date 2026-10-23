@@ -399,6 +399,17 @@ export default function OrderHistory() {
     currentPage * pageSize
   );
 
+  const handleToggleExpandAll = () => {
+    const anyExpanded = paginatedOrders.some(
+      (ord, idx) => !collapsedOrders[ord.orderId || idx]
+    );
+    const updated = { ...collapsedOrders };
+    paginatedOrders.forEach((ord, idx) => {
+      updated[ord.orderId || idx] = anyExpanded;
+    });
+    setCollapsedOrders(updated);
+  };
+
   return (
     <div className="orders-container container section">
       <div className="orders-header">
@@ -517,6 +528,16 @@ export default function OrderHistory() {
                   <option value="amount_desc">Amount: High to Low</option>
                   <option value="amount_asc">Amount: Low to High</option>
                 </select>
+
+                {/* Expand / Collapse All Toggle */}
+                <button
+                  type="button"
+                  className="btn-order-action"
+                  onClick={handleToggleExpandAll}
+                  title="Expand or collapse hampers for all listed orders"
+                >
+                  ↕ Toggle Hampers
+                </button>
 
                 {/* Export CSV Action */}
                 <button
