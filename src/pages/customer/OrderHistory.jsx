@@ -36,6 +36,21 @@ function getCourierPartner(ord) {
   return partners[charCode % partners.length];
 }
 
+function getCourierTrackingUrl(partner, trackingNumber) {
+  const p = (partner || "").toLowerCase();
+  const trk = encodeURIComponent(trackingNumber || "");
+  if (p.includes("bluedart")) {
+    return `https://www.bluedart.com/tracking?handler=traking&action=auto&numbers=${trk}`;
+  }
+  if (p.includes("delhivery")) {
+    return `https://www.delhivery.com/track/package/${trk}`;
+  }
+  if (p.includes("shadowfax")) {
+    return `https://tracker.shadowfax.in/#/track?awb=${trk}`;
+  }
+  return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber}`)}`;
+}
+
 function renderHighlightedText(text, query) {
   if (!text || !query || !query.trim()) return text;
   const q = query.trim();
@@ -732,7 +747,22 @@ export default function OrderHistory() {
                         : `🚚 Estimated Delivery by: ${getEstimatedDeliveryDate(ord.createdAt)}`}
                     </span>
                     <span className="stepper-track-num">
-                      📦 {getCourierPartner(ord)} | {ord.trackingNumber || `TRK-${(ord.orderId || "KG").slice(-6)}`}
+                      {(() => {
+                        const partner = getCourierPartner(ord);
+                        const trkNum = ord.trackingNumber || `TRK-${(ord.orderId || "KG").slice(-6)}`;
+                        const trkUrl = getCourierTrackingUrl(partner, trkNum);
+                        return (
+                          <a
+                            href={trkUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: "inherit", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                            title="Track parcel on official courier site"
+                          >
+                            📦 {partner} | {trkNum} ↗
+                          </a>
+                        );
+                      })()}
                     </span>
                   </div>
                   <div className="stepper-steps">
