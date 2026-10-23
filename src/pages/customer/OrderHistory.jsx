@@ -598,6 +598,21 @@ export default function OrderHistory() {
                       ? formatShortDate(ord.createdAt)
                       : "Recently placed"}
                   </span>
+                  {ord.orderStatus !== "delivered" && ord.orderStatus !== "cancelled" && (
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        background: "rgba(245, 158, 11, 0.12)",
+                        color: "#92400e",
+                        padding: "2px 7px",
+                        borderRadius: "4px",
+                        fontWeight: 600,
+                      }}
+                      title="Estimated delivery date"
+                    >
+                      ETA: {getEstimatedDeliveryDate(ord.createdAt)}
+                    </span>
+                  )}
                 </div>
                 <div className="order-status-group">
                   <span className={`status-pill ${ord.orderStatus || "pending"}`}>
