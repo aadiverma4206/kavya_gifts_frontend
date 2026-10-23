@@ -735,9 +735,14 @@ export default function OrderHistory() {
                         />
                         <div className="order-item-desc">
                           <h4>{pName}</h4>
-                          <p className="muted">
-                            Qty: {item.quantity} • ₹
-                            {Number(item.price || 0).toLocaleString("en-IN")} each
+                          <p className="muted" style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                            <span>Qty: <strong>{item.quantity}</strong></span>
+                            <span>•</span>
+                            <span>{formatCurrency(item.price || 0)} each</span>
+                            <span>•</span>
+                            <span style={{ color: "var(--color-primary)", fontWeight: 600 }}>
+                              Subtotal: {formatCurrency(Number(item.price || 0) * Number(item.quantity || 1))}
+                            </span>
                           </p>
                           {pId && (
                             <Link
