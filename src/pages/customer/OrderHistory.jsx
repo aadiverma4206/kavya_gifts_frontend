@@ -872,6 +872,11 @@ export default function OrderHistory() {
                   <span className="muted">Delivering To:</span>{" "}
                   <strong>{ord.customer?.name || ord.customerSnapshot?.name || "Customer"}</strong>,{" "}
                   {ord.customer?.address || ord.customerSnapshot?.address || ord.deliveryAddress || "Address provided"}
+                  {(ord.deliveryNotes || ord.specialInstructions || ord.notes) && (
+                    <div style={{ marginTop: "4px", fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic" }}>
+                      📝 Delivery Instructions: "{ord.deliveryNotes || ord.specialInstructions || ord.notes}"
+                    </div>
+                  )}
                 </div>
                 <div className="order-total-summary">
                   <span>Total:</span>
