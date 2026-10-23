@@ -902,10 +902,29 @@ export default function OrderHistory() {
       {/* Pagination Controls */}
       {!loading && displayedOrders.length > 0 && totalPages > 1 && (
         <div className="orders-pagination-bar" role="navigation" aria-label="Orders pagination">
-          <span style={{ fontSize: "13px", color: "var(--color-muted)" }}>
-            Showing {(currentPage - 1) * pageSize + 1} to{" "}
-            {Math.min(currentPage * pageSize, displayedOrders.length)} of {displayedOrders.length} hampers
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <span style={{ fontSize: "13px", color: "var(--color-muted)" }}>
+              Showing {(currentPage - 1) * pageSize + 1} to{" "}
+              {Math.min(currentPage * pageSize, displayedOrders.length)} of {displayedOrders.length} hampers
+            </span>
+            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>Per page:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="filter-select"
+                style={{ padding: "2px 6px", fontSize: "12px", height: "auto" }}
+                aria-label="Items per page"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </select>
+            </div>
+          </div>
           <div className="pagination-pages">
             <button
               type="button"
