@@ -90,6 +90,7 @@ export default function OrderHistory() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [paymentFilter, setPaymentFilter] = useState("all");
+  const [dateRangeFilter, setDateRangeFilter] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -215,12 +216,13 @@ export default function OrderHistory() {
   };
 
   const hasActiveFilters =
-    Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all";
+    Boolean(searchTerm.trim()) || statusFilter !== "all" || paymentFilter !== "all" || dateRangeFilter !== "all";
 
   const resetAllFilters = () => {
     setSearchTerm("");
     setStatusFilter("all");
     setPaymentFilter("all");
+    setDateRangeFilter("all");
     setSortBy("newest");
   };
 
@@ -280,6 +282,21 @@ export default function OrderHistory() {
           return false;
         }
       }
+      // Date range filter
+      if (dateRangeFilter !== "all") {
+        const orderDate = ord.createdAt?.toDate ? ord.createdAt.toDate() : new Date(ord.createdAt || 0);
+        const now = new Date();
+        if (dateRangeFilter === "30_days") {
+          const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+          if (orderDate < thirtyDaysAgo) return false;
+        } else if (dateRangeFilter === "6_months") {
+          const sixMonthsAgo = new Date(now.getTime() - 180 * 24 * 60 * 60 * 1000);
+          if (orderDate < sixMonthsAgo) return false;
+        } else if (dateRangeFilter === "this_year") {
+          const startOfYear = new Date(now.getFullYear(), 0, 1);
+          if (orderDate < startOfYear) return false;
+        }
+      }
       // Search filter
       if (!searchTerm.trim()) return true;
       const term = searchTerm.toLowerCase();
@@ -321,7 +338,7 @@ export default function OrderHistory() {
   // Reset pagination on filter adjustments
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, statusFilter, paymentFilter, sortBy]);
+  }, [searchTerm, statusFilter, paymentFilter, dateRangeFilter, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(displayedOrders.length / pageSize));
   const paginatedOrders = displayedOrders.slice(
