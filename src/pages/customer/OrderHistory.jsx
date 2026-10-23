@@ -963,10 +963,17 @@ export default function OrderHistory() {
                   )}
                 </div>
                 <div className="order-total-summary">
-                  <span>Total:</span>
-                  <strong className="order-total-amt">
-                    ₹{Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}
-                  </strong>
+                  {(ord.discount || ord.discountAmount || ord.couponCode) && (
+                    <div style={{ fontSize: "11.5px", color: "#166534", marginBottom: "2px", fontWeight: 600 }}>
+                      🏷️ Coupon {ord.couponCode ? `"${ord.couponCode}"` : ""}: -{formatCurrency(ord.discount || ord.discountAmount || 0)}
+                    </div>
+                  )}
+                  <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
+                    <span>Total:</span>
+                    <strong className="order-total-amt">
+                      ₹{Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}
+                    </strong>
+                  </div>
                 </div>
 
                 {/* Actions Bar */}
