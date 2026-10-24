@@ -420,7 +420,15 @@ export default function OrderHistory() {
         )
           .toLowerCase()
           .includes(term);
-        return idMatch || itemMatch || recipientMatch;
+        const trackingMatch = Boolean(
+          ord.trackingNumber &&
+          String(ord.trackingNumber).toLowerCase().includes(term)
+        );
+        const couponMatch = Boolean(
+          ord.couponCode &&
+          String(ord.couponCode).toLowerCase().includes(term)
+        );
+        return idMatch || itemMatch || recipientMatch || trackingMatch || couponMatch;
       })
       .sort((a, b) => {
         if (sortBy === "amount_desc") {
