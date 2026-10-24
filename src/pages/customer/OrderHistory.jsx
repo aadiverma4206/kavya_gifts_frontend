@@ -299,19 +299,23 @@ export default function OrderHistory() {
     if (!ord) return;
     const summary = [
       `Kavya Luxury Gifts - Tax Invoice Summary`,
+      `GSTIN: 07AAAAA0000A1Z5`,
       `Invoice ID: INV-${ord.orderId ? ord.orderId.replace(/[^a-zA-Z0-9]/g, "") : "KG"}`,
       `Order Date: ${formatShortDate(ord.createdAt)}`,
       `Recipient: ${ord.customer?.name || ord.customerSnapshot?.name || "Customer"}`,
-      `Total Amount: ₹${Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}`,
+      `Courier Partner: ${getCourierPartner(ord)}`,
       `Payment Status: ${ord.paymentStatus || "Completed"}`,
       `Items:`,
       ...(ord.items || []).map(
         (it) => `- ${it.productName || it.product_name || "Hamper"} x ${it.quantity || 1}: ₹${(Number(it.price || 0) * (it.quantity || 1)).toLocaleString("en-IN")}`
       ),
+      `Grand Total: ₹${Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}`,
     ].join("\n");
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard.writeText(summary).then(() => {
         showToast("Invoice summary copied to clipboard!");
+      }).catch(() => {
+        showToast("Invoice summary generated.");
       });
     } else {
       showToast("Invoice summary generated.");
