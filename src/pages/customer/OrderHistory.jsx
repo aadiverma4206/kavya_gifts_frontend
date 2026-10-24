@@ -1095,9 +1095,28 @@ export default function OrderHistory() {
                   <span className="muted">Delivering To:</span>{" "}
                   <strong>{ord.customer?.name || ord.customerSnapshot?.name || "Customer"}</strong>
                   {Boolean(ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone) && (
-                    <span style={{ marginLeft: "6px", fontSize: "11.5px", background: "rgba(0,0,0,0.05)", padding: "1px 6px", borderRadius: "3px", color: "var(--color-muted)" }}>
-                      📞 {ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone}
-                    </span>
+                    (() => {
+                      const ph = ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone;
+                      const cleanPh = String(ph).replace(/[^\d+]/g, "");
+                      return (
+                        <a
+                          href={`tel:${cleanPh}`}
+                          style={{
+                            marginLeft: "6px",
+                            fontSize: "11.5px",
+                            background: "rgba(0,0,0,0.05)",
+                            padding: "1px 6px",
+                            borderRadius: "3px",
+                            color: "var(--color-primary)",
+                            textDecoration: "none",
+                            fontWeight: 500,
+                          }}
+                          title={`Call recipient ${ph}`}
+                        >
+                          📞 {ph}
+                        </a>
+                      );
+                    })()
                   )},{" "}
                   {ord.customer?.address || ord.customerSnapshot?.address || ord.deliveryAddress || "Address provided"}
                   {(ord.deliveryNotes || ord.specialInstructions || ord.notes) && (
