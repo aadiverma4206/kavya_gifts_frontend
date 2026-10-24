@@ -1255,8 +1255,19 @@ export default function OrderHistory() {
               type="button"
               className="page-btn"
               disabled={currentPage <= 1}
+              onClick={() => setCurrentPage(1)}
+              aria-label="First page"
+              title="First page"
+            >
+              «
+            </button>
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage <= 1}
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
               aria-label="Previous page"
+              title="Previous page"
             >
               ‹
             </button>
@@ -1266,6 +1277,8 @@ export default function OrderHistory() {
                 type="button"
                 className={`page-btn ${currentPage === num ? "active" : ""}`}
                 onClick={() => setCurrentPage(num)}
+                aria-label={`Page ${num}`}
+                aria-current={currentPage === num ? "page" : undefined}
               >
                 {num}
               </button>
@@ -1276,8 +1289,19 @@ export default function OrderHistory() {
               disabled={currentPage >= totalPages}
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
               aria-label="Next page"
+              title="Next page"
             >
               ›
+            </button>
+            <button
+              type="button"
+              className="page-btn"
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage(totalPages)}
+              aria-label="Last page"
+              title="Last page"
+            >
+              »
             </button>
           </div>
         </div>
