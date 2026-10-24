@@ -242,11 +242,24 @@ export default function OrderHistory() {
   }, []);
 
   const handleCopyOrderId = (id) => {
+    if (!id) return;
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard
         .writeText(id)
         .then(() => showToast(`Copied Order ID: ${id}`))
-        .catch(() => showToast(`Order ID: ${id}`));
+        .catch(() => {
+          try {
+            const tempInput = document.createElement("input");
+            tempInput.value = id;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            showToast(`Copied Order ID: ${id}`);
+          } catch {
+            showToast(`Order ID: ${id}`);
+          }
+        });
     } else {
       showToast(`Order ID: ${id}`);
     }
