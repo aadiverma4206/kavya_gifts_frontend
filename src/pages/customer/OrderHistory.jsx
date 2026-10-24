@@ -213,16 +213,19 @@ export default function OrderHistory() {
   };
 
   const handleReorderSingleItem = (item) => {
+    if (!item) return;
+    const qty = Math.max(1, Number(item.quantity) || 1);
+    const pName = item.productName || item.product_name || "Gift Hamper";
     addToCart(
       {
-        id: item.productId || item.product_id,
-        name: item.productName || item.product_name || "Gift Hamper",
-        price: Number(item.price || 0),
+        id: item.productId || item.product_id || `item_${Date.now()}`,
+        name: pName,
+        price: Math.max(0, Number(item.price) || 0),
         thumbnail: item.thumbnail || item.image || item.image_url,
       },
-      item.quantity || 1
+      qty
     );
-    showToast(`Added "${item.productName || item.product_name || "Hamper"}" to cart!`);
+    showToast(`Added ${qty > 1 ? `${qty}x ` : ""}“${pName}” to your cart!`);
   };
 
   const toggleOrderItems = (orderKey) => {
