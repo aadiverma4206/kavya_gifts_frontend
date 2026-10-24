@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
@@ -232,14 +232,14 @@ export default function OrderHistory() {
     }));
   };
 
-  const showToast = (msg) => {
+  const showToast = useCallback((msg) => {
     if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
     setToastMessage(msg);
     toastTimerRef.current = setTimeout(() => {
       setToastMessage("");
       toastTimerRef.current = null;
     }, 3000);
-  };
+  }, []);
 
   const handleCopyOrderId = (id) => {
     if (navigator?.clipboard?.writeText) {
