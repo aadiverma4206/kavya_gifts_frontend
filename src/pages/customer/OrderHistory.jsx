@@ -1485,6 +1485,19 @@ export default function OrderHistory() {
             </div>
             <div
               style={{
+                fontSize: "12px",
+                background: "#fef2f2",
+                color: "#991b1b",
+                border: "1px solid #fee2e2",
+                borderRadius: "6px",
+                padding: "8px 12px",
+                lineHeight: "1.5",
+              }}
+            >
+              💡 If payment was already completed, your refund will be automatically processed back to your original payment method within 5–7 business days.
+            </div>
+            <div
+              style={{
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "10px",
