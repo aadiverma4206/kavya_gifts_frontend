@@ -813,17 +813,29 @@ export default function OrderHistory() {
         <div className="card empty-orders-card" style={{ padding: "40px 20px" }}>
           <span style={{ fontSize: "36px" }}>🔍</span>
           <h3>No Matching Orders Found</h3>
-          <p className="muted">
-            No orders match your current search or status filters.
+          <p className="muted" style={{ maxWidth: "460px", margin: "8px auto 0" }}>
+            {searchTerm.trim()
+              ? `No hampers or orders matched your keyword “${searchTerm.trim()}”. Try searching by Order ID, hamper name, or recipient.`
+              : "No orders match the selected filters. Try adjusting your status, payment or date range criteria."}
           </p>
-          <button
-            type="button"
-            className="btn btn-secondary btn-sm"
-            style={{ marginTop: "14px" }}
-            onClick={resetAllFilters}
-          >
-            Clear All Filters
-          </button>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "center", marginTop: "16px", flexWrap: "wrap" }}>
+            {searchTerm && (
+              <button
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => setSearchTerm("")}
+              >
+                Clear Search Keyword
+              </button>
+            )}
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={resetAllFilters}
+            >
+              Reset All Filters
+            </button>
+          </div>
         </div>
       )}
 
