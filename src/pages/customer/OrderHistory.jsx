@@ -647,18 +647,41 @@ export default function OrderHistory() {
                 { id: "shipped", label: "Shipped" },
                 { id: "delivered", label: "Delivered" },
                 { id: "cancelled", label: "Cancelled" },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={statusFilter === tab.id}
-                  className={`status-tab-btn ${statusFilter === tab.id ? "active" : ""}`}
-                  onClick={() => setStatusFilter(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              ))}
+              ].map((tab) => {
+                const count =
+                  tab.id === "all"
+                    ? orders.length
+                    : orders.filter(
+                        (o) => (o.orderStatus || "pending").toLowerCase() === tab.id
+                      ).length;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={statusFilter === tab.id}
+                    className={`status-tab-btn ${statusFilter === tab.id ? "active" : ""}`}
+                    onClick={() => setStatusFilter(tab.id)}
+                  >
+                    <span>{tab.label}</span>
+                    <span
+                      style={{
+                        marginLeft: "6px",
+                        fontSize: "11px",
+                        padding: "1px 6px",
+                        borderRadius: "10px",
+                        background:
+                          statusFilter === tab.id
+                            ? "rgba(255, 255, 255, 0.25)"
+                            : "rgba(0, 0, 0, 0.07)",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Active Filters Clear Row */}
