@@ -23,6 +23,11 @@ function getOrderStepIndex(status) {
   return 0; // pending / placed
 }
 
+/**
+ * Computes estimated delivery date based on order creation date.
+ * @param {Date|Object|string|number} createdAt - Order timestamp.
+ * @returns {string} Formatted localized delivery date estimate.
+ */
 function getEstimatedDeliveryDate(createdAt) {
   if (!createdAt) return "Within 3 business days";
   const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
@@ -36,6 +41,11 @@ function getEstimatedDeliveryDate(createdAt) {
   });
 }
 
+/**
+ * Formats a relative time string (e.g., 'Today', 'Yesterday', '3 days ago').
+ * @param {Date|Object|string|number} createdAt - Order timestamp.
+ * @returns {string} Human-readable relative time string.
+ */
 function formatRelativeTime(createdAt) {
   if (!createdAt) return "Recently";
   const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
@@ -50,6 +60,11 @@ function formatRelativeTime(createdAt) {
   return formatShortDate(createdAt);
 }
 
+/**
+ * Resolves or deterministically selects an assigned courier partner for the order.
+ * @param {Object} ord - Order data object.
+ * @returns {string} Courier partner name.
+ */
 function getCourierPartner(ord) {
   if (ord?.courierPartner) return ord.courierPartner;
   const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge"];
@@ -57,6 +72,12 @@ function getCourierPartner(ord) {
   return partners[charCode % partners.length];
 }
 
+/**
+ * Generates an official tracking URL for the specified courier partner and tracking code.
+ * @param {string} partner - Courier partner name.
+ * @param {string} trackingNumber - Consignment AWB / tracking ID.
+ * @returns {string} External web tracking URL.
+ */
 function getCourierTrackingUrl(partner, trackingNumber) {
   const p = (partner || "").toLowerCase();
   const trk = encodeURIComponent(trackingNumber || "");
