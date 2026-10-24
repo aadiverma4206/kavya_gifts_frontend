@@ -69,6 +69,15 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("shadowfax")) {
     return `https://tracker.shadowfax.in/#/track?awb=${trk}`;
   }
+  if (p.includes("dtdc")) {
+    return `https://www.dtdc.in/tracking/tracking_results.asp?trkType=awb&strCnno=${trk}`;
+  }
+  if (p.includes("ecom")) {
+    return `https://ecomexpress.in/tracking/?awb_field=${trk}`;
+  }
+  if (p.includes("fedex")) {
+    return `https://www.fedex.com/fedextrack/?trknbr=${trk}`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber}`)}`;
 }
 
