@@ -145,11 +145,15 @@ function getStatusBadgeInfo(status) {
  * @returns {JSX.Element} The rendered Order History dashboard.
  */
 export default function OrderHistory() {
-  useDocumentTitle("Order History - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  useDocumentTitle(
+    orders.length > 0
+      ? `Order History (${orders.length}) - Kavya Luxury Gifts`
+      : "Order History - Kavya Luxury Gifts"
+  );
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
