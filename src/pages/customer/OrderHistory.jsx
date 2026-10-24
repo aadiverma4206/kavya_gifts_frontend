@@ -10,15 +10,16 @@ import "./OrderHistory.css";
 
 /**
  * Maps order lifecycle fulfillment status to a numeric milestone index (0-4).
+ * Supports standard and courier status aliases.
  * @param {string} [status="pending"] - Order status string.
  * @returns {number} Milestone index between 0 and 4.
  */
 function getOrderStepIndex(status) {
   const s = (status || "pending").toLowerCase();
-  if (s === "delivered") return 4;
-  if (s === "shipped" || s === "out_for_delivery") return 3;
-  if (s === "processing" || s === "packed") return 2;
-  if (s === "confirmed") return 1;
+  if (s === "delivered" || s === "completed") return 4;
+  if (s === "shipped" || s === "out_for_delivery" || s === "dispatched") return 3;
+  if (s === "processing" || s === "packed" || s === "ready_for_pickup") return 2;
+  if (s === "confirmed" || s === "accepted") return 1;
   return 0; // pending / placed
 }
 
