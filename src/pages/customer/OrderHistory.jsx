@@ -112,17 +112,25 @@ function getStatusBadgeInfo(status) {
   const s = (status || "pending").toLowerCase();
   switch (s) {
     case "delivered":
+    case "completed":
       return { label: "Delivered", icon: "✓", color: "#166534", bg: "#dcfce7" };
     case "shipped":
     case "out_for_delivery":
+    case "dispatched":
       return { label: "Dispatched", icon: "🚚", color: "#1e40af", bg: "#dbeafe" };
     case "processing":
     case "packed":
+    case "ready_for_pickup":
       return { label: "Packaging", icon: "📦", color: "#854d0e", bg: "#fef9c3" };
     case "confirmed":
+    case "accepted":
       return { label: "Confirmed", icon: "★", color: "#065f46", bg: "#d1fae5" };
     case "cancelled":
       return { label: "Cancelled", icon: "✕", color: "#991b1b", bg: "#fee2e2" };
+    case "refunded":
+      return { label: "Refunded", icon: "↩", color: "#475569", bg: "#f1f5f9" };
+    case "returned":
+      return { label: "Returned", icon: "🔄", color: "#7c2d12", bg: "#ffedd5" };
     default:
       return { label: "Pending", icon: "⏳", color: "#9a3412", bg: "#ffedd5" };
   }
