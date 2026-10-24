@@ -1428,7 +1428,14 @@ export default function OrderHistory() {
               <button
                 type="button"
                 className="btn btn-primary btn-sm"
-                onClick={() => window.print()}
+                onClick={() => {
+                  const originalTitle = document.title;
+                  document.title = `Kavya_Invoice_${invoiceOrder.orderId || "Order"}`;
+                  window.print();
+                  setTimeout(() => {
+                    document.title = originalTitle;
+                  }, 1000);
+                }}
               >
                 🖨️ Print Receipt
               </button>
