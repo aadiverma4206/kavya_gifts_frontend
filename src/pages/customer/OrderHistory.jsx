@@ -925,6 +925,11 @@ export default function OrderHistory() {
                     <div className="stepper-connector">
                       <div
                         className="stepper-connector-fill"
+                        role="progressbar"
+                        aria-valuenow={getOrderStepIndex(ord.orderStatus)}
+                        aria-valuemin={0}
+                        aria-valuemax={4}
+                        aria-label={`Order fulfillment progress: step ${getOrderStepIndex(ord.orderStatus) + 1} of 5`}
                         style={{
                           width: `${(getOrderStepIndex(ord.orderStatus) / 4) * 100}%`,
                         }}
