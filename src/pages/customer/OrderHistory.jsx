@@ -528,6 +528,24 @@ export default function OrderHistory() {
                 <span className="metric-label">Active Dispatches</span>
               </div>
             </div>
+            <div className="metric-tile">
+              <div className="metric-icon-wrap">✨</div>
+              <div className="metric-info">
+                <span className="metric-val">
+                  {formatCurrency(
+                    orders.length > 0
+                      ? Math.round(
+                          orders.reduce(
+                            (sum, o) => sum + Number(o.totalAmount || o.total || 0),
+                            0
+                          ) / orders.length
+                        )
+                      : 0
+                  )}
+                </span>
+                <span className="metric-label">Average Booking Value</span>
+              </div>
+            </div>
           </div>
 
           {/* Search Controls */}
