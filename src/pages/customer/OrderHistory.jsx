@@ -82,10 +82,12 @@ function getCourierTrackingUrl(partner, trackingNumber) {
 }
 
 function renderHighlightedText(text, query) {
-  if (!text || !query || !query.trim()) return text;
+  if (text == null) return "";
+  const str = String(text);
+  if (!query || !query.trim()) return str;
   const q = query.trim();
   const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const parts = String(text).split(new RegExp(`(${escaped})`, "gi"));
+  const parts = str.split(new RegExp(`(${escaped})`, "gi"));
   return parts.map((part, i) =>
     part.toLowerCase() === q.toLowerCase() ? (
       <mark
@@ -93,8 +95,9 @@ function renderHighlightedText(text, query) {
         style={{
           backgroundColor: "#fef08a",
           color: "#854d0e",
-          padding: "0 2px",
-          borderRadius: "2px",
+          padding: "1px 3px",
+          borderRadius: "3px",
+          fontWeight: 600,
         }}
       >
         {part}
