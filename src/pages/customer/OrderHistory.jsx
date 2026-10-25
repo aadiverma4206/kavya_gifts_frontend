@@ -81,7 +81,7 @@ function getCourierPartner(ord) {
  */
 function getCourierTrackingUrl(partner, trackingNumber) {
   const p = (partner || "").toLowerCase();
-  const trk = encodeURIComponent(trackingNumber || "");
+  const trk = encodeURIComponent((trackingNumber || "").toString().trim());
   if (p.includes("bluedart")) {
     return `https://www.bluedart.com/tracking?handler=traking&action=auto&numbers=${trk}`;
   }
