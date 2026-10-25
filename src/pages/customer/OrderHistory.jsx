@@ -15,7 +15,7 @@ import "./OrderHistory.css";
  * @returns {number} Milestone index between 0 and 4.
  */
 function getOrderStepIndex(status) {
-  const s = (status || "pending").toLowerCase();
+  const s = (status || "pending").toLowerCase().trim();
   if (s === "delivered" || s === "completed") return 4;
   if (s === "shipped" || s === "out_for_delivery" || s === "dispatched") return 3;
   if (s === "processing" || s === "packed" || s === "ready_for_pickup") return 2;
