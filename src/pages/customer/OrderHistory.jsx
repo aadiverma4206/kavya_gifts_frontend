@@ -310,6 +310,7 @@ export default function OrderHistory() {
       `"${o.items?.length || 0}"`,
       `"${o.totalAmount || o.total || 0}"`,
       `"${(o.customer?.name || o.customerSnapshot?.name || "").replace(/"/g, '""')}"`,
+      `"${getCourierPartner(o)}"`,
     ]);
     const csvContent =
       "\uFEFF" +
