@@ -202,7 +202,7 @@ export default function OrderHistory() {
   }, []);
 
   const handleConfirmCancelOrder = async () => {
-    if (!cancelOrderTarget) return;
+    if (!cancelOrderTarget || cancelling) return;
     setCancelling(true);
     try {
       setOrders((prev) =>
