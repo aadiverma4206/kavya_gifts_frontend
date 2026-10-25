@@ -139,6 +139,7 @@ function getStatusBadgeInfo(status) {
     case "shipped":
     case "out_for_delivery":
     case "dispatched":
+    case "in_transit":
       return { label: "Dispatched", icon: "🚚", color: "#1e40af", bg: "#dbeafe" };
     case "processing":
     case "packed":
