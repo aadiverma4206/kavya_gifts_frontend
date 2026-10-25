@@ -131,7 +131,7 @@ function renderHighlightedText(text, query) {
 }
 
 function getStatusBadgeInfo(status) {
-  const s = (status || "pending").toLowerCase();
+  const s = (status || "pending").toLowerCase().trim();
   switch (s) {
     case "delivered":
     case "completed":
