@@ -222,7 +222,7 @@ export default function OrderHistory() {
   };
 
   const handleBuyAgain = (ord) => {
-    if (!ord.items || ord.items.length === 0) return;
+    if (!ord?.items || !Array.isArray(ord.items) || ord.items.length === 0) return;
     ord.items.forEach((item) => {
       addToCart(
         {
