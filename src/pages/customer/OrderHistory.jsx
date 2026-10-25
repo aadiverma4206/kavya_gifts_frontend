@@ -212,7 +212,7 @@ export default function OrderHistory() {
             : o
         )
       );
-      showToast(`Order ${cancelOrderTarget.orderId} has been cancelled`);
+      showToast(`Order #${cancelOrderTarget.orderId || cancelOrderTarget.id || ""} has been cancelled`);
       setCancelOrderTarget(null);
     } catch (err) {
       showToast("Unable to cancel order: " + err.message);
