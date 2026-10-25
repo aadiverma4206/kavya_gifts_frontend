@@ -147,6 +147,7 @@ function getStatusBadgeInfo(status) {
       return { label: "Packaging", icon: "📦", color: "#854d0e", bg: "#fef9c3" };
     case "confirmed":
     case "accepted":
+    case "placed":
       return { label: "Confirmed", icon: "★", color: "#065f46", bg: "#d1fae5" };
     case "cancelled":
       return { label: "Cancelled", icon: "✕", color: "#991b1b", bg: "#fee2e2" };
