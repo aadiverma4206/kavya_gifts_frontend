@@ -67,7 +67,7 @@ function formatRelativeTime(createdAt) {
  */
 function getCourierPartner(ord) {
   if (ord?.courierPartner) return String(ord.courierPartner).trim();
-  const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge"];
+  const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge", "DTDC Express"];
   const refStr = String(ord?.orderId || ord?.id || "KG");
   const charCode = refStr.charCodeAt(refStr.length - 1) || 75;
   return partners[charCode % partners.length];
