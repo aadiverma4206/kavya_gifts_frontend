@@ -228,7 +228,7 @@ export default function OrderHistory() {
         {
           id: item.productId || item.product_id,
           name: item.productName || item.product_name || "Gift Hamper",
-          price: Number(item.price || 0),
+          price: Math.max(0, Number(item.price || item.totalPrice || 0)),
           thumbnail: item.thumbnail || item.image || item.image_url,
         },
         item.quantity || 1
