@@ -363,6 +363,7 @@ export default function OrderHistory() {
     setPaymentFilter("all");
     setDateRangeFilter("all");
     setSortBy("newest");
+    setCurrentPage(1);
   };
 
   const [fetchError, setFetchError] = useState(null);
