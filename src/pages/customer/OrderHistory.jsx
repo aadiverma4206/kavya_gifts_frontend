@@ -332,7 +332,7 @@ export default function OrderHistory() {
     const summary = [
       `Kavya Luxury Gifts - Tax Invoice Summary`,
       `GSTIN: 07AAAAA0000A1Z5`,
-      `Invoice ID: INV-${ord.orderId ? ord.orderId.replace(/[^a-zA-Z0-9]/g, "") : "KG"}`,
+      `Invoice ID: INV-${ord.orderId ? String(ord.orderId).replace(/[^a-zA-Z0-9]/g, "") : (ord.id ? String(ord.id).replace(/[^a-zA-Z0-9]/g, "") : "KG")}`,
       `Order Date: ${formatShortDate(ord.createdAt)}`,
       `Recipient: ${ord.customer?.name || ord.customerSnapshot?.name || "Customer"}`,
       `Courier Partner: ${getCourierPartner(ord)}`,
