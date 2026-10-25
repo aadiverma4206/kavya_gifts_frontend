@@ -100,7 +100,7 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("fedex")) {
     return `https://www.fedex.com/fedextrack/?trknbr=${trk}`;
   }
-  return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber}`)}`;
+  return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
 function renderHighlightedText(text, query) {
