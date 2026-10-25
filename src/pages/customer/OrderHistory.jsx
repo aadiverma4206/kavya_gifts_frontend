@@ -48,7 +48,7 @@ function getEstimatedDeliveryDate(createdAt) {
  */
 function formatRelativeTime(createdAt) {
   if (!createdAt) return "Recently";
-  const date = createdAt.toDate ? createdAt.toDate() : new Date(createdAt);
+  const date = createdAt.toDate ? createdAt.toDate() : (createdAt.seconds ? new Date(createdAt.seconds * 1000) : new Date(createdAt));
   if (isNaN(date.getTime())) return "Recently";
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
