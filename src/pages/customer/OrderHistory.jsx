@@ -273,7 +273,7 @@ export default function OrderHistory() {
   }, []);
 
   const handleCopyOrderId = (id) => {
-    if (!id) return;
+    if (!id || (typeof id !== "string" && typeof id !== "number")) return;
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard
         .writeText(id)
