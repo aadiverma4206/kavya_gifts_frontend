@@ -106,7 +106,7 @@ function getCourierTrackingUrl(partner, trackingNumber) {
 function renderHighlightedText(text, query) {
   if (text == null) return "";
   const str = String(text);
-  if (!query || !query.trim()) return str;
+  if (!query || typeof query !== "string" || !query.trim()) return str;
   const q = query.trim();
   const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const parts = str.split(new RegExp(`(${escaped})`, "gi"));
