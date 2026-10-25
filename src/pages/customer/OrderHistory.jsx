@@ -66,9 +66,10 @@ function formatRelativeTime(createdAt) {
  * @returns {string} Courier partner name.
  */
 function getCourierPartner(ord) {
-  if (ord?.courierPartner) return ord.courierPartner;
+  if (ord?.courierPartner) return String(ord.courierPartner).trim();
   const partners = ["BlueDart Express", "Delhivery Luxury", "Shadowfax Premium", "Bluedart Concierge"];
-  const charCode = (ord?.orderId || "KG").charCodeAt((ord?.orderId || "KG").length - 1);
+  const refStr = String(ord?.orderId || ord?.id || "KG");
+  const charCode = refStr.charCodeAt(refStr.length - 1) || 75;
   return partners[charCode % partners.length];
 }
 
