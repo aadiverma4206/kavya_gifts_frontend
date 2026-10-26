@@ -1075,7 +1075,7 @@ export default function OrderHistory() {
                 <button
                   type="button"
                   aria-expanded={!collapsedOrders[ord.orderId || ord.id || oIdx]}
-                  aria-label={collapsedOrders[ord.orderId || oIdx] ? "Expand hamper items" : "Collapse hamper items"}
+                  aria-label={collapsedOrders[ord.orderId || ord.id || oIdx] ? "Expand hamper items" : "Collapse hamper items"}
                   onClick={() => toggleOrderItems(ord.orderId || oIdx)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
