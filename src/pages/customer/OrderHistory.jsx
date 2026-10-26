@@ -1131,7 +1131,7 @@ export default function OrderHistory() {
                             {pId && (
                               <Link
                                 to={`/review/${pId}`}
-                                state={{ productName: pName, orderId: ord.orderId }}
+                                state={{ productName: pName, orderId: ord.orderId || ord.id }}
                                 className="review-btn-link"
                               >
                                 ★ Write Product Review
