@@ -161,6 +161,8 @@ function getStatusBadgeInfo(status) {
       return { label: "Refunded", icon: "↩", color: "#475569", bg: "#f1f5f9" };
     case "returned":
       return { label: "Returned", icon: "🔄", color: "#7c2d12", bg: "#ffedd5" };
+    case "return_requested":
+      return { label: "Return Requested", icon: "📋", color: "#c2410c", bg: "#ffedd5" };
     default:
       return { label: "Pending", icon: "⏳", color: "#9a3412", bg: "#ffedd5" };
   }
