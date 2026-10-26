@@ -1496,7 +1496,7 @@ export default function OrderHistory() {
                 className="btn btn-primary btn-sm"
                 onClick={() => {
                   const originalTitle = document.title;
-                  document.title = `Kavya_Invoice_${invoiceOrder.orderId || "Order"}`;
+                  document.title = `Kavya_Invoice_${invoiceOrder.orderId || invoiceOrder.id || "Order"}`;
                   window.print();
                   setTimeout(() => {
                     document.title = originalTitle;
