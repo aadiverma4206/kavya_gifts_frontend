@@ -104,6 +104,9 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("indiapost") || p.includes("speed post")) {
     return `https://www.indiapost.gov.in/_layouts/15/dpt.cptc.va/tracking.aspx?articleid=${trk}`;
   }
+  if (p.includes("dhl")) {
+    return `https://www.dhl.com/en/express/tracking.html?AWB=${trk}&brand=DHL`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
