@@ -155,6 +155,8 @@ function getStatusBadgeInfo(status) {
       return { label: "Confirmed", icon: "★", color: "#065f46", bg: "#d1fae5" };
     case "cancelled":
       return { label: "Cancelled", icon: "✕", color: "#991b1b", bg: "#fee2e2" };
+    case "failed":
+      return { label: "Failed", icon: "⚠", color: "#dc2626", bg: "#fee2e2" };
     case "refunded":
       return { label: "Refunded", icon: "↩", color: "#475569", bg: "#f1f5f9" };
     case "returned":
