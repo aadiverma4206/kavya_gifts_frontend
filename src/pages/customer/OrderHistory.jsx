@@ -100,6 +100,9 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("fedex")) {
     return `https://www.fedex.com/fedextrack/?trknbr=${trk}`;
   }
+  if (p.includes("indiapost") || p.includes("speed post")) {
+    return `https://www.indiapost.gov.in/_layouts/15/dpt.cptc.va/tracking.aspx?articleid=${trk}`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
