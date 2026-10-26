@@ -1545,7 +1545,7 @@ export default function OrderHistory() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
               <a
-                href={`https://wa.me/919999999999?text=Hello%20Kavya%20Luxury%20Gifts%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(supportOrder.orderId || "")}`}
+                href={`https://wa.me/919999999999?text=Hello%20Kavya%20Luxury%20Gifts%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(supportOrder.orderId || supportOrder.id || "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
