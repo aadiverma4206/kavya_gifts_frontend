@@ -504,7 +504,7 @@ export default function OrderHistory() {
 
   const handleToggleExpandAll = () => {
     const anyExpanded = paginatedOrders.some(
-      (ord, idx) => !collapsedOrders[ord.orderId || idx]
+      (ord, idx) => !collapsedOrders[ord.orderId || ord.id || idx]
     );
     const updated = { ...collapsedOrders };
     paginatedOrders.forEach((ord, idx) => {
