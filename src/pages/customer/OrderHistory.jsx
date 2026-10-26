@@ -1525,7 +1525,7 @@ export default function OrderHistory() {
                   Concierge Support Desk
                 </h3>
                 <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
-                  Regarding Order: {supportOrder.orderId}
+                  Regarding Order: {supportOrder.orderId || supportOrder.id || ""}
                 </span>
               </div>
               <button
