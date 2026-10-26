@@ -352,7 +352,7 @@ export default function OrderHistory() {
       `Payment Status: ${ord.paymentStatus || "Completed"}`,
       `Items:`,
       ...(ord.items || []).map(
-        (it) => `- ${it.productName || it.product_name || "Hamper"} x ${it.quantity || 1}: ₹${(Number(it.price || 0) * (it.quantity || 1)).toLocaleString("en-IN")}`
+        (it) => `- ${it.productName || it.product_name || "Hamper"} x ${Math.max(1, Number(it.quantity) || 1)}: ₹${(Number(it.price || 0) * Math.max(1, Number(it.quantity) || 1)).toLocaleString("en-IN")}`
       ),
       `Grand Total: ₹${Number(ord.totalAmount || ord.total || 0).toLocaleString("en-IN")}`,
     ].join("\n");
