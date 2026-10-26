@@ -1080,7 +1080,7 @@ export default function OrderHistory() {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
-                      toggleOrderItems(ord.orderId || oIdx);
+                      toggleOrderItems(ord.orderId || ord.id || oIdx);
                     }
                   }}
                   style={{
