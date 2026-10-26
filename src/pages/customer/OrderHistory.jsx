@@ -1092,7 +1092,7 @@ export default function OrderHistory() {
                     cursor: "pointer",
                   }}
                 >
-                  {collapsedOrders[ord.orderId || oIdx] ? "▾ Show Hampers" : "▴ Hide Hampers"}
+                  {collapsedOrders[ord.orderId || ord.id || oIdx] ? "▾ Show Hampers" : "▴ Hide Hampers"}
                 </button>
               </div>
 
