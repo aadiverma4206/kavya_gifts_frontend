@@ -285,10 +285,11 @@ export default function OrderHistory() {
 
   const handleCopyOrderId = (id) => {
     if (!id || (typeof id !== "string" && typeof id !== "number")) return;
+    const cleanId = String(id).trim();
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard
-        .writeText(id)
-        .then(() => showToast(`Copied Order ID: ${id}`))
+        .writeText(cleanId)
+        .then(() => showToast(`Copied Order ID: ${cleanId}`))
         .catch(() => {
           try {
             const tempInput = document.createElement("input");
