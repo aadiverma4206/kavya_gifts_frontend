@@ -1554,7 +1554,7 @@ export default function OrderHistory() {
                 💬 Chat with Concierge on WhatsApp
               </a>
               <a
-                href={`mailto:concierge@kavyaluxurygifts.com?subject=Assistance%20for%20Order%20${encodeURIComponent(supportOrder.orderId || "")}`}
+                href={`mailto:concierge@kavyaluxurygifts.com?subject=Assistance%20for%20Order%20${encodeURIComponent(supportOrder.orderId || supportOrder.id || "")}`}
                 className="btn btn-secondary"
                 style={{ textAlign: "center", textDecoration: "none" }}
               >
