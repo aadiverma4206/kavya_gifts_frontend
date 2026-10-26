@@ -508,7 +508,7 @@ export default function OrderHistory() {
     );
     const updated = { ...collapsedOrders };
     paginatedOrders.forEach((ord, idx) => {
-      updated[ord.orderId || idx] = anyExpanded;
+      updated[ord.orderId || ord.id || idx] = anyExpanded;
     });
     setCollapsedOrders(updated);
   };
