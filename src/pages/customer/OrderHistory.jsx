@@ -1586,7 +1586,7 @@ export default function OrderHistory() {
               </button>
             </div>
             <p style={{ fontSize: "14px", lineHeight: "1.6" }}>
-              Are you sure you want to cancel Order <strong>{cancelOrderTarget.orderId}</strong>?
+              Are you sure you want to cancel Order <strong>{cancelOrderTarget.orderId || cancelOrderTarget.id || ""}</strong>?
               This will discontinue preparation of your bespoke gift hamper booking.
             </p>
             <div style={{ margin: "14px 0" }}>
