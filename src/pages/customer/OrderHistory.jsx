@@ -1368,7 +1368,7 @@ export default function OrderHistory() {
                   Tax Invoice / Receipt
                 </h3>
                 <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>
-                  Invoice No: INV-{invoiceOrder.orderId ? invoiceOrder.orderId.replace(/[^a-zA-Z0-9]/g, "") : "KG"} • Order: {invoiceOrder.orderId}
+                  Invoice No: INV-{invoiceOrder.orderId ? invoiceOrder.orderId.replace(/[^a-zA-Z0-9]/g, "") : (invoiceOrder.id ? String(invoiceOrder.id).replace(/[^a-zA-Z0-9]/g, "") : "KG")} • Order: {invoiceOrder.orderId || invoiceOrder.id}
                 </span>
               </div>
               <button
