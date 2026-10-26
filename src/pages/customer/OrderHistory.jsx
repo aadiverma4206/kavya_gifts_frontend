@@ -1096,7 +1096,7 @@ export default function OrderHistory() {
                 </button>
               </div>
 
-              {!collapsedOrders[ord.orderId || oIdx] && (
+              {!collapsedOrders[ord.orderId || ord.id || oIdx] && (
                 <div className="order-items-grid">
                   {ord.items?.map((item, idx) => {
                     const pId = item.productId || item.product_id;
