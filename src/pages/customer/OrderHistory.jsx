@@ -503,6 +503,9 @@ export default function OrderHistory() {
             Number(b.totalAmount || b.total || 0)
           );
         }
+        if (sortBy === "items_desc") {
+          return (b.items?.length || 0) - (a.items?.length || 0);
+        }
         const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
         const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
         if (sortBy === "oldest") {
