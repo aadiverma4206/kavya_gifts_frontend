@@ -107,6 +107,9 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("dhl")) {
     return `https://www.dhl.com/en/express/tracking.html?AWB=${trk}&brand=DHL`;
   }
+  if (p.includes("ekart")) {
+    return `https://ekartlogistics.com/shipmenttrack/${trk}`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
