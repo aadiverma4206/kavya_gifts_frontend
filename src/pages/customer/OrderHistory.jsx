@@ -35,6 +35,7 @@ function getEstimatedDeliveryDate(createdAt) {
   const eta = new Date(date);
   eta.setDate(eta.getDate() + 3);
   return eta.toLocaleDateString("en-IN", {
+    weekday: "short",
     month: "short",
     day: "numeric",
     year: "numeric",
