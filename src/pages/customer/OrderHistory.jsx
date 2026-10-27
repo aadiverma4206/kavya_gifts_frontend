@@ -1052,7 +1052,10 @@ export default function OrderHistory() {
                               isCompleted ? "completed" : ""
                             } ${isCurrent ? "current" : ""}`}
                           >
-                            <div className="stepper-circle">
+                            <div
+                              className="stepper-circle"
+                              title={`${step}: ${isCompleted ? (isCurrent ? "Current fulfillment phase" : "Completed") : "Upcoming phase"}`}
+                            >
                               {isCompleted ? "✓" : sIdx + 1}
                             </div>
                             <span className="stepper-label">{step}</span>
