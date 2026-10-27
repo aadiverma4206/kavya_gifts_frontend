@@ -54,7 +54,8 @@ function formatRelativeTime(createdAt) {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-  if (diffMs < 0) return "Just now";
+  if (diffMs < 60000) return "Just now";
+  if (diffMs < 3600000) return `${Math.max(1, Math.floor(diffMs / 60000))}m ago`;
   if (diffDays <= 0) return "Today";
   if (diffDays === 1) return "Yesterday";
   if (diffDays < 7) return `${diffDays} days ago`;
