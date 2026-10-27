@@ -250,7 +250,7 @@ export default function OrderHistory() {
       addToCart(
         {
           id: item.productId || item.product_id,
-          name: item.productName || item.product_name || "Gift Hamper",
+          name: String(item.productName || item.product_name || "Gift Hamper").trim(),
           price: Math.max(0, Number(item.price || item.totalPrice || 0)),
           thumbnail: item.thumbnail || item.image || item.image_url,
         },
