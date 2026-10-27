@@ -488,7 +488,13 @@ export default function OrderHistory() {
           ord.couponCode &&
           String(ord.couponCode).toLowerCase().includes(term)
         );
-        return idMatch || itemMatch || recipientMatch || trackingMatch || couponMatch;
+        const phoneMatch = Boolean(
+          (ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone || "")
+            .toString()
+            .toLowerCase()
+            .includes(term)
+        );
+        return idMatch || itemMatch || recipientMatch || trackingMatch || couponMatch || phoneMatch;
       })
       .sort((a, b) => {
         if (sortBy === "amount_desc") {
