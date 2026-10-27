@@ -361,6 +361,7 @@ export default function OrderHistory() {
       `Invoice ID: INV-${ord.orderId ? String(ord.orderId).replace(/[^a-zA-Z0-9]/g, "") : (ord.id ? String(ord.id).replace(/[^a-zA-Z0-9]/g, "") : "KG")}`,
       `Order Date: ${formatShortDate(ord.createdAt)}`,
       `Recipient: ${ord.customer?.name || ord.customerSnapshot?.name || "Customer"}`,
+      ...(ord.customer?.phone || ord.recipientPhone ? [`Phone: ${ord.customer?.phone || ord.recipientPhone}`] : []),
       `Courier Partner: ${getCourierPartner(ord)}`,
       `Payment Status: ${ord.paymentStatus || "Completed"}`,
       `Items:`,
