@@ -110,6 +110,9 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("ekart")) {
     return `https://ekartlogistics.com/shipmenttrack/${trk}`;
   }
+  if (p.includes("xpressbees") || p.includes("xpress bees")) {
+    return `https://www.xpressbees.com/track?isAwb=true&trackid=${trk}`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
