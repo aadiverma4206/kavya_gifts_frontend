@@ -1498,6 +1498,16 @@ export default function OrderHistory() {
                       <td style={{ textAlign: "right", padding: "8px" }}>Included</td>
                     </tr>
                   )}
+                  {Boolean(invoiceOrder.discount || invoiceOrder.discountAmount) && (
+                    <tr style={{ borderBottom: "1px solid #f0ede8", color: "#166534" }}>
+                      <td style={{ padding: "8px" }} colSpan={3}>
+                        🏷️ Promotional Discount {invoiceOrder.couponCode ? `(${invoiceOrder.couponCode})` : ""}
+                      </td>
+                      <td style={{ textAlign: "right", padding: "8px" }}>
+                        -₹{Number(invoiceOrder.discount || invoiceOrder.discountAmount || 0).toLocaleString("en-IN")}
+                      </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
 
