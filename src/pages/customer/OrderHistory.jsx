@@ -266,7 +266,7 @@ export default function OrderHistory() {
   const handleReorderSingleItem = (item) => {
     if (!item) return;
     const qty = Math.min(99, Math.max(1, Number(item.quantity) || 1));
-    const pName = item.productName || item.product_name || "Gift Hamper";
+    const pName = String(item.productName || item.product_name || "Gift Hamper").trim();
     addToCart(
       {
         id: item.productId || item.product_id || `item_${Date.now()}`,
