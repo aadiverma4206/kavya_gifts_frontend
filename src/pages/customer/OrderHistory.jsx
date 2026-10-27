@@ -172,6 +172,8 @@ function getStatusBadgeInfo(status) {
       return { label: "Returned", icon: "🔄", color: "#7c2d12", bg: "#ffedd5" };
     case "return_requested":
       return { label: "Return Requested", icon: "📋", color: "#c2410c", bg: "#ffedd5" };
+    case "exchange_requested":
+      return { label: "Exchange Requested", icon: "🔄", color: "#b45309", bg: "#ffedd5" };
     case "on_hold":
       return { label: "On Hold", icon: "⏸", color: "#b45309", bg: "#fef3c7" };
     default:
