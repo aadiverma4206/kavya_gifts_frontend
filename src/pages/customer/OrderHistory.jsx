@@ -297,7 +297,7 @@ export default function OrderHistory() {
 
   const handleCopyOrderId = (id) => {
     if (!id || (typeof id !== "string" && typeof id !== "number")) return;
-    const cleanId = String(id).trim();
+    const cleanId = String(id).replace(/^#/, "").trim();
     if (navigator?.clipboard?.writeText) {
       navigator.clipboard
         .writeText(cleanId)
