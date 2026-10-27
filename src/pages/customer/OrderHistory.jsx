@@ -674,6 +674,7 @@ export default function OrderHistory() {
                   <option value="oldest">Sort: Oldest First</option>
                   <option value="amount_desc">Amount: High to Low</option>
                   <option value="amount_asc">Amount: Low to High</option>
+                  <option value="items_desc">Items: Most First</option>
                 </select>
 
                 {/* Expand / Collapse All Toggle */}
