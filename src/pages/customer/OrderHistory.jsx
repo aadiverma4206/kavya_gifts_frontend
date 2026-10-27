@@ -625,7 +625,7 @@ export default function OrderHistory() {
                 <input
                   type="text"
                   className="orders-search-input"
-                  placeholder="Search by Order ID (#KG-...), hamper name, or recipient..."
+                  placeholder="Search by Order ID (#KG-...), hamper name, recipient, or phone..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
