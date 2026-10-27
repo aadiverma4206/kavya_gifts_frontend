@@ -336,6 +336,7 @@ export default function OrderHistory() {
       `"${(o.customer?.name || o.customerSnapshot?.name || "").replace(/"/g, '""')}"`,
       `"${getCourierPartner(o)}"`,
       `"${o.trackingNumber || ""}"`,
+      `"${getEstimatedDeliveryDate(o.createdAt)}"`,
     ]);
     const csvContent =
       "\uFEFF" +
