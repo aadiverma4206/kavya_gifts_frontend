@@ -186,7 +186,7 @@ function getStatusBadgeInfo(status) {
 /**
  * OrderHistory - Customer dashboard view for tracking luxury gift hamper bookings.
  * Features live order tracking stepper, multi-criteria filtering, CSV export,
- * interactive tax invoices, concierge support desk, and seamless reordering.
+ * interactive tax invoices, concierge support desk, multi-courier tracking, and seamless reordering.
  *
  * @component
  * @returns {JSX.Element} The rendered Order History dashboard.
