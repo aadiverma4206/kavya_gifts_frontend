@@ -1652,6 +1652,7 @@ export default function OrderHistory() {
                 <option value="Changed mind / Ordered by mistake">Changed mind / Ordered by mistake</option>
                 <option value="Delivery date no longer suits">Delivery date no longer suits</option>
                 <option value="Want to change recipient details">Want to change recipient details</option>
+                <option value="Delivery address entered incorrectly">Delivery address entered incorrectly</option>
                 <option value="Found alternative gift option">Found alternative gift option</option>
                 <option value="Other / Financial reason">Other / Financial reason</option>
               </select>
