@@ -325,7 +325,7 @@ export default function OrderHistory() {
       showToast("No orders available to export.");
       return;
     }
-    const headers = ["Order ID", "Date", "Status", "Payment Status", "Items Count", "Total Amount (INR)", "Recipient", "Courier Partner", "Tracking Number"];
+    const headers = ["Order ID", "Date", "Status", "Payment Status", "Items Count", "Total Amount (INR)", "Recipient", "Courier Partner", "Tracking Number", "Estimated Delivery"];
     const rows = orders.map((o) => [
       `"${o.orderId || o.id || ""}"`,
       `"${formatShortDate(o.createdAt)}"`,
