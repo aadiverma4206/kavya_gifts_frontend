@@ -600,6 +600,19 @@ export default function OrderHistory() {
     );
   }, [displayedOrders, currentPage, pageSize]);
 
+  const orderMetrics = useMemo(() => {
+    if (!orders || orders.length === 0) {
+      return { totalCount: 0, totalValue: 0, activeCount: 0, avgValue: 0 };
+    }
+    const totalCount = orders.length;
+    const totalValue = orders.reduce((sum, o) => sum + Number(o.totalAmount || o.total || 0), 0);
+    const activeCount = orders.filter(
+      (o) => !["delivered", "cancelled", "refunded"].includes((o.orderStatus || "").toLowerCase())
+    ).length;
+    const avgValue = Math.round(totalValue / totalCount);
+    return { totalCount, totalValue, activeCount, avgValue };
+  }, [orders]);
+
   const handleToggleExpandAll = () => {
     const anyExpanded = paginatedOrders.some(
       (ord, idx) => !collapsedOrders[ord.orderId || ord.id || idx]
@@ -632,52 +645,28 @@ export default function OrderHistory() {
             <div className="metric-tile">
               <div className="metric-icon-wrap">🎁</div>
               <div className="metric-info">
-                <span className="metric-val">{orders.length}</span>
+                <span className="metric-val">{orderMetrics.totalCount}</span>
                 <span className="metric-label">Total Hampers Ordered</span>
               </div>
             </div>
             <div className="metric-tile">
               <div className="metric-icon-wrap">💎</div>
               <div className="metric-info">
-                <span className="metric-val">
-                  {formatCurrency(
-                    orders.reduce((sum, o) => sum + Number(o.totalAmount || o.total || 0), 0)
-                  )}
-                </span>
+                <span className="metric-val">{formatCurrency(orderMetrics.totalValue)}</span>
                 <span className="metric-label">Total Curated Value</span>
               </div>
             </div>
             <div className="metric-tile">
               <div className="metric-icon-wrap">🚚</div>
               <div className="metric-info">
-                <span className="metric-val">
-                  {
-                    orders.filter(
-                      (o) =>
-                        !["delivered", "cancelled", "refunded"].includes(
-                          (o.orderStatus || "").toLowerCase()
-                        )
-                    ).length
-                  }
-                </span>
+                <span className="metric-val">{orderMetrics.activeCount}</span>
                 <span className="metric-label">Active Dispatches</span>
               </div>
             </div>
             <div className="metric-tile">
               <div className="metric-icon-wrap">✨</div>
               <div className="metric-info">
-                <span className="metric-val">
-                  {formatCurrency(
-                    orders.length > 0
-                      ? Math.round(
-                          orders.reduce(
-                            (sum, o) => sum + Number(o.totalAmount || o.total || 0),
-                            0
-                          ) / orders.length
-                        )
-                      : 0
-                  )}
-                </span>
+                <span className="metric-val">{formatCurrency(orderMetrics.avgValue)}</span>
                 <span className="metric-label">Average Booking Value</span>
               </div>
             </div>
