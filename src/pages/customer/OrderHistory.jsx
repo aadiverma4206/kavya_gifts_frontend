@@ -1747,9 +1747,27 @@ export default function OrderHistory() {
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="orders-toast" role="status" aria-live="polite">
-          <span>📋</span> {toastMessage}
-        </div>
+        <aside className="orders-toast" role="status" aria-live="polite" aria-atomic="true">
+          <span aria-hidden="true">📋</span>
+          <span className="toast-text">{toastMessage}</span>
+          <button
+            type="button"
+            onClick={() => setToastMessage("")}
+            style={{
+              background: "none",
+              border: "none",
+              color: "inherit",
+              cursor: "pointer",
+              marginLeft: "8px",
+              fontSize: "13px",
+              opacity: 0.8,
+              padding: "0 4px",
+            }}
+            aria-label="Dismiss notification"
+          >
+            ✕
+          </button>
+        </aside>
       )}
     </div>
   );
