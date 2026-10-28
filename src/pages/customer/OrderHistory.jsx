@@ -358,23 +358,30 @@ export default function OrderHistory() {
     }
   };
 
+  const sanitizeCsvValue = (val) => {
+    const raw = String(val ?? "").trim();
+    const safe = /^[=+\-@]/.test(raw) ? `'${raw}` : raw;
+    return `"${safe.replace(/"/g, '""')}"`;
+  };
+
   const handleExportCSV = () => {
     if (!orders || orders.length === 0) {
       showToast("No orders available to export.");
       return;
     }
-    const headers = ["Order ID", "Date", "Status", "Payment Status", "Items Count", "Total Amount (INR)", "Recipient", "Courier Partner", "Tracking Number", "Estimated Delivery"];
+    const headers = ["Order ID", "Date", "Status", "Payment Status", "Items Count", "Total Amount (INR)", "Recipient", "Contact Phone", "Courier Partner", "Tracking Number", "Estimated Delivery"];
     const rows = orders.map((o) => [
-      `"${o.orderId || o.id || ""}"`,
-      `"${formatShortDate(o.createdAt)}"`,
-      `"${o.orderStatus || "pending"}"`,
-      `"${o.paymentStatus || "pending"}"`,
-      `"${o.items?.length || 0}"`,
-      `"${o.totalAmount || o.total || 0}"`,
-      `"${(o.customer?.name || o.customerSnapshot?.name || "").replace(/"/g, '""')}"`,
-      `"${getCourierPartner(o)}"`,
-      `"${o.trackingNumber || ""}"`,
-      `"${getEstimatedDeliveryDate(o.createdAt)}"`,
+      sanitizeCsvValue(o.orderId || o.id || ""),
+      sanitizeCsvValue(formatShortDate(o.createdAt)),
+      sanitizeCsvValue(o.orderStatus || "pending"),
+      sanitizeCsvValue(o.paymentStatus || "pending"),
+      sanitizeCsvValue(o.items?.length || 0),
+      sanitizeCsvValue(o.totalAmount || o.total || 0),
+      sanitizeCsvValue(o.customer?.name || o.customerSnapshot?.name || "Customer"),
+      sanitizeCsvValue(o.recipientPhone || o.customer?.phone || o.customerSnapshot?.phone || ""),
+      sanitizeCsvValue(getCourierPartner(o)),
+      sanitizeCsvValue(o.trackingNumber || ""),
+      sanitizeCsvValue(getEstimatedDeliveryDate(o.createdAt)),
     ]);
     const csvContent =
       "\uFEFF" +
