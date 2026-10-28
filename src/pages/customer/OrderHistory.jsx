@@ -268,6 +268,7 @@ export default function OrderHistory() {
   const [toastMessage, setToastMessage] = useState("");
   const toastTimerRef = useRef(null);
   const searchInputRef = useRef(null);
+  const reorderTimerRef = useRef(null);
   const [collapsedOrders, setCollapsedOrders] = useState({});
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [supportOrder, setSupportOrder] = useState(null);
@@ -278,6 +279,7 @@ export default function OrderHistory() {
   useEffect(() => {
     return () => {
       if (toastTimerRef.current) clearTimeout(toastTimerRef.current);
+      if (reorderTimerRef.current) clearTimeout(reorderTimerRef.current);
     };
   }, []);
 
@@ -315,8 +317,10 @@ export default function OrderHistory() {
       );
     });
     showToast("Selected hamper(s) added to your cart!");
-    setTimeout(() => {
+    if (reorderTimerRef.current) clearTimeout(reorderTimerRef.current);
+    reorderTimerRef.current = setTimeout(() => {
       navigate("/cart");
+      reorderTimerRef.current = null;
     }, 700);
   };
 
