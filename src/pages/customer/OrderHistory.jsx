@@ -1417,7 +1417,7 @@ export default function OrderHistory() {
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
             <span style={{ fontSize: "13px", color: "var(--color-muted)" }}>
               Showing {(currentPage - 1) * pageSize + 1} to{" "}
-              {Math.min(currentPage * pageSize, displayedOrders.length)} of {displayedOrders.length} hampers
+              {Math.min(currentPage * pageSize, displayedOrders.length)} of {displayedOrders.length} orders
             </span>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <span style={{ fontSize: "12px", color: "var(--color-muted)" }}>Per page:</span>
