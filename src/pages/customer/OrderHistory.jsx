@@ -146,6 +146,16 @@ function getCourierTrackingUrl(partner, trackingNumber) {
  * @param {string} query - Keyword substring to highlight.
  * @returns {React.ReactNode} Highlighted React elements or original string.
  */
+/**
+ * Sanitizes a phone number for use in tel: links.
+ * @param {string|number} phone - Raw phone value.
+ * @returns {string} Sanitized dial digits string.
+ */
+function sanitizePhoneForTel(phone) {
+  if (!phone) return "";
+  return String(phone).replace(/[^\d+]/g, "").trim();
+}
+
 function renderHighlightedText(text, query) {
   if (text == null) return "";
   const str = String(text);
@@ -1253,28 +1263,22 @@ export default function OrderHistory() {
                   <span className="muted">Delivering To:</span>{" "}
                   <strong>{ord.customer?.name || ord.customerSnapshot?.name || "Customer"}</strong>
                   {Boolean(ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone) && (
-                    (() => {
-                      const ph = ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone;
-                      const cleanPh = String(ph).replace(/[^\d+]/g, "");
-                      return (
-                        <a
-                          href={`tel:${cleanPh}`}
-                          style={{
-                            marginLeft: "6px",
-                            fontSize: "11.5px",
-                            background: "rgba(0,0,0,0.05)",
-                            padding: "1px 6px",
-                            borderRadius: "3px",
-                            color: "var(--color-primary)",
-                            textDecoration: "none",
-                            fontWeight: 500,
-                          }}
-                          title={`Call recipient ${ph}`}
-                        >
-                          📞 {ph}
-                        </a>
-                      );
-                    })()
+                    <a
+                      href={`tel:${sanitizePhoneForTel(ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone)}`}
+                      style={{
+                        marginLeft: "6px",
+                        fontSize: "11.5px",
+                        background: "rgba(0,0,0,0.05)",
+                        padding: "1px 6px",
+                        borderRadius: "3px",
+                        color: "var(--color-primary)",
+                        textDecoration: "none",
+                        fontWeight: 500,
+                      }}
+                      title={`Call recipient ${ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone}`}
+                    >
+                      📞 {ord.recipientPhone || ord.customer?.phone || ord.customerSnapshot?.phone || ord.phone}
+                    </a>
                   )},{" "}
                   {ord.customer?.address || ord.customerSnapshot?.address || ord.deliveryAddress || "Address provided"}
                   {(ord.deliveryNotes || ord.specialInstructions || ord.notes) && (
