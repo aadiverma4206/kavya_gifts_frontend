@@ -1646,7 +1646,7 @@ export default function OrderHistory() {
 
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
               <a
-                href={`https://wa.me/919999999999?text=Hello%20Kavya%20Luxury%20Gifts%2C%20I%20need%20assistance%20with%20Order%20${encodeURIComponent(supportOrder.orderId || supportOrder.id || "")}`}
+                href={`https://wa.me/919999999999?text=${encodeURIComponent(`Hello Kavya Luxury Gifts, I require assistance with Order #${supportOrder.orderId || supportOrder.id || ""}` + (supportOrder.customer?.name ? ` (Account: ${supportOrder.customer.name})` : ""))}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-primary"
@@ -1655,7 +1655,11 @@ export default function OrderHistory() {
                 💬 Chat with Concierge on WhatsApp
               </a>
               <a
-                href={`mailto:concierge@kavyaluxurygifts.com?subject=Assistance%20for%20Order%20${encodeURIComponent(supportOrder.orderId || supportOrder.id || "")}`}
+                href={`mailto:concierge@kavyaluxurygifts.com?subject=${encodeURIComponent(`Assistance Request - Order #${supportOrder.orderId || supportOrder.id || ""}`)}&body=${encodeURIComponent(`Hello Concierge Desk,
+
+I am requesting support regarding my booking #${supportOrder.orderId || supportOrder.id || ""}.
+
+Thank you!`)}`}
                 className="btn btn-secondary"
                 style={{ textAlign: "center", textDecoration: "none" }}
               >
