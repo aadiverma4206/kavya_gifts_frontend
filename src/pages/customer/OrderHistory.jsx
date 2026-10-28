@@ -60,14 +60,15 @@ function getEstimatedDeliveryDate(createdAt) {
  * @returns {string} Human-readable relative time string.
  */
 function formatRelativeTime(createdAt) {
-  if (!createdAt) return "Recently";
   const date = parseOrderDate(createdAt);
   if (!date) return "Recently";
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
+  if (diffMs < 0) return "Upcoming";
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   if (diffMs < 60000) return "Just now";
   if (diffMs < 3600000) return `${Math.max(1, Math.floor(diffMs / 60000))}m ago`;
+  if (diffMs < 86400000 && diffDays <= 0) return `${Math.floor(diffMs / 3600000)}h ago`;
   if (diffDays <= 0) return "Today";
   if (diffDays === 1) return "Yesterday";
   if (diffDays < 7) return `${diffDays} days ago`;
