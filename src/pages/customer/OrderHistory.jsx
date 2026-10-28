@@ -190,6 +190,11 @@ function renderHighlightedText(text, query) {
   }
 }
 
+/**
+ * Resolves visual badge metadata (label, icon, text color, background) for any order status.
+ * @param {string} [status="pending"] - Raw order status string.
+ * @returns {{ label: string, icon: string, color: string, bg: string }} Status badge presentation properties.
+ */
 function getStatusBadgeInfo(status) {
   const s = (status || "pending").toLowerCase().trim();
   switch (s) {
