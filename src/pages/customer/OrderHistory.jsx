@@ -1810,7 +1810,11 @@ Thank you!`)}`}
                   border: "none",
                   padding: "8px 16px",
                   borderRadius: "var(--radius-xs)",
-                  cursor: "pointer",
+                  cursor: cancelling ? "not-allowed" : "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  opacity: cancelling ? 0.75 : 1,
                 }}
                 disabled={cancelling}
                 onClick={handleConfirmCancelOrder}
