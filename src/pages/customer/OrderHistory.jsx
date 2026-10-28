@@ -589,27 +589,24 @@ export default function OrderHistory() {
         return idMatch || itemMatch || recipientMatch || trackingMatch || couponMatch || phoneMatch;
       })
       .sort((a, b) => {
+        const timeA = parseOrderDate(a.createdAt)?.getTime() || 0;
+        const timeB = parseOrderDate(b.createdAt)?.getTime() || 0;
         if (sortBy === "amount_desc") {
-          return (
-            Number(b.totalAmount || b.total || 0) -
-            Number(a.totalAmount || a.total || 0)
-          );
+          const diff = Number(b.totalAmount || b.total || 0) - Number(a.totalAmount || a.total || 0);
+          if (diff !== 0) return diff;
         }
         if (sortBy === "amount_asc") {
-          return (
-            Number(a.totalAmount || a.total || 0) -
-            Number(b.totalAmount || b.total || 0)
-          );
+          const diff = Number(a.totalAmount || a.total || 0) - Number(b.totalAmount || b.total || 0);
+          if (diff !== 0) return diff;
         }
         if (sortBy === "items_desc") {
-          return (b.items?.length || 0) - (a.items?.length || 0);
+          const diff = (b.items?.length || 0) - (a.items?.length || 0);
+          if (diff !== 0) return diff;
         }
-        const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt || 0);
-        const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt || 0);
         if (sortBy === "oldest") {
-          return dateA - dateB;
+          return timeA !== timeB ? timeA - timeB : String(a.orderId || a.id).localeCompare(String(b.orderId || b.id));
         }
-        return dateB - dateA;
+        return timeB !== timeA ? timeB - timeA : String(b.orderId || b.id).localeCompare(String(a.orderId || a.id));
       });
   }, [orders, statusFilter, paymentFilter, dateRangeFilter, searchTerm, sortBy]);
 
