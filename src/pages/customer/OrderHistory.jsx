@@ -259,6 +259,7 @@ export default function OrderHistory() {
   const [pageSize, setPageSize] = useState(5);
   const [toastMessage, setToastMessage] = useState("");
   const toastTimerRef = useRef(null);
+  const searchInputRef = useRef(null);
   const [collapsedOrders, setCollapsedOrders] = useState({});
   const [invoiceOrder, setInvoiceOrder] = useState(null);
   const [supportOrder, setSupportOrder] = useState(null);
@@ -475,6 +476,16 @@ export default function OrderHistory() {
   // Accessibility: Close active modal on Escape key press
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (
+        e.key === "/" &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "TEXTAREA" &&
+        document.activeElement?.tagName !== "SELECT"
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        return;
+      }
       if (e.key === "Escape") {
         if (invoiceOrder) setInvoiceOrder(null);
         if (supportOrder) setSupportOrder(null);
@@ -678,9 +689,10 @@ export default function OrderHistory() {
               <div className="orders-search-box">
                 <span className="search-icon-inside">🔍</span>
                 <input
+                  ref={searchInputRef}
                   type="text"
                   className="orders-search-input"
-                  placeholder="Search by Order ID (#KG-...), hamper name, recipient, or phone..."
+                  placeholder="Search by Order ID, hamper name, recipient, or phone (Press / to search)..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
