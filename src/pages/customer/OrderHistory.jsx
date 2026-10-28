@@ -24,14 +24,26 @@ function getOrderStepIndex(status) {
 }
 
 /**
+ * Safely normalizes date representations (Firestore Timestamp, ISO string, milliseconds, Date).
+ * @param {Date|Object|string|number} createdAt - Raw date representation.
+ * @returns {Date|null} Valid Date or null.
+ */
+function parseOrderDate(createdAt) {
+  if (!createdAt) return null;
+  if (typeof createdAt?.toDate === "function") return createdAt.toDate();
+  if (createdAt?.seconds != null) return new Date(createdAt.seconds * 1000);
+  const parsed = new Date(createdAt);
+  return isNaN(parsed.getTime()) ? null : parsed;
+}
+
+/**
  * Computes estimated delivery date based on order creation date.
  * @param {Date|Object|string|number} createdAt - Order timestamp.
  * @returns {string} Formatted localized delivery date estimate.
  */
 function getEstimatedDeliveryDate(createdAt) {
-  if (!createdAt) return "Within 3 business days";
-  const date = createdAt?.toDate ? createdAt.toDate() : (createdAt?.seconds ? new Date(createdAt.seconds * 1000) : new Date(createdAt || 0));
-  if (isNaN(date.getTime())) return "Within 3 business days";
+  const date = parseOrderDate(createdAt);
+  if (!date) return "Within 3 business days";
   const eta = new Date(date);
   eta.setDate(eta.getDate() + 3);
   return eta.toLocaleDateString("en-IN", {
@@ -49,8 +61,8 @@ function getEstimatedDeliveryDate(createdAt) {
  */
 function formatRelativeTime(createdAt) {
   if (!createdAt) return "Recently";
-  const date = createdAt?.toDate ? createdAt.toDate() : (createdAt?.seconds ? new Date(createdAt.seconds * 1000) : new Date(createdAt || 0));
-  if (isNaN(date.getTime())) return "Recently";
+  const date = parseOrderDate(createdAt);
+  if (!date) return "Recently";
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
