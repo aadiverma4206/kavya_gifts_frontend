@@ -180,7 +180,13 @@ function getStatusBadgeInfo(status) {
     case "cancelled":
       return { label: "Cancelled", icon: "✕", color: "#991b1b", bg: "#fee2e2" };
     case "failed":
-      return { label: "Failed", icon: "⚠", color: "#dc2626", bg: "#fee2e2" };
+    case "payment_failed":
+      return { label: "Payment Failed", icon: "⚠", color: "#dc2626", bg: "#fee2e2" };
+    case "partially_shipped":
+      return { label: "Partially Shipped", icon: "📦", color: "#2563eb", bg: "#eff6ff" };
+    case "rto":
+    case "undelivered":
+      return { label: "Undelivered", icon: "⚠️", color: "#b91c1c", bg: "#fef2f2" };
     case "refunded":
       return { label: "Refunded", icon: "↩", color: "#475569", bg: "#f1f5f9" };
     case "returned":
