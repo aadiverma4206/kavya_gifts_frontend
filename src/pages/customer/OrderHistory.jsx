@@ -1560,17 +1560,19 @@ export default function OrderHistory() {
                 </tbody>
               </table>
 
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  paddingTop: "8px",
-                  fontSize: "15px",
-                  fontWeight: 800,
-                  color: "var(--color-primary)",
-                }}
-              >
-                <span>Grand Total: ₹{Number(invoiceOrder.totalAmount || invoiceOrder.total || 0).toLocaleString("en-IN")}</span>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px", paddingTop: "8px", borderTop: "1px dashed var(--color-border)" }}>
+                <div style={{ fontSize: "12.5px", color: "var(--color-muted)" }}>
+                  Shipping & Handling: <strong style={{ color: "#166534" }}>Complimentary</strong>
+                </div>
+                <div
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: 800,
+                    color: "var(--color-primary)",
+                  }}
+                >
+                  <span>Grand Total: ₹{Number(invoiceOrder.totalAmount || invoiceOrder.total || 0).toLocaleString("en-IN")}</span>
+                </div>
               </div>
             </div>
 
