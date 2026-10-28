@@ -820,10 +820,32 @@ export default function OrderHistory() {
 
             {/* Active Filters Clear Row */}
             {hasActiveFilters && (
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "8px", borderTop: "1px dashed var(--color-border)" }}>
-                <span style={{ fontSize: "12.5px", color: "var(--color-muted)" }}>
-                  Showing {displayedOrders.length} of {orders.length} orders
-                </span>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "8px", paddingTop: "8px", borderTop: "1px dashed var(--color-border)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: "12.5px", color: "var(--color-muted)" }}>
+                    Showing {displayedOrders.length} of {orders.length} orders
+                  </span>
+                  {searchTerm && (
+                    <span style={{ fontSize: "11px", background: "rgba(0,0,0,0.06)", padding: "2px 7px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      "{searchTerm}" <button type="button" onClick={() => setSearchTerm("")} style={{ border: "none", background: "none", cursor: "pointer", padding: 0 }}>✕</button>
+                    </span>
+                  )}
+                  {statusFilter !== "all" && (
+                    <span style={{ fontSize: "11px", background: "rgba(0,0,0,0.06)", padding: "2px 7px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      Status: {statusFilter} <button type="button" onClick={() => setStatusFilter("all")} style={{ border: "none", background: "none", cursor: "pointer", padding: 0 }}>✕</button>
+                    </span>
+                  )}
+                  {paymentFilter !== "all" && (
+                    <span style={{ fontSize: "11px", background: "rgba(0,0,0,0.06)", padding: "2px 7px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      Payment: {paymentFilter} <button type="button" onClick={() => setPaymentFilter("all")} style={{ border: "none", background: "none", cursor: "pointer", padding: 0 }}>✕</button>
+                    </span>
+                  )}
+                  {dateRangeFilter !== "all" && (
+                    <span style={{ fontSize: "11px", background: "rgba(0,0,0,0.06)", padding: "2px 7px", borderRadius: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+                      Date: {dateRangeFilter.replace("_", " ")} <button type="button" onClick={() => setDateRangeFilter("all")} style={{ border: "none", background: "none", cursor: "pointer", padding: 0 }}>✕</button>
+                    </span>
+                  )}
+                </div>
                 <button
                   type="button"
                   onClick={resetAllFilters}
