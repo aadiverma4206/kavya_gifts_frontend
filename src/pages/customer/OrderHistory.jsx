@@ -140,31 +140,41 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
+/**
+ * Safely renders string text with occurrences of a search query highlighted with <mark>.
+ * @param {string|number} text - Target text to display.
+ * @param {string} query - Keyword substring to highlight.
+ * @returns {React.ReactNode} Highlighted React elements or original string.
+ */
 function renderHighlightedText(text, query) {
   if (text == null) return "";
   const str = String(text);
   if (!query || typeof query !== "string" || !query.trim()) return str;
   const q = query.trim();
-  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const parts = str.split(new RegExp(`(${escaped})`, "gi"));
-  return parts.map((part, i) =>
-    part.toLowerCase() === q.toLowerCase() ? (
-      <mark
-        key={i}
-        style={{
-          backgroundColor: "#fef08a",
-          color: "#854d0e",
-          padding: "1px 3px",
-          borderRadius: "3px",
-          fontWeight: 600,
-        }}
-      >
-        {part}
-      </mark>
-    ) : (
-      part
-    )
-  );
+  try {
+    const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const parts = str.split(new RegExp(`(${escaped})`, "gi"));
+    return parts.map((part, i) =>
+      part.toLowerCase() === q.toLowerCase() ? (
+        <mark
+          key={i}
+          style={{
+            backgroundColor: "#fef08a",
+            color: "#854d0e",
+            padding: "1px 3px",
+            borderRadius: "3px",
+            fontWeight: 600,
+          }}
+        >
+          {part}
+        </mark>
+      ) : (
+        part
+      )
+    );
+  } catch {
+    return str;
+  }
 }
 
 function getStatusBadgeInfo(status) {
