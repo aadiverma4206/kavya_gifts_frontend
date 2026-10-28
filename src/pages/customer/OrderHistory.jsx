@@ -128,6 +128,15 @@ function getCourierTrackingUrl(partner, trackingNumber) {
   if (p.includes("xpressbees") || p.includes("xpress bees")) {
     return `https://www.xpressbees.com/track?isAwb=true&trackid=${trk}`;
   }
+  if (p.includes("amazon")) {
+    return `https://track.amazon.in/tracking/${trk}`;
+  }
+  if (p.includes("trackon")) {
+    return `https://trackon.in/tracking?awb=${trk}`;
+  }
+  if (p.includes("tpc") || p.includes("professional courier")) {
+    return `https://www.tpcindia.com/Track.aspx?awb=${trk}`;
+  }
   return `https://www.google.com/search?q=${encodeURIComponent(`${partner || "courier"} tracking ${trackingNumber || ""}`.trim())}`;
 }
 
