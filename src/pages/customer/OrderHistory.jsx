@@ -510,6 +510,18 @@ export default function OrderHistory() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [invoiceOrder, supportOrder, cancelOrderTarget, cancelling]);
 
+  // Prevent background page scrolling when an overlay modal is active
+  useEffect(() => {
+    const isModalOpen = Boolean(invoiceOrder || supportOrder || cancelOrderTarget);
+    if (isModalOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [invoiceOrder, supportOrder, cancelOrderTarget]);
+
   const displayedOrders = useMemo(() => {
     return orders
       .filter((ord) => {
