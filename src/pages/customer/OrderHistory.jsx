@@ -344,6 +344,20 @@ export default function OrderHistory() {
     }, 3000);
   }, []);
 
+  const handleCopyTrackingNumber = (trk) => {
+    if (!trk) return;
+    const cleanTrk = String(trk).trim();
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(cleanTrk).then(() => {
+        showToast(`Copied tracking number: ${cleanTrk}`);
+      }).catch(() => {
+        showToast(`Tracking: ${cleanTrk}`);
+      });
+    } else {
+      showToast(`Tracking: ${cleanTrk}`);
+    }
+  };
+
   const handleCopyOrderId = (id) => {
     if (!id || (typeof id !== "string" && typeof id !== "number")) return;
     const cleanId = String(id).replace(/^#/, "").trim();
@@ -1091,15 +1105,26 @@ export default function OrderHistory() {
                         const trkNum = ord.trackingNumber || `TRK-${(ord.orderId || "KG").slice(-6)}`;
                         const trkUrl = getCourierTrackingUrl(partner, trkNum);
                         return (
-                          <a
-                            href={trkUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ color: "inherit", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "4px" }}
-                            title="Track parcel on official courier site"
-                          >
-                            📦 {partner} | {trkNum} ↗
-                          </a>
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <a
+                              href={trkUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{ color: "inherit", textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                              title="Track parcel on official courier site"
+                            >
+                              📦 {partner} | {trkNum} ↗
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => handleCopyTrackingNumber(trkNum)}
+                              style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", padding: "1px 3px", opacity: 0.75 }}
+                              title="Copy tracking number to clipboard"
+                              aria-label="Copy tracking number"
+                            >
+                              📋
+                            </button>
+                          </span>
                         );
                       })()}
                     </span>
