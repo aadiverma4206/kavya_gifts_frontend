@@ -11,6 +11,7 @@ import {
   retryPaymentForOrder,
 } from "../../controllers/paymentController";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { formatCurrency } from "../../utils/formatters";
 import "./Payment.css";
 
 /**
@@ -496,7 +497,7 @@ export default function Payment() {
       <div className="payment-header">
         <h2>Select Payment Method</h2>
         <p className="muted">
-          Pay ₹{displayTotal.toLocaleString("en-IN")} securely to confirm your gift hamper booking
+          Pay {formatCurrency(displayTotal)} securely to confirm your gift hamper booking
         </p>
       </div>
 
@@ -897,7 +898,7 @@ export default function Payment() {
                 className="btn btn-primary btn-pill"
                 style={{ flex: 1 }}
               >
-                Pay ₹{displayTotal.toLocaleString("en-IN")} & Verify
+                Pay {formatCurrency(displayTotal)} & Verify
               </button>
               <button
                 type="button"
@@ -992,12 +993,12 @@ export default function Payment() {
             <div className="recap-pricing">
               <div className="recap-row">
                 <span>Hampers Total:</span>
-                <span>₹{(order?.subtotal || subtotal).toLocaleString("en-IN")}</span>
+                <span>{formatCurrency(order?.subtotal || subtotal)}</span>
               </div>
               {(order?.giftWrappingTotal || giftWrapFee) > 0 && (
                 <div className="recap-row">
                   <span>Gift Wrapping:</span>
-                  <span>₹{(order?.giftWrappingTotal || giftWrapFee).toLocaleString("en-IN")}</span>
+                  <span>{formatCurrency(order?.giftWrappingTotal || giftWrapFee)}</span>
                 </div>
               )}
               {Boolean(order?.discount || order?.discountAmount) && (
@@ -1009,7 +1010,7 @@ export default function Payment() {
               <div className="recap-row total">
                 <strong>Total Payable:</strong>
                 <strong style={{ color: "var(--color-primary)", fontSize: "18px" }}>
-                  ₹{displayTotal.toLocaleString("en-IN")}
+                  {formatCurrency(displayTotal)}
                 </strong>
               </div>
             </div>
