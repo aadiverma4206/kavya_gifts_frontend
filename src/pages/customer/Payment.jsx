@@ -554,6 +554,11 @@ export default function Payment() {
           <p style={{ fontSize: "13.5px", margin: "8px 0" }}>
             If funds were deducted, click <strong>Re-Verify Payment</strong> below to verify your receipt with the server without re-charging.
           </p>
+          {activePaymentRecord?.paymentId && (
+            <div style={{ fontSize: "12px", background: "rgba(37, 99, 235, 0.08)", padding: "6px 10px", borderRadius: "var(--radius-xs)", color: "#1e40af", marginBottom: "12px" }}>
+              🔑 Gateway Payment Intent: <code>{activePaymentRecord.paymentId}</code>
+            </div>
+          )}
           <div className="recovery-actions">
             <button type="button" onClick={handleReverifyNetworkError} className="btn btn-primary btn-pill">
               🔍 Re-Verify Payment Status
