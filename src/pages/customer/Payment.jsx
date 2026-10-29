@@ -35,6 +35,22 @@ function isValidLuhn(number) {
   return sum % 10 === 0;
 }
 
+/**
+ * Detects the payment card network brand (Visa, Mastercard, RuPay, Amex, Maestro) based on IIN prefix.
+ * @param {string} number - Card digits string.
+ * @returns {string} Detected network name.
+ */
+function detectCardNetwork(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  if (!digits) return "Card";
+  if (/^4/.test(digits)) return "Visa";
+  if (/^(5[1-5]|2[2-7])/.test(digits)) return "Mastercard";
+  if (/^(508|60|65|81|82)/.test(digits)) return "RuPay";
+  if (/^3[47]/.test(digits)) return "Amex";
+  if (/^(50|5[6-8]|6\d)/.test(digits)) return "Maestro";
+  return "Card";
+}
+
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
