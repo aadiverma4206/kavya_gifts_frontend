@@ -97,6 +97,31 @@ function formatCardNumberInput(raw) {
   return digits.match(/.{1,4}/g)?.join(" ") || digits;
 }
 
+/**
+ * Safely retrieves an item from sessionStorage with error suppression for sandboxed/private browsing.
+ * @param {string} key - Storage item key.
+ * @returns {string|null} Retrieved value or null.
+ */
+function getSafeSessionStorage(key) {
+  try {
+    return window?.sessionStorage ? window.sessionStorage.getItem(key) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Safely removes an item from sessionStorage.
+ * @param {string} key - Storage item key.
+ */
+function removeSafeSessionStorage(key) {
+  try {
+    if (window?.sessionStorage) window.sessionStorage.removeItem(key);
+  } catch {
+    // Ignore quota or security restriction exceptions
+  }
+}
+
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
@@ -139,12 +164,7 @@ export default function Payment() {
   // Load existing pending order if navigated directly or refreshed
   useEffect(() => {
     if (!order) {
-      let pendingOrderId = null;
-      try {
-        pendingOrderId = window.sessionStorage?.getItem("kavya_pending_order_id");
-      } catch {
-        // Safe fallback
-      }
+      const pendingOrderId = getSafeSessionStorage("kavya_pending_order_id");
       if (pendingOrderId) {
         getOrderById(pendingOrderId)
           .then((ord) => {
@@ -226,12 +246,7 @@ export default function Payment() {
     setPaymentState("initiating");
 
     try {
-      let pendingId = null;
-      try {
-        pendingId = window.sessionStorage?.getItem("kavya_pending_order_id");
-      } catch {
-        // Safe fallback
-      }
+      const pendingId = getSafeSessionStorage("kavya_pending_order_id");
       const orderId = order?.orderId || pendingId;
       if (!orderId) {
         throw new Error("Missing active order. Please return to Checkout.");
@@ -330,11 +345,7 @@ export default function Payment() {
       // Step 4: Verification confirmed on server!
       // Clear cart, clean session storage, and route to confirmation
       clearCart();
-      try {
-        window.sessionStorage?.removeItem("kavya_pending_order_id");
-      } catch {
-        // Safe fallback
-      }
+      removeSafeSessionStorage("kavya_pending_order_id");
 
       navigate(`/order-confirmation/${orderId}`, {
         state: {
@@ -367,7 +378,7 @@ export default function Payment() {
     setPaymentState("idle");
     setSimulateOutcome("success");
 
-    const orderId = order?.orderId || sessionStorage.getItem("kavya_pending_order_id");
+    const orderId = order?.orderId || getSafeSessionStorage("kavya_pending_order_id");
     if (orderId) {
       try {
         await retryPaymentForOrder({
@@ -391,7 +402,7 @@ export default function Payment() {
     setPaymentState("verifying");
     setErrorMessage("");
 
-    const orderId = order?.orderId || sessionStorage.getItem("kavya_pending_order_id");
+    const orderId = order?.orderId || getSafeSessionStorage("kavya_pending_order_id");
     const verifyRes = await verifyPaymentTransaction({
       orderId,
       paymentId: activePaymentRecord.paymentId,
@@ -405,7 +416,7 @@ export default function Payment() {
 
     if (verifyRes.success) {
       clearCart();
-      sessionStorage.removeItem("kavya_pending_order_id");
+      removeSafeSessionStorage("kavya_pending_order_id");
       navigate(`/order-confirmation/${orderId}`, {
         state: {
           order: {
@@ -437,7 +448,7 @@ export default function Payment() {
 
   // --- USER EXPLICIT CANCEL ---
   async function handleUserCancel() {
-    const orderId = order?.orderId || sessionStorage.getItem("kavya_pending_order_id");
+    const orderId = order?.orderId || getSafeSessionStorage("kavya_pending_order_id");
     if (orderId && activePaymentRecord?.paymentId) {
       await handlePaymentCancellation({
         orderId,
