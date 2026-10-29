@@ -719,11 +719,21 @@ export default function Payment() {
                     />
                   </div>
                   <div className="form-group">
-                    <label>CVV</label>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                      <label style={{ margin: 0 }}>CVV / CVC</label>
+                      <span
+                        title="3 digits on back of Visa/Mastercard/RuPay, or 4 digits on front of Amex"
+                        style={{ fontSize: "11px", color: "var(--color-muted)", cursor: "help" }}
+                        aria-label="3 digits on back of card or 4 digits on front for Amex"
+                      >
+                        ℹ️ 3-4 digits
+                      </span>
+                    </div>
                     <input
                       type="password"
                       placeholder="•••"
-                      maxLength={4}
+                      maxLength={detectCardNetwork(cardNumber) === "Amex" ? 4 : 3}
+                      autoComplete="cc-csc"
                       value={cardCvv}
                       onChange={(e) => setCardCvv(e.target.value.replace(/\D/g, "").slice(0, 4))}
                       required
