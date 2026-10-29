@@ -894,6 +894,13 @@ export default function Payment() {
                 Cancel
               </button>
             </div>
+            <div className="payment-security-stamp" aria-label="Security and encryption guarantee">
+              <span>🔒 256-Bit SSL Encrypted</span>
+              <span>•</span>
+              <span>PCI-DSS Level 1</span>
+              <span>•</span>
+              <span>RBI Regulated Gateway</span>
+            </div>
           </form>
         </div>
 
