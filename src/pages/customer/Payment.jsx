@@ -577,10 +577,10 @@ export default function Payment() {
       <div className="payment-grid">
         {/* Payment Methods */}
         <div className="payment-methods-card card">
-          <form onSubmit={handleStartPayment}>
+          <form onSubmit={handleStartPayment} role="radiogroup" aria-label="Payment method selection">
             {/* UPI Option */}
             <div
-              className={`payment-option-row ${paymentMethod === "upi" ? "active" : ""}`}
+              className={`payment-option-row ${paymentMethod === "upi" ? "active" : ""}`} role="radio" tabIndex={0} aria-checked={paymentMethod === "upi"} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelectPaymentMethod("upi"); } }}
               onClick={() => handleSelectPaymentMethod("upi")}
             >
               <input
@@ -638,7 +638,7 @@ export default function Payment() {
 
             {/* Card Option */}
             <div
-              className={`payment-option-row ${paymentMethod === "card" ? "active" : ""}`}
+              className={`payment-option-row ${paymentMethod === "card" ? "active" : ""}`} role="radio" tabIndex={0} aria-checked={paymentMethod === "card"} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelectPaymentMethod("card"); } }}
               onClick={() => handleSelectPaymentMethod("card")}
             >
               <input
@@ -762,7 +762,7 @@ export default function Payment() {
 
             {/* Net Banking */}
             <div
-              className={`payment-option-row ${paymentMethod === "netbanking" ? "active" : ""}`}
+              className={`payment-option-row ${paymentMethod === "netbanking" ? "active" : ""}`} role="radio" tabIndex={0} aria-checked={paymentMethod === "netbanking"} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelectPaymentMethod("netbanking"); } }}
               onClick={() => handleSelectPaymentMethod("netbanking")}
             >
               <input
@@ -810,7 +810,7 @@ export default function Payment() {
 
             {/* Cash / Pay on Delivery */}
             <div
-              className={`payment-option-row ${paymentMethod === "cod" ? "active" : ""}`}
+              className={`payment-option-row ${paymentMethod === "cod" ? "active" : ""}`} role="radio" tabIndex={0} aria-checked={paymentMethod === "cod"} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleSelectPaymentMethod("cod"); } }}
               onClick={() => handleSelectPaymentMethod("cod")}
             >
               <input
