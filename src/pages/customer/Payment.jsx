@@ -81,6 +81,22 @@ function validateCardExpiry(expiry) {
   return { valid: true };
 }
 
+/**
+ * Formats a raw card number string with network-aware spacing (4-6-5 for Amex, 4-4-4-4 for others).
+ * @param {string} raw - Raw input digits.
+ * @returns {string} Formatted card string.
+ */
+function formatCardNumberInput(raw) {
+  const digits = String(raw || "").replace(/\D/g, "").slice(0, 19);
+  if (/^3[47]/.test(digits)) {
+    const part1 = digits.slice(0, 4);
+    const part2 = digits.slice(4, 10);
+    const part3 = digits.slice(10, 15);
+    return [part1, part2, part3].filter(Boolean).join(" ");
+  }
+  return digits.match(/.{1,4}/g)?.join(" ") || digits;
+}
+
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
@@ -678,9 +694,7 @@ export default function Payment() {
                     maxLength={19}
                     value={cardNumber}
                     onChange={(e) => {
-                      const digits = e.target.value.replace(/\D/g, "").slice(0, 16);
-                      const formatted = digits.match(/.{1,4}/g)?.join(" ") || digits;
-                      setCardNumber(formatted);
+                      setCardNumber(formatCardNumberInput(e.target.value));
                     }}
                     required
                   />
