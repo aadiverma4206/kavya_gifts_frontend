@@ -808,6 +808,22 @@ export default function Payment() {
               </div>
             </div>
 
+            {paymentMethod === "cod" && (
+              <div className="payment-subform" style={{ background: "#fefdfa", border: "1.5px solid #fef3c7" }}>
+                <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                  <span style={{ fontSize: "20px" }}>📦</span>
+                  <div>
+                    <strong style={{ fontSize: "13.5px", color: "#92400e" }}>Cash on Delivery Guidelines</strong>
+                    <p className="muted" style={{ fontSize: "12.5px", margin: "4px 0 0", lineHeight: "1.5" }}>
+                      • Our courier executive will accept cash or instant UPI QR payment upon delivery.<br />
+                      • An SMS verification passcode will be sent to <strong>{customerInfo.phone || "your mobile"}</strong> prior to delivery.<br />
+                      • Zero additional handling charges for luxury hamper bookings.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Developer Testing Controls: Quick toggles for verifying error recovery flows */}
             <div className="simulate-testing-options">
               <span style={{ fontWeight: 600, display: "block", marginBottom: "6px" }}>
