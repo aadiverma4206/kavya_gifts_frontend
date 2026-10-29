@@ -104,6 +104,7 @@ export default function Payment() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
+  const [selectedBank, setSelectedBank] = useState("HDFC Bank");
 
   // Payment UI state machine: 'idle' | 'initiating' | 'verifying' | 'failed' | 'cancelled' | 'network_error'
   const [paymentState, setPaymentState] = useState("idle");
@@ -707,6 +708,37 @@ export default function Payment() {
                 <p className="muted">All major Indian banks supported (HDFC, ICICI, SBI, Axis)</p>
               </div>
             </div>
+
+            {paymentMethod === "netbanking" && (
+              <div className="payment-subform">
+                <label>Select Your Bank:</label>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px", marginTop: "8px" }}>
+                  {["HDFC Bank", "ICICI Bank", "SBI", "Axis Bank", "Kotak Bank", "Other Bank"].map((bank) => (
+                    <button
+                      key={bank}
+                      type="button"
+                      onClick={() => setSelectedBank(bank)}
+                      style={{
+                        padding: "8px 10px",
+                        border: `1.5px solid ${selectedBank === bank ? "var(--color-primary)" : "var(--color-border)"}`,
+                        background: selectedBank === bank ? "rgba(122, 31, 43, 0.06)" : "#ffffff",
+                        borderRadius: "var(--radius-xs)",
+                        fontSize: "12px",
+                        fontWeight: selectedBank === bank ? 700 : 500,
+                        color: selectedBank === bank ? "var(--color-primary)" : "var(--color-text)",
+                        cursor: "pointer",
+                        textAlign: "center",
+                      }}
+                    >
+                      🏛️ {bank}
+                    </button>
+                  ))}
+                </div>
+                <span className="muted" style={{ fontSize: "12px", display: "block", marginTop: "8px" }}>
+                  You will be securely redirected to {selectedBank} gateway to authorize the transaction.
+                </span>
+              </div>
+            )}
 
             {/* Cash / Pay on Delivery */}
             <div
