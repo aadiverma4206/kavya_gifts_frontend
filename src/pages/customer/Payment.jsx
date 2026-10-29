@@ -494,6 +494,30 @@ export default function Payment() {
                   onChange={(e) => setUpiId(e.target.value)}
                   required
                 />
+                <div style={{ display: "flex", gap: "6px", marginTop: "8px", flexWrap: "wrap" }}>
+                  {["@okhdfcbank", "@okicici", "@oksbi", "@okaxis", "@paytm"].map((handle) => (
+                    <button
+                      key={handle}
+                      type="button"
+                      onClick={() => {
+                        const prefix = upiId.includes("@") ? upiId.split("@")[0] : upiId;
+                        setUpiId((prefix || "") + handle);
+                      }}
+                      style={{
+                        background: "rgba(0,0,0,0.04)",
+                        border: "1px solid var(--color-border)",
+                        borderRadius: "12px",
+                        padding: "2px 8px",
+                        fontSize: "11px",
+                        cursor: "pointer",
+                        color: "var(--color-primary)",
+                        fontWeight: 500,
+                      }}
+                    >
+                      {handle}
+                    </button>
+                  ))}
+                </div>
                 <span className="muted" style={{ fontSize: "12px", display: "block", marginTop: "4px" }}>
                   A payment authorization request will be sent to your UPI app.
                 </span>
