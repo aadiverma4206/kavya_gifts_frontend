@@ -51,6 +51,36 @@ function detectCardNetwork(number) {
   return "Card";
 }
 
+/**
+ * Validates a card expiration date string in MM/YY format against current month/year.
+ * @param {string} expiry - Expiry formatted as MM/YY.
+ * @returns {{ valid: boolean, error?: string }} Validation result.
+ */
+function validateCardExpiry(expiry) {
+  if (!expiry || typeof expiry !== "string") {
+    return { valid: false, error: "Please enter card expiry date (MM/YY)." };
+  }
+  const parts = expiry.trim().split("/");
+  if (parts.length !== 2) {
+    return { valid: false, error: "Expiry format must be MM/YY." };
+  }
+  const month = parseInt(parts[0], 10);
+  const year = parseInt(parts[1], 10);
+  if (isNaN(month) || month < 1 || month > 12) {
+    return { valid: false, error: "Expiry month must be between 01 and 12." };
+  }
+  if (isNaN(year) || year < 0) {
+    return { valid: false, error: "Invalid expiry year." };
+  }
+  const now = new Date();
+  const currentYear = now.getFullYear() % 100;
+  const currentMonth = now.getMonth() + 1;
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return { valid: false, error: "This card has already expired." };
+  }
+  return { valid: true };
+}
+
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
@@ -158,8 +188,9 @@ export default function Payment() {
         setErrorMessage("Invalid card number. Please check the digits and try again.");
         return;
       }
-      if (!cardExpiry.trim()) {
-        setErrorMessage("Please provide card expiry date (MM/YY).");
+      const expiryCheck = validateCardExpiry(cardExpiry);
+      if (!expiryCheck.valid) {
+        setErrorMessage(expiryCheck.error);
         return;
       }
       const cleanCvv = (cardCvv || "").replace(/\D/g, "");
