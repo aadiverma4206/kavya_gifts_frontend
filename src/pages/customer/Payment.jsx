@@ -148,10 +148,10 @@ export default function Payment() {
   const [loadingOrder, setLoadingOrder] = useState(!location.state?.order);
 
   const customerInfo = location.state?.customerInfo || order?.customerSnapshot || {
-    name: userProfile?.fullName || "Valued Customer",
-    phone: userProfile?.mobile || "",
+    name: userProfile?.fullName || currentUser?.displayName || "Valued Customer",
+    phone: userProfile?.mobile || userProfile?.phone || "",
     email: currentUser?.email || "",
-    address: userProfile?.address || "",
+    address: userProfile?.address || "Address on record",
   };
 
   const [paymentMethod, setPaymentMethod] = useState("upi");
@@ -208,7 +208,7 @@ export default function Payment() {
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [paymentState]);
 
-  const displayTotal = order?.totalAmount || grandTotal;
+  const displayTotal = Math.max(0, Number(order?.totalAmount ?? grandTotal ?? 0));
 
   if (loadingOrder) {
     return (
