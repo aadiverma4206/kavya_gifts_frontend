@@ -180,6 +180,19 @@ export default function Payment() {
     }
   }, [order]);
 
+  // Prevent accidental tab closure/reload during payment gateway verification
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (paymentState === "initiating" || paymentState === "verifying") {
+        e.preventDefault();
+        e.returnValue = "Payment transaction is actively being verified. Leaving now may result in delayed order confirmation.";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [paymentState]);
+
   const displayTotal = order?.totalAmount || grandTotal;
 
   if (loadingOrder) {
