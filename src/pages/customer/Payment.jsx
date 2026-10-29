@@ -123,6 +123,20 @@ function removeSafeSessionStorage(key) {
   }
 }
 
+/**
+ * Payment - Customer secure payment gateway checkout view.
+ *
+ * Implements a strict client-side state machine:
+ * - "idle": Selecting payment method (UPI, Card, NetBanking, COD)
+ * - "initiating": Communicating with gateway & generating cryptographic intent
+ * - "verifying": Verifying signature & transaction integrity on secure server
+ * - "failed": Payment declined by issuing bank with automatic retry options
+ * - "cancelled": User aborted transaction with resume capabilities
+ * - "network_error": Connection timeout handling with idempotent re-verification
+ *
+ * @component
+ * @returns {JSX.Element} The rendered secure payment portal.
+ */
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
