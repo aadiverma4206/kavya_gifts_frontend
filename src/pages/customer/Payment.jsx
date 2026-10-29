@@ -596,7 +596,23 @@ export default function Payment() {
                   />
                 </div>
                 <div className="form-group">
-                  <label>Card Number</label>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "4px" }}>
+                    <label style={{ margin: 0 }}>Card Number</label>
+                    {cardNumber && detectCardNetwork(cardNumber) !== "Card" && (
+                      <span
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: 700,
+                          color: "var(--color-primary)",
+                          background: "rgba(122, 31, 43, 0.08)",
+                          padding: "1px 8px",
+                          borderRadius: "4px",
+                        }}
+                      >
+                        💳 {detectCardNetwork(cardNumber)}
+                      </span>
+                    )}
+                  </div>
                   <input
                     type="text"
                     placeholder="1234 5678 9012 3456"
