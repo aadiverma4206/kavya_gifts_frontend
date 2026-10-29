@@ -13,6 +13,28 @@ import {
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./Payment.css";
 
+/**
+ * Validates a payment card number using the standard Luhn checksum algorithm (Mod 10).
+ * @param {string} number - Raw card number string.
+ * @returns {boolean} True if card number passes Luhn check.
+ */
+function isValidLuhn(number) {
+  const digits = String(number || "").replace(/\D/g, "");
+  if (digits.length < 13 || digits.length > 19) return false;
+  let sum = 0;
+  let shouldDouble = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let digit = parseInt(digits.charAt(i), 10);
+    if (shouldDouble) {
+      digit *= 2;
+      if (digit > 9) digit -= 9;
+    }
+    sum += digit;
+    shouldDouble = !shouldDouble;
+  }
+  return sum % 10 === 0;
+}
+
 export default function Payment() {
   useDocumentTitle("Secure Payment - Kavya Luxury Gifts");
   const location = useLocation();
@@ -114,6 +136,10 @@ export default function Payment() {
       const digits = (cardNumber || "").replace(/\D/g, "");
       if (digits.length < 15 || digits.length > 19) {
         setErrorMessage("Please provide a valid card number (15-19 digits).");
+        return;
+      }
+      if (!isValidLuhn(digits)) {
+        setErrorMessage("Invalid card number. Please check the digits and try again.");
         return;
       }
       if (!cardExpiry.trim()) {
