@@ -106,6 +106,11 @@ export default function Payment() {
   const [cardCvv, setCardCvv] = useState("");
   const [selectedBank, setSelectedBank] = useState("HDFC Bank");
 
+  const handleSelectPaymentMethod = (method) => {
+    setPaymentMethod(method);
+    if (errorMessage) setErrorMessage("");
+  };
+
   // Payment UI state machine: 'idle' | 'initiating' | 'verifying' | 'failed' | 'cancelled' | 'network_error'
   const [paymentState, setPaymentState] = useState("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -543,13 +548,13 @@ export default function Payment() {
             {/* UPI Option */}
             <div
               className={`payment-option-row ${paymentMethod === "upi" ? "active" : ""}`}
-              onClick={() => setPaymentMethod("upi")}
+              onClick={() => handleSelectPaymentMethod("upi")}
             >
               <input
                 type="radio"
                 name="pm"
                 checked={paymentMethod === "upi"}
-                onChange={() => setPaymentMethod("upi")}
+                onChange={() => handleSelectPaymentMethod("upi")}
               />
               <div className="payment-option-info">
                 <strong>UPI / Instant QR</strong>
@@ -601,13 +606,13 @@ export default function Payment() {
             {/* Card Option */}
             <div
               className={`payment-option-row ${paymentMethod === "card" ? "active" : ""}`}
-              onClick={() => setPaymentMethod("card")}
+              onClick={() => handleSelectPaymentMethod("card")}
             >
               <input
                 type="radio"
                 name="pm"
                 checked={paymentMethod === "card"}
-                onChange={() => setPaymentMethod("card")}
+                onChange={() => handleSelectPaymentMethod("card")}
               />
               <div className="payment-option-info">
                 <strong>Credit / Debit Card</strong>
@@ -695,13 +700,13 @@ export default function Payment() {
             {/* Net Banking */}
             <div
               className={`payment-option-row ${paymentMethod === "netbanking" ? "active" : ""}`}
-              onClick={() => setPaymentMethod("netbanking")}
+              onClick={() => handleSelectPaymentMethod("netbanking")}
             >
               <input
                 type="radio"
                 name="pm"
                 checked={paymentMethod === "netbanking"}
-                onChange={() => setPaymentMethod("netbanking")}
+                onChange={() => handleSelectPaymentMethod("netbanking")}
               />
               <div className="payment-option-info">
                 <strong>Net Banking</strong>
@@ -743,13 +748,13 @@ export default function Payment() {
             {/* Cash / Pay on Delivery */}
             <div
               className={`payment-option-row ${paymentMethod === "cod" ? "active" : ""}`}
-              onClick={() => setPaymentMethod("cod")}
+              onClick={() => handleSelectPaymentMethod("cod")}
             >
               <input
                 type="radio"
                 name="pm"
                 checked={paymentMethod === "cod"}
-                onChange={() => setPaymentMethod("cod")}
+                onChange={() => handleSelectPaymentMethod("cod")}
               />
               <div className="payment-option-info">
                 <strong>Pay on Delivery / Cash on Delivery</strong>
