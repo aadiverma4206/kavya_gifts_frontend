@@ -121,6 +121,7 @@ export default function Payment() {
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
   const [selectedBank, setSelectedBank] = useState("HDFC Bank");
+  const [showItemsRecap, setShowItemsRecap] = useState(false);
 
   const handleSelectPaymentMethod = (method) => {
     setPaymentMethod(method);
@@ -910,6 +911,47 @@ export default function Payment() {
             )}
 
             <hr style={{ border: "none", borderTop: "1px dashed rgba(122, 31, 43, 0.2)", margin: "16px 0" }} />
+
+            {/* Collapsible Order Items Summary */}
+            {((order?.items && order.items.length > 0) || items.length > 0) && (
+              <div style={{ marginBottom: "12px" }}>
+                <button
+                  type="button"
+                  onClick={() => setShowItemsRecap((prev) => !prev)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "var(--color-primary)",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <span>{showItemsRecap ? "▾ Hide Items in Order" : "▸ Review Items in Order"}</span>
+                  <span style={{ fontSize: "11px", color: "var(--color-muted)" }}>
+                    ({(order?.items || items).length})
+                  </span>
+                </button>
+                {showItemsRecap && (
+                  <div style={{ marginTop: "8px", background: "rgba(0,0,0,0.02)", borderRadius: "var(--radius-xs)", padding: "8px 10px", fontSize: "12px" }}>
+                    {(order?.items || items).map((it, idx) => (
+                      <div key={idx} style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                        <span style={{ color: "var(--color-text)", maxWidth: "160px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {it.productName || it.name || "Luxury Hamper"} × {it.quantity || 1}
+                        </span>
+                        <span style={{ fontWeight: 600 }}>
+                          ₹{(Number(it.price || 0) * (it.quantity || 1)).toLocaleString("en-IN")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
 
             <div className="recap-pricing">
               <div className="recap-row">
