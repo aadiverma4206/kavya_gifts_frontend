@@ -622,6 +622,28 @@ export default function Payment() {
 
             {paymentMethod === "card" && (
               <div className="payment-subform">
+                {/* Dynamic Virtual Card Preview */}
+                <div className="virtual-card-preview" aria-hidden="true">
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div className="virtual-card-chip" />
+                    <span style={{ fontSize: "14px", fontWeight: 700, letterSpacing: "1px" }}>
+                      {detectCardNetwork(cardNumber)}
+                    </span>
+                  </div>
+                  <div className="virtual-card-number">
+                    {cardNumber || "•••• •••• •••• ••••"}
+                  </div>
+                  <div className="virtual-card-bottom">
+                    <div>
+                      <span style={{ fontSize: "9px", opacity: 0.8, display: "block" }}>CARDHOLDER</span>
+                      <span>{cardName.trim() || "VALUED PATRON"}</span>
+                    </div>
+                    <div style={{ textAlign: "right" }}>
+                      <span style={{ fontSize: "9px", opacity: 0.8, display: "block" }}>EXPIRES</span>
+                      <span>{cardExpiry || "MM/YY"}</span>
+                    </div>
+                  </div>
+                </div>
                 <div className="form-group">
                   <label>Name on Card</label>
                   <input
