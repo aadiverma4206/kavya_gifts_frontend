@@ -964,6 +964,12 @@ export default function Payment() {
                   <span>₹{(order?.giftWrappingTotal || giftWrapFee).toLocaleString("en-IN")}</span>
                 </div>
               )}
+              {Boolean(order?.discount || order?.discountAmount) && (
+                <div className="recap-row" style={{ color: "#166534", fontWeight: 600 }}>
+                  <span>Discount {order.couponCode ? `(${order.couponCode})` : ""}:</span>
+                  <span>-₹{Number(order.discount || order.discountAmount || 0).toLocaleString("en-IN")}</span>
+                </div>
+              )}
               <div className="recap-row total">
                 <strong>Total Payable:</strong>
                 <strong style={{ color: "var(--color-primary)", fontSize: "18px" }}>
