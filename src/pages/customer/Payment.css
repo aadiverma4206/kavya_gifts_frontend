@@ -5,7 +5,7 @@
 
 .payment-container {
   padding-top: 30px;
-  padding-bottom: 60px;
+  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
 }
 
 .payment-header {
