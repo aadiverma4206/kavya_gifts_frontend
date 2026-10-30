@@ -308,6 +308,11 @@
   background: #fffbeb;
   border-color: #fde68a;
 }
+/* --- Payment Recovery Card (Network Drop) --- */
+.payment-recovery-card.network {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
 @keyframes fadeInSubform {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
