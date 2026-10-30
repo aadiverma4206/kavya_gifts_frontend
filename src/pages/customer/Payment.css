@@ -176,6 +176,7 @@
   border-radius: 6px;
   background: linear-gradient(135deg, #d4a347, #f5d68d);
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+  border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .virtual-card-number {
