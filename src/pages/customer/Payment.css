@@ -303,6 +303,11 @@
   margin-top: 16px;
   flex-wrap: wrap;
 }
+/* --- Payment Recovery Card (Cancelled) --- */
+.payment-recovery-card.cancelled {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
 @keyframes fadeInSubform {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
