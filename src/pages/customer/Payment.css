@@ -104,6 +104,9 @@
   border-radius: 999px;
   border: 1px solid #bbf7d0;
   text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  letter-spacing: 0.5px;
 }
 
 /* Subform */
