@@ -245,6 +245,37 @@
   margin-top: 14px;
 }
 
+/* --- Verification Loading State --- */
+.payment-verifying-card {
+  text-align: center;
+  padding: 48px 32px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.payment-verifying-card h3 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 20px;
+}
+
+.verifying-spinner {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto;
+  border: 3.5px solid rgba(122, 31, 43, 0.15);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spinVerifying 0.9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite;
+}
+
+@keyframes spinVerifying {
+  to { transform: rotate(360deg); }
+}
 @keyframes fadeInSubform {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }
