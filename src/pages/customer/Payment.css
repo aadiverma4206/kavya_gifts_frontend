@@ -429,3 +429,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media (max-width: 600px) {
+  .virtual-card-preview {
+    max-width: 100%;
+    height: 165px;
+    padding: 16px;
+  }
+  .payment-subform .form-row {
+    grid-template-columns: 1fr;
+  }
+}
