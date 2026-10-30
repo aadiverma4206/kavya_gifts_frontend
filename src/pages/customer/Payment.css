@@ -440,3 +440,15 @@
     grid-template-columns: 1fr;
   }
 }
+
+@media print {
+  .payment-methods-card,
+  .simulate-testing-options,
+  .btn-pay-action {
+    display: none !important;
+  }
+  .payment-summary-card {
+    border: none;
+    box-shadow: none;
+  }
+}
