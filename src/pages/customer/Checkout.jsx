@@ -236,7 +236,19 @@ export default function Checkout() {
         <p className="muted">Complete the recipient details for your bespoke hamper delivery</p>
       </div>
 
-      {error && <div className="checkout-alert error">{error}</div>}
+      {error && (
+        <div className="checkout-alert error" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span>{error}</span>
+          <button
+            type="button"
+            onClick={() => setError("")}
+            style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", fontSize: "14px", padding: "0 4px" }}
+            aria-label="Dismiss error"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <div className="checkout-grid">
         {/* Form Column */}
