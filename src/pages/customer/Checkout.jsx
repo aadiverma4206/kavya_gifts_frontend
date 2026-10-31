@@ -8,6 +8,22 @@ import { initializeCheckoutOrder } from "../../controllers/orderController";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./Checkout.css";
 
+/**
+ * Sanitizes and extracts a 10-digit Indian mobile number, stripping non-digits and leading country codes.
+ * @param {string} raw - Raw phone input.
+ * @returns {string} 10-digit cleaned mobile number or empty string.
+ */
+function cleanIndianPhoneNumber(raw) {
+  let digits = String(raw || "").replace(/\D/g, "");
+  if (digits.length === 11 && digits.startsWith("0")) {
+    digits = digits.slice(1);
+  }
+  if (digits.length === 12 && digits.startsWith("91")) {
+    digits = digits.slice(2);
+  }
+  return digits.length === 10 ? digits : "";
+}
+
 export default function Checkout() {
   useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
@@ -66,14 +82,8 @@ export default function Checkout() {
       setError("Please specify the recipient name.");
       return;
     }
-    let cleanPhone = (phone || "").replace(/\D/g, "");
-    if (cleanPhone.length === 11 && cleanPhone.startsWith("0")) {
-      cleanPhone = cleanPhone.slice(1);
-    }
-    if (cleanPhone.length === 12 && cleanPhone.startsWith("91")) {
-      cleanPhone = cleanPhone.slice(2);
-    }
-    if (!cleanPhone || cleanPhone.length !== 10) {
+    const cleanPhone = cleanIndianPhoneNumber(phone);
+    if (!cleanPhone) {
       setError("Please specify a valid 10-digit contact mobile number.");
       return;
     }
