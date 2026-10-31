@@ -263,6 +263,7 @@ export default function Checkout() {
                 placeholder="Full Name"
                 value={recipientName}
                 onChange={(e) => setRecipientName(e.target.value)}
+                onBlur={() => setRecipientName((prev) => prev.trim())}
                 required
               />
             </div>
@@ -303,6 +304,7 @@ export default function Checkout() {
                 placeholder="Door/Flat No, Apartment, Street, Landmark, City, State, PIN"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                onBlur={() => setAddress((prev) => prev.trim())}
                 required
               />
               {extractPinCode(address) && (
