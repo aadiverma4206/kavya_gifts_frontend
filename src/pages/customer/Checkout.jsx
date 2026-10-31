@@ -322,6 +322,9 @@ export default function Checkout() {
                   value={deliveryDate}
                   onChange={(e) => setDeliveryDate(e.target.value)}
                 />
+                <span className="muted" style={{ fontSize: "11.5px", marginTop: "4px", display: "block" }}>
+                  ✨ Standard dispatch takes 2–3 business days. Leave blank for earliest delivery.
+                </span>
               </div>
 
               <div className="form-group">
