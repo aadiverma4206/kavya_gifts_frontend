@@ -34,6 +34,32 @@ function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
+/**
+ * Safely retrieves an item from sessionStorage with fallback for private browsing.
+ * @param {string} key - Storage key.
+ * @returns {string|null} Retrieved value.
+ */
+function getSafeSessionStorage(key) {
+  try {
+    return window?.sessionStorage ? window.sessionStorage.getItem(key) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Safely stores an item in sessionStorage with exception suppression.
+ * @param {string} key - Storage key.
+ * @param {string} value - Storage string value.
+ */
+function setSafeSessionStorage(key, value) {
+  try {
+    if (window?.sessionStorage) window.sessionStorage.setItem(key, value);
+  } catch {
+    // Suppress storage quota errors
+  }
+}
+
 export default function Checkout() {
   useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
@@ -118,12 +144,7 @@ export default function Checkout() {
 
     setSubmitting(true);
     try {
-      let existingOrderId = null;
-      try {
-        existingOrderId = window.sessionStorage?.getItem("kavya_pending_order_id");
-      } catch {
-        // Safe fallback in restricted environments
-      }
+      const existingOrderId = getSafeSessionStorage("kavya_pending_order_id");
 
       const order = await initializeCheckoutOrder({
         customer: {
@@ -145,11 +166,7 @@ export default function Checkout() {
       });
 
       if (order?.orderId) {
-        try {
-          window.sessionStorage?.setItem("kavya_pending_order_id", order.orderId);
-        } catch {
-          // Safe fallback
-        }
+        setSafeSessionStorage("kavya_pending_order_id", order.orderId);
       }
 
       // Pass checkout state & order to payment page
