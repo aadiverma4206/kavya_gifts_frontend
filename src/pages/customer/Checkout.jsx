@@ -75,6 +75,19 @@ function extractPinCode(addr) {
   return match ? match[0] : null;
 }
 
+/**
+ * Checkout - Customer delivery details and gift wrapping confirmation page.
+ *
+ * Responsibilities:
+ * - Captures verified recipient shipping contact & postal address
+ * - Validates 10-digit Indian phone numbers and email formats
+ * - Embeds artisan gift wrapping selection and personalized keepsake notes
+ * - Displays real-time order pricing calculation and items breakdown
+ * - Initializes pending order record and passes intent to Payment gateway
+ *
+ * @component
+ * @returns {JSX.Element} Rendered checkout portal.
+ */
 export default function Checkout() {
   useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
