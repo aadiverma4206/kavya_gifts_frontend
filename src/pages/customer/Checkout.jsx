@@ -286,6 +286,24 @@ export default function Checkout() {
                 onChange={(e) => setAddress(e.target.value)}
                 required
               />
+              {extractPinCode(address) && (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    fontSize: "11.5px",
+                    color: "#166534",
+                    background: "#dcfce7",
+                    padding: "2px 8px",
+                    borderRadius: "4px",
+                    marginTop: "6px",
+                    fontWeight: 600,
+                  }}
+                >
+                  📍 Detected PIN Code: {extractPinCode(address)} (Express Delivery Eligible)
+                </span>
+              )}
             </div>
 
             <div className="form-row">
