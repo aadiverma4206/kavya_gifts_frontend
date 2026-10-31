@@ -120,6 +120,7 @@ export default function Checkout() {
   if (items.length === 0) {
     return (
       <div className="container section" style={{ textAlign: "center" }}>
+        <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎁</div>
         <h2>Your Cart is Empty</h2>
         <p className="muted" style={{ margin: "16px 0 24px" }}>
           Please add hampers to your cart before proceeding to checkout.
