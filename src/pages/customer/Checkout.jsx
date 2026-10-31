@@ -184,7 +184,7 @@ export default function Checkout() {
           email: email.trim(),
           address: address.trim(),
           deliveryDate,
-          notes,
+          notes: notes.trim(),
         },
         items,
         subtotal,
