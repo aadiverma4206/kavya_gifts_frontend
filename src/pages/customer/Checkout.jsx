@@ -349,7 +349,7 @@ export default function Checkout() {
         {/* Order Summary Column */}
         <div className="checkout-summary-column">
           <div className="card summary-card">
-            <h3>Order Summary</h3>
+            <h3>Order Summary ({items.length} {items.length === 1 ? "hamper" : "hampers"})</h3>
 
             <div className="summary-items-list">
               {items.map((item, idx) => {
