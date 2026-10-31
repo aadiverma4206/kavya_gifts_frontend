@@ -24,6 +24,16 @@ function cleanIndianPhoneNumber(raw) {
   return digits.length === 10 ? digits : "";
 }
 
+/**
+ * Validates email address format using standard RFC 5322 regex.
+ * @param {string} email - Email address string.
+ * @returns {boolean} True if format is valid.
+ */
+function isValidEmail(email) {
+  if (!email || typeof email !== "string") return false;
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+
 export default function Checkout() {
   useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
@@ -85,6 +95,10 @@ export default function Checkout() {
     const cleanPhone = cleanIndianPhoneNumber(phone);
     if (!cleanPhone) {
       setError("Please specify a valid 10-digit contact mobile number.");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      setError("Please specify a valid email address for order updates.");
       return;
     }
     if (!address.trim() || address.trim().length < 8) {
