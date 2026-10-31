@@ -258,8 +258,12 @@ export default function Checkout() {
                 <input
                   type="tel"
                   placeholder="10-digit mobile number"
+                  maxLength={13}
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    const digitsOnly = e.target.value.replace(/[^\d+\s-]/g, "");
+                    setPhone(digitsOnly);
+                  }}
                   required
                 />
               </div>
