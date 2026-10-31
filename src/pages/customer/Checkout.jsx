@@ -424,6 +424,11 @@ export default function Checkout() {
                 <span>Artisan Gift Wrapping:</span>
                 <span>{giftWrapFee > 0 ? formatCurrency(giftWrapFee) : "Free / None"}</span>
               </div>
+              {Boolean(giftWrap?.enabled && giftWrap?.message) && (
+                <div style={{ fontSize: "11.5px", background: "#fdf8ee", border: "1px solid #f9dfb8", borderRadius: "4px", padding: "6px 8px", color: "#854d0e", fontStyle: "italic" }}>
+                  💌 "{giftWrap.message}"
+                </div>
+              )}
 
               <div className="calc-row">
                 <span>Standard Delivery:</span>
