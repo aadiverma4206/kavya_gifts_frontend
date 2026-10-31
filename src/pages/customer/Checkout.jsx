@@ -6,6 +6,7 @@ import { toDirectImageUrl } from "../../utils/driveImage";
 import GiftWrapSelector from "../../components/customer/GiftWrapSelector";
 import { initializeCheckoutOrder } from "../../controllers/orderController";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { formatCurrency } from "../../utils/formatters";
 import "./Checkout.css";
 
 /**
@@ -320,12 +321,12 @@ export default function Checkout() {
                     <div className="summary-item-info">
                       <h4>{item.product_name || item.productName}</h4>
                       <p className="muted">
-                        Qty: {itemQty} × ₹{itemPrice.toLocaleString("en-IN")}
+                        Qty: {itemQty} × {formatCurrency(itemPrice)}
                         {item.giftWrappingSelected && <span style={{ color: "var(--color-primary)", marginLeft: "4px" }}>(Gift Wrapped)</span>}
                       </p>
                     </div>
                     <span className="summary-item-subtotal">
-                      ₹{(itemPrice * itemQty).toLocaleString("en-IN")}
+                      {formatCurrency(itemPrice * itemQty)}
                     </span>
                   </div>
                 );
@@ -335,12 +336,12 @@ export default function Checkout() {
             <div className="summary-calc-breakdown">
               <div className="calc-row">
                 <span>Hampers Subtotal:</span>
-                <span>₹{subtotal.toLocaleString("en-IN")}</span>
+                <span>{formatCurrency(subtotal)}</span>
               </div>
 
               <div className="calc-row">
                 <span>Artisan Gift Wrapping:</span>
-                <span>{giftWrapFee > 0 ? `₹${giftWrapFee.toLocaleString("en-IN")}` : "Free / None"}</span>
+                <span>{giftWrapFee > 0 ? formatCurrency(giftWrapFee) : "Free / None"}</span>
               </div>
 
               <div className="calc-row">
@@ -350,7 +351,7 @@ export default function Checkout() {
 
               <div className="calc-row total-row">
                 <strong>Grand Total:</strong>
-                <strong className="grand-total-amount">₹{grandTotal.toLocaleString("en-IN")}</strong>
+                <strong className="grand-total-amount">{formatCurrency(grandTotal)}</strong>
               </div>
             </div>
 
