@@ -61,6 +61,17 @@ function setSafeSessionStorage(key, value) {
   }
 }
 
+/**
+ * Extracts a valid 6-digit Indian Postal PIN code from an address string.
+ * @param {string} addr - Full delivery address.
+ * @returns {string|null} Extracted 6-digit PIN code or null.
+ */
+function extractPinCode(addr) {
+  if (!addr || typeof addr !== "string") return null;
+  const match = addr.match(/\b[1-9][0-9]{5}\b/);
+  return match ? match[0] : null;
+}
+
 export default function Checkout() {
   useDocumentTitle("Checkout - Secure Delivery Details");
   const navigate = useNavigate();
