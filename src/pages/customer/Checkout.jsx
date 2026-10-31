@@ -203,7 +203,7 @@ export default function Checkout() {
         subtotal,
         giftWrap,
         giftWrapFee,
-        grandTotal,
+        grandTotal: Math.max(0, Number(grandTotal || 0)),
         userId: currentUser?.uid,
         customerId: userProfile?.customerId,
         existingOrderId,
