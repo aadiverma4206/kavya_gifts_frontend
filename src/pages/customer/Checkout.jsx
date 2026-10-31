@@ -102,6 +102,21 @@ export default function Checkout() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  // Warn user before closing window with unsubmitted shipping details
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (submitting) return;
+      const hasData = Boolean(recipientName.trim() || phone.trim() || address.trim());
+      if (hasData) {
+        e.preventDefault();
+        e.returnValue = "You have unsaved checkout details. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [recipientName, phone, address, submitting]);
+
   if (items.length === 0) {
     return (
       <div className="container section" style={{ textAlign: "center" }}>
