@@ -322,10 +322,16 @@ export default function Checkout() {
               </div>
 
               <div className="form-group">
-                <label>Delivery Instructions (Optional)</label>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <label style={{ margin: 0 }}>Delivery Instructions (Optional)</label>
+                  <span style={{ fontSize: "11px", color: notes.length > 180 ? "#b91c1c" : "var(--color-muted)" }}>
+                    {notes.length}/200
+                  </span>
+                </div>
                 <input
                   type="text"
                   placeholder="e.g. Ring the bell twice, leave with guard"
+                  maxLength={200}
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
