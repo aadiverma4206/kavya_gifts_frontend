@@ -446,6 +446,8 @@ export default function Checkout() {
               form="checkout-form"
               className="btn btn-primary btn-block btn-pill"
               disabled={submitting}
+              aria-busy={submitting}
+              aria-label={submitting ? "Preparing your gift hamper order" : "Proceed to secure payment"}
             >
               {submitting ? "Preparing Order..." : "Continue to Payment →"}
             </button>
