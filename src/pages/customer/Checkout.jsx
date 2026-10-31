@@ -433,7 +433,7 @@ export default function Checkout() {
 
               <div className="calc-row">
                 <span>Standard Delivery:</span>
-                <span style={{ color: "#166534", fontWeight: 600 }}>FREE (Festive Offer)</span>
+                <span style={{ color: "#166534", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: "4px" }}>🎁 FREE (Festive Delivery)</span>
               </div>
 
               <div className="calc-row total-row">
