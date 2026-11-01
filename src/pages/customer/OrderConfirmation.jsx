@@ -214,7 +214,7 @@ export default function OrderConfirmation() {
 
         {/* Itemized List */}
         <div className="items-breakdown">
-          <h4>Hamper Details</h4>
+          <h4>Hamper Details ({order.items?.length || 0} {(order.items?.length || 0) === 1 ? "hamper" : "hampers"})</h4>
           <div className="items-list">
             {order.items?.map((it, idx) => {
               const itemImg = it.image_url || it.thumbnail || it.image || (Array.isArray(it.images) && it.images[0]);
