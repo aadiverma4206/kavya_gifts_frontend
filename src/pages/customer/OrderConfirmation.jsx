@@ -141,6 +141,12 @@ export default function OrderConfirmation() {
               {order.orderStatus === "confirmed" ? "✓ Confirmed" : order.orderStatus}
             </span>
           </div>
+          <div className="reference-box">
+            <span className="ref-label">Estimated Delivery</span>
+            <strong className="ref-val" style={{ color: "#166534" }}>
+              🚚 {getEstimatedDeliveryDate(order.createdAt || Date.now())}
+            </strong>
+          </div>
         </div>
 
         {/* Gift Wrapping Details */}
