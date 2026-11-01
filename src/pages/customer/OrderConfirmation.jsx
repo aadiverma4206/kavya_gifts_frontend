@@ -109,6 +109,22 @@ export default function OrderConfirmation() {
           </span>
         </div>
 
+        {/* Live Milestone Stepper */}
+        <div style={{ background: "#faf8f5", border: "1px solid #ebd9c8", borderRadius: "8px", padding: "16px 20px", margin: "16px 0 20px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative" }}>
+            {["Placed", "Confirmed", "Artisan Packing", "Dispatched", "Delivered"].map((st, i) => (
+              <div key={st} style={{ textAlign: "center", flex: 1, position: "relative", zIndex: 1 }}>
+                <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: i <= 1 ? "var(--color-primary)" : "#e2d9cd", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 700, margin: "0 auto 6px" }}>
+                  {i <= 1 ? "✓" : i + 1}
+                </div>
+                <div style={{ fontSize: "11.5px", color: i <= 1 ? "var(--color-primary)" : "var(--color-muted)", fontWeight: i === 1 ? 700 : 500 }}>
+                  {st}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Highlighted Order and Payment Reference */}
         <div className="reference-badges-row">
           <div className="reference-box">
