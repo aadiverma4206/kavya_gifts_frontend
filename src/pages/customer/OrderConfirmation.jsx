@@ -267,7 +267,7 @@ export default function OrderConfirmation() {
               </p>
             )}
             <p className="total-highlight">
-              Total Paid: {formatCurrency(order.totalAmount || order.total || 0)}
+              Total Paid: {formatCurrency(Math.max(0, Number(order.totalAmount ?? order.total ?? 0)))}
             </p>
           </div>
         </div>
