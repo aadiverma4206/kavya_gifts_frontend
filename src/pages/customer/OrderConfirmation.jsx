@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { getOrderById } from "../../services/orderService";
 import { toDirectImageUrl } from "../../utils/driveImage";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
+import { formatCurrency } from "../../utils/formatters";
 import "./OrderConfirmation.css";
 
 /**
@@ -153,7 +154,7 @@ export default function OrderConfirmation() {
               </strong>
             </p>
             <p className="total-highlight">
-              Total Paid: ₹{(order.totalAmount || order.total || 0).toLocaleString("en-IN")}
+              Total Paid: {formatCurrency(order.totalAmount || order.total || 0)}
             </p>
           </div>
         </div>
