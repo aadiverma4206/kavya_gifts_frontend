@@ -93,7 +93,7 @@ export default function OrderConfirmation() {
 
   return (
     <div className="confirmation-container container section">
-      <div className="confirmation-card card">
+      <div className="confirmation-card card" role="region" aria-label="Order confirmation details">
         <div className="confirmation-badge" style={{ display: "inline-flex", alignItems: "center", gap: "6px", fontSize: "13px" }}>
           <span aria-hidden="true">🎉</span>
           <span>Booking Confirmed</span>
