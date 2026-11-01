@@ -216,6 +216,15 @@ export default function OrderConfirmation() {
 
         {/* Action Buttons */}
         <div className="confirmation-actions">
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(`I just booked a luxury gift hamper with Kavya Luxury Gifts! Order Ref: #${order.orderId}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            title="Share booking with friends or recipient on WhatsApp"
+          >
+            💬 Share on WhatsApp
+          </a>
           <button
             type="button"
             onClick={() => window.print()}
