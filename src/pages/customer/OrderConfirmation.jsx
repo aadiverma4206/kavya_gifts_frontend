@@ -213,7 +213,12 @@ export default function OrderConfirmation() {
 
           <div className="detail-col">
             <h4>Payment Verification</h4>
-            <p>Method: <strong>{order.paymentMethod || "Online"}</strong></p>
+            <p style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <span>Method:</span>
+              <strong style={{ background: "rgba(0,0,0,0.04)", padding: "2px 8px", borderRadius: "4px", fontSize: "12.5px" }}>
+                💳 {order.paymentMethod || "Online Payment"}
+              </strong>
+            </p>
             <p>
               Status:{" "}
               <strong style={{ color: order.paymentStatus === "paid" ? "#166534" : "#92400e" }}>
