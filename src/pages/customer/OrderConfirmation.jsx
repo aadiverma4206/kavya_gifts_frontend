@@ -158,7 +158,12 @@ export default function OrderConfirmation() {
         {/* Gift Wrapping Details */}
         {order.giftWrap?.enabled && (
           <div className="gift-wrap-summary-box">
-            <h4>🎁 {order.giftWrap.optionName} Included</h4>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+              <h4 style={{ margin: 0 }}>🎁 {order.giftWrap.optionName} Included</h4>
+              <span style={{ fontSize: "11px", background: "#dcfce7", color: "#15803d", padding: "2px 8px", borderRadius: "10px", fontWeight: 700 }}>
+                Complimentary Luxury Finish
+              </span>
+            </div>
             {order.giftWrap.recipientName && (
               <p><strong>For:</strong> {order.giftWrap.recipientName}</p>
             )}
