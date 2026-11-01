@@ -194,7 +194,16 @@ export default function OrderConfirmation() {
             <h4>Delivery Address</h4>
             <p><strong>{order.customerSnapshot?.name || order.customer?.name}</strong></p>
             <p className="muted">{order.deliveryAddress || order.customer?.address}</p>
-            <p className="muted">📞 {order.customerSnapshot?.mobile || order.customer?.phone}</p>
+            <p className="muted">
+              📞{" "}
+              <a
+                href={`tel:${String(order.customerSnapshot?.mobile || order.customer?.phone || "").replace(/[^\d+]/g, "")}`}
+                style={{ color: "inherit", textDecoration: "underline" }}
+                title="Call recipient"
+              >
+                {order.customerSnapshot?.mobile || order.customer?.phone}
+              </a>
+            </p>
             {(order.deliveryNotes || order.specialInstructions || order.notes || order.customer?.notes) && (
               <p style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic", marginTop: "6px" }}>
                 📝 Instructions: "{order.deliveryNotes || order.specialInstructions || order.notes || order.customer?.notes}"
