@@ -180,7 +180,7 @@ export default function OrderConfirmation() {
                     <strong>{itemName}</strong>
                     <span className="muted">Qty: {it.quantity}</span>
                   </div>
-                  <strong>₹{(Number(it.price || 0) * Number(it.quantity || 1)).toLocaleString("en-IN")}</strong>
+                  <strong>{formatCurrency(Number(it.price || 0) * Number(it.quantity || 1))}</strong>
                 </div>
               );
             })}
