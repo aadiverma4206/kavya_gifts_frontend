@@ -52,6 +52,19 @@ function getEstimatedDeliveryDate(createdAt) {
   });
 }
 
+/**
+ * OrderConfirmation - Customer booking success and verified tax invoice receipt view.
+ *
+ * Displays:
+ * - Cryptographic order & payment gateway references
+ * - Artisan packaging and personalized gift wrap notes
+ * - Itemized hampers breakdown with live pricing
+ * - Estimated delivery timeline and fulfillment progress stepper
+ * - Quick sharing, printing, and concierge assistance integrations
+ *
+ * @component
+ * @returns {JSX.Element} Rendered confirmation dashboard.
+ */
 export default function OrderConfirmation() {
   useDocumentTitle("Order Confirmation - Kavya Luxury Gifts");
   const { orderId } = useParams();
