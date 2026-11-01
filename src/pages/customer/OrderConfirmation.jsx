@@ -195,6 +195,11 @@ export default function OrderConfirmation() {
             <p><strong>{order.customerSnapshot?.name || order.customer?.name}</strong></p>
             <p className="muted">{order.deliveryAddress || order.customer?.address}</p>
             <p className="muted">📞 {order.customerSnapshot?.mobile || order.customer?.phone}</p>
+            {(order.deliveryNotes || order.specialInstructions || order.notes || order.customer?.notes) && (
+              <p style={{ fontSize: "12px", color: "var(--color-muted)", fontStyle: "italic", marginTop: "6px" }}>
+                📝 Instructions: "{order.deliveryNotes || order.specialInstructions || order.notes || order.customer?.notes}"
+              </p>
+            )}
           </div>
 
           <div className="detail-col">
