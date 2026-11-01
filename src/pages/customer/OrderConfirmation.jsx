@@ -215,8 +215,8 @@ export default function OrderConfirmation() {
         <div className="confirmation-details-grid">
           <div className="detail-col">
             <h4>Delivery Address</h4>
-            <p><strong>{order.customerSnapshot?.name || order.customer?.name}</strong></p>
-            <p className="muted">{order.deliveryAddress || order.customer?.address}</p>
+            <p><strong>{order.customerSnapshot?.name || order.customer?.name || "Valued Customer"}</strong></p>
+            <p className="muted">{order.deliveryAddress || order.customer?.address || "Delivery address on file"}</p>
             <p className="muted">
               📞{" "}
               <a
