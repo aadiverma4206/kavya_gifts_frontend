@@ -216,6 +216,14 @@ export default function OrderConfirmation() {
 
         {/* Action Buttons */}
         <div className="confirmation-actions">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="btn btn-secondary"
+            title="Print booking confirmation receipt"
+          >
+            🖨️ Print Receipt
+          </button>
           <Link to="/orders" className="btn btn-primary">
             Track in Order History
           </Link>
