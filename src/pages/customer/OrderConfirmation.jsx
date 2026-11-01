@@ -6,6 +6,24 @@ import { toDirectImageUrl } from "../../utils/driveImage";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderConfirmation.css";
 
+async function copyToClipboard(text, onSuccess, onError) {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const temp = document.createElement("textarea");
+      temp.value = text;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+    }
+    if (onSuccess) onSuccess();
+  } catch (err) {
+    if (onError) onError(err);
+  }
+}
+
 export default function OrderConfirmation() {
   useDocumentTitle("Order Confirmation - Kavya Luxury Gifts");
   const { orderId } = useParams();
@@ -62,23 +80,13 @@ export default function OrderConfirmation() {
               <strong className="ref-val">{order.orderId}</strong>
               <button
                 type="button"
-                onClick={async () => {
-                  try {
-                    if (navigator.clipboard?.writeText) {
-                      await navigator.clipboard.writeText(order.orderId);
-                    } else {
-                      const temp = document.createElement("textarea");
-                      temp.value = order.orderId;
-                      document.body.appendChild(temp);
-                      temp.select();
-                      document.execCommand("copy");
-                      document.body.removeChild(temp);
-                    }
-                    toast.success("Order ID copied to clipboard!");
-                  } catch {
-                    toast.error("Could not copy order ID");
-                  }
-                }}
+                onClick={() =>
+                  copyToClipboard(
+                    order.orderId,
+                    () => toast.success("Order ID copied to clipboard!"),
+                    () => toast.error("Could not copy order ID")
+                  )
+                }
                 style={{
                   background: "none",
                   border: "none",
