@@ -34,6 +34,24 @@ async function copyToClipboard(text, onSuccess, onError) {
   }
 }
 
+/**
+ * Computes estimated delivery date (+3 business days from order creation).
+ * @param {Date|Object|string|number} createdAt - Order timestamp.
+ * @returns {string} Formatted localized delivery date estimate.
+ */
+function getEstimatedDeliveryDate(createdAt) {
+  if (!createdAt) return "Within 3 business days";
+  const date = createdAt?.toDate ? createdAt.toDate() : (createdAt?.seconds ? new Date(createdAt.seconds * 1000) : new Date(createdAt || 0));
+  if (isNaN(date.getTime())) return "Within 3 business days";
+  const eta = new Date(date);
+  eta.setDate(eta.getDate() + 3);
+  return eta.toLocaleDateString("en-IN", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+}
+
 export default function OrderConfirmation() {
   useDocumentTitle("Order Confirmation - Kavya Luxury Gifts");
   const { orderId } = useParams();
