@@ -168,6 +168,21 @@ export default function OrderConfirmation() {
           </div>
         )}
 
+        {/* Concierge Desk Callout */}
+        <div style={{ background: "#fdfaf6", border: "1px solid #ebd9c8", borderRadius: "8px", padding: "12px 18px", marginBottom: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+          <div style={{ fontSize: "13px", color: "var(--color-text)" }}>
+            ✨ Need special packaging customization or delivery rescheduling?
+          </div>
+          <a
+            href={`https://wa.me/919999999999?text=${encodeURIComponent(`Hello Concierge Desk, I need assistance with Order #${order.orderId}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ fontSize: "12.5px", color: "var(--color-primary)", fontWeight: 700, textDecoration: "underline" }}
+          >
+            💬 Contact Concierge Desk →
+          </a>
+        </div>
+
         {/* Delivery Address & Items */}
         <div className="confirmation-details-grid">
           <div className="detail-col">
