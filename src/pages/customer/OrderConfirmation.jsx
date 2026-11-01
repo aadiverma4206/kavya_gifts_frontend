@@ -300,6 +300,27 @@ export default function OrderConfirmation() {
           </a>
           <button
             type="button"
+            onClick={() => {
+              const summary = [
+                `Kavya Luxury Gifts - Booking Confirmation`,
+                `Order Ref: #${order.orderId}`,
+                `Payment Status: ${order.paymentStatus || "Paid"}`,
+                `Recipient: ${order.customerSnapshot?.name || order.customer?.name || "Customer"}`,
+                `Total: ₹${order.totalAmount || order.total || 0}`,
+              ].join("\n");
+              copyToClipboard(
+                summary,
+                () => toast.success("Receipt summary copied!"),
+                () => toast.error("Could not copy summary")
+              );
+            }}
+            className="btn btn-secondary"
+            title="Copy receipt summary to clipboard"
+          >
+            📋 Copy Summary
+          </button>
+          <button
+            type="button"
             onClick={() => window.print()}
             className="btn btn-secondary"
             title="Print booking confirmation receipt"
