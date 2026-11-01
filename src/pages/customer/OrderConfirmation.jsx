@@ -6,6 +6,12 @@ import { toDirectImageUrl } from "../../utils/driveImage";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
 import "./OrderConfirmation.css";
 
+/**
+ * Safely copies specified text to clipboard with legacy document.execCommand fallback.
+ * @param {string} text - Content string to copy.
+ * @param {Function} [onSuccess] - Callback executed on successful copy.
+ * @param {Function} [onError] - Callback executed on failure.
+ */
 async function copyToClipboard(text, onSuccess, onError) {
   try {
     if (navigator.clipboard?.writeText) {
