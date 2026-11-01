@@ -225,6 +225,11 @@ export default function OrderConfirmation() {
                 {order.paymentStatus === "paid" ? "✓ Verified & Paid" : order.paymentStatus}
               </strong>
             </p>
+            {Boolean(order.discount || order.discountAmount) && (
+              <p style={{ color: "#166534", fontSize: "12.5px", fontWeight: 600, margin: "4px 0" }}>
+                🏷️ Coupon Discount {order.couponCode ? `(${order.couponCode})` : ""}: -{formatCurrency(order.discount || order.discountAmount)}
+              </p>
+            )}
             <p className="total-highlight">
               Total Paid: {formatCurrency(order.totalAmount || order.total || 0)}
             </p>
