@@ -60,6 +60,10 @@ export default function OrderConfirmation() {
   const [loading, setLoading] = useState(!location.state?.order);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
     if (!order && orderId) {
       getOrderById(orderId)
         .then((data) => setOrder(data))
