@@ -99,6 +99,12 @@ export default function OrderConfirmation() {
         <p className="muted confirmation-subtitle">
           Your gift hamper has been booked successfully and is being handcrafted with love.
         </p>
+        <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#166534", borderRadius: "8px", padding: "10px 16px", fontSize: "13px", margin: "12px 0 20px", display: "flex", alignItems: "center", gap: "8px" }}>
+          <span>📧</span>
+          <span>
+            A detailed invoice & receipt has been dispatched to <strong>{order.customerSnapshot?.email || order.customer?.email || "your registered email"}</strong>.
+          </span>
+        </div>
 
         {/* Highlighted Order and Payment Reference */}
         <div className="reference-badges-row">
