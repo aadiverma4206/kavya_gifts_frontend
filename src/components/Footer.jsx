@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin } from "lucide-react";
+import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin, Clock } from "lucide-react";
 import { subscribeNewsletter } from "../services/newsletterService.js";
 import { notify } from "../utils/notify.js";
 import "./Footer.css";
@@ -103,6 +103,9 @@ export default function Footer() {
           <div className="footer-contact-links">
             <div className="contact-item">
               <MapPin size={15} /> <span>New Delhi • Mumbai • Bengaluru</span>
+            </div>
+            <div className="contact-item">
+              <Clock size={15} /> <span>Mon – Sun: 9:00 AM – 9:00 PM IST</span>
             </div>
             <div className="contact-item">
               <Mail size={15} />{" "}
