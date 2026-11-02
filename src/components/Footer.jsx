@@ -5,6 +5,8 @@ import { subscribeNewsletter } from "../services/newsletterService.js";
 import { notify } from "../utils/notify.js";
 import "./Footer.css";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,8 +15,7 @@ export default function Footer() {
   async function handleSubscribe(e) {
     e.preventDefault();
     const cleanEmail = (email || "").trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+    if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
       notify.warning("Please enter a valid email address (e.g. name@example.com)");
       return;
     }
