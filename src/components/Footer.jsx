@@ -206,6 +206,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-payment-tags">
+          <span style={{ fontWeight: 600 }}>🔒 256-Bit SSL</span>
           <span>UPI</span>
           <span>Visa</span>
           <span>Mastercard</span>
