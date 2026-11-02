@@ -140,6 +140,8 @@ export default function Footer() {
           <Link to="/category/Wedding">Wedding Keepsakes</Link>
           <Link to="/category/Corporate">Corporate Suites</Link>
           <Link to="/category/Birthday">Birthday Surprises</Link>
+          <Link to="/category/Anniversary">Anniversary Hampers</Link>
+          <Link to="/category/BabyShower">Baby Shower Gifts</Link>
           <Link to="/#catalog">All 100+ Catalog</Link>
         </div>
 
