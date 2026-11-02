@@ -154,6 +154,7 @@ export default function Footer() {
           <form className="newsletter-form" onSubmit={handleSubscribe}>
             <input
               type="email"
+              autoComplete="email"
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
