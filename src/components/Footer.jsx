@@ -58,7 +58,7 @@ export default function Footer() {
       setEmail("");
     } catch (err) {
       console.error("Newsletter subscription error:", err);
-      const msg = err.message || "Unable to subscribe. Please try again.";
+      const msg = err?.message || (typeof err === "string" ? err : "Unable to subscribe. Please try again.");
       setStatusMessage(msg);
       notify.error(err, "Subscription failed. Please try again.");
     } finally {
