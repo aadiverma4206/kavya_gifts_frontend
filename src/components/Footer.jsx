@@ -33,7 +33,7 @@ function isValidEmail(email) {
  * @returns {JSX.Element} Rendered global footer.
  */
 export default function Footer() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState/** @type {[string, React.Dispatch<React.SetStateAction<string>>]} */ ("");
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
