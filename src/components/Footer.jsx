@@ -153,6 +153,7 @@ export default function Footer() {
           <Link to="/profile">Account Settings</Link>
           <Link to="/faq">Frequently Asked Questions</Link>
           <Link to="/contact">Contact Concierge</Link>
+          <Link to="/returns">Return & Refund Policy</Link>
         </div>
 
         <div className="footer-col newsletter-col">
