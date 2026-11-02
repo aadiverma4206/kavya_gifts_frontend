@@ -167,6 +167,7 @@ export default function Footer() {
             <input
               type="email"
               autoComplete="email"
+              onBlur={() => setEmail((prev) => (prev || "").trim())}
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
