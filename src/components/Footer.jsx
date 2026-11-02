@@ -151,6 +151,8 @@ export default function Footer() {
           <Link to="/dashboard">Customer Portal</Link>
           <Link to="/cart">Shopping Bag</Link>
           <Link to="/profile">Account Settings</Link>
+          <Link to="/faq">Frequently Asked Questions</Link>
+          <Link to="/contact">Contact Concierge</Link>
         </div>
 
         <div className="footer-col newsletter-col">
