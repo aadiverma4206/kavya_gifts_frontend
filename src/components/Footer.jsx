@@ -116,6 +116,18 @@ export default function Footer() {
                 +91 99999 88888
               </a>
             </div>
+            <div className="contact-item">
+              <span aria-hidden="true">💬</span>{" "}
+              <a
+                href="https://wa.me/919999988888?text=Hello%20Kavya%20Concierge,%20I%20have%20an%20inquiry%20regarding%20bespoke%20gifting"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "inherit", textDecoration: "underline", fontSize: "12.5px" }}
+                title="Chat on WhatsApp with Concierge"
+              >
+                WhatsApp Concierge Desk
+              </a>
+            </div>
           </div>
         </div>
 
