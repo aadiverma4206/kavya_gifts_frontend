@@ -189,9 +189,16 @@ export default function Footer() {
       </div>
 
       <div className="container footer-bottom-wrap">
-        <p className="footer-bottom-copy">
-          © {new Date().getFullYear()} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
-        </p>
+        <div className="footer-bottom-copy-group">
+          <p className="footer-bottom-copy">
+            © {new Date().getFullYear()} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
+          </p>
+          <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--color-muted, #777)", marginTop: "4px" }}>
+            <Link to="/privacy" style={{ color: "inherit", textDecoration: "underline" }}>Privacy Policy</Link>
+            <span>•</span>
+            <Link to="/terms" style={{ color: "inherit", textDecoration: "underline" }}>Terms of Service</Link>
+          </div>
+        </div>
         <div className="footer-payment-tags">
           <span>UPI</span>
           <span>Visa</span>
