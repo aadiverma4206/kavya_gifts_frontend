@@ -22,6 +22,10 @@ export default function Footer() {
   const [loading, setLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
 
+  /**
+   * Submits newsletter subscriber email with validation and toast notification.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit form event.
+   */
   async function handleSubscribe(e) {
     e.preventDefault();
     const cleanEmail = (email || "").trim();
