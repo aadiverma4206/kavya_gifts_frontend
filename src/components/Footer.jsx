@@ -166,6 +166,7 @@ export default function Footer() {
               type="submit"
               className="footer-sub-btn"
               disabled={loading}
+              aria-busy={loading}
               aria-label="Subscribe"
             >
               {loading ? "..." : <Send size={16} />}
