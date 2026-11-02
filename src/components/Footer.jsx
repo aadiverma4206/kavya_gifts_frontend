@@ -199,6 +199,16 @@ export default function Footer() {
       </div>
 
       <div className="container footer-bottom-wrap">
+        <div style={{ width: "100%", display: "flex", justifyContent: "flex-end", marginBottom: "8px" }}>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: "12px", color: "var(--color-primary, #7a1f2b)", fontWeight: 600 }}
+            title="Scroll back to top of page"
+          >
+            ↑ Back to Top
+          </button>
+        </div>
         <div className="footer-bottom-copy-group">
           <p className="footer-bottom-copy">
             © {CURRENT_YEAR} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
