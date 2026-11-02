@@ -169,6 +169,9 @@ export default function Footer() {
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
               aria-label="Email for newsletter"
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setEmail("");
+              }}
               required
             />
             <button
