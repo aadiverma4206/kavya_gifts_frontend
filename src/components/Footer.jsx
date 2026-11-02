@@ -7,6 +7,15 @@ import "./Footer.css";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Validates whether the given string is a syntactically valid email address.
+ * @param {string} email - Address to test.
+ * @returns {boolean}
+ */
+function isValidEmail(email) {
+  return Boolean(email && EMAIL_REGEX.test(String(email).trim()));
+}
+
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,7 +24,7 @@ export default function Footer() {
   async function handleSubscribe(e) {
     e.preventDefault();
     const cleanEmail = (email || "").trim();
-    if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
+    if (!isValidEmail(cleanEmail)) {
       notify.warning("Please enter a valid email address (e.g. name@example.com)");
       return;
     }
