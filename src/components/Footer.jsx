@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin, Clock } from "lucide-react";
+import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin, Clock, CheckCircle2 } from "lucide-react";
 import { subscribeNewsletter } from "../services/newsletterService.js";
 import { notify } from "../utils/notify.js";
 import "./Footer.css";
@@ -182,8 +182,9 @@ export default function Footer() {
             </button>
           </form>
           {statusMessage && (
-            <p className="status-msg" role="status" aria-live="polite">
-              {statusMessage}
+            <p className="status-msg" role="status" aria-live="polite" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+              <CheckCircle2 size={14} color="#166534" />
+              <span>{statusMessage}</span>
             </p>
           )}
         </div>
