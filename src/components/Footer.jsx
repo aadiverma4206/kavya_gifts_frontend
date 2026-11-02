@@ -179,7 +179,8 @@ export default function Footer() {
               className="footer-sub-btn"
               disabled={loading}
               aria-busy={loading}
-              aria-label="Subscribe"
+              aria-label="Subscribe to luxury gifting updates"
+              title="Subscribe to Kavya Luxury Circle"
             >
               {loading ? "..." : <Send size={16} />}
             </button>
