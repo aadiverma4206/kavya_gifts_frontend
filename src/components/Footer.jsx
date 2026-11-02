@@ -6,6 +6,7 @@ import { notify } from "../utils/notify.js";
 import "./Footer.css";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const CURRENT_YEAR = new Date().getFullYear();
 
 /**
  * Validates whether the given string is a syntactically valid email address.
@@ -191,7 +192,7 @@ export default function Footer() {
       <div className="container footer-bottom-wrap">
         <div className="footer-bottom-copy-group">
           <p className="footer-bottom-copy">
-            © {new Date().getFullYear()} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
+            © {CURRENT_YEAR} Kavya Gifting. Handcrafted with passion in India. All rights reserved.
           </p>
           <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "var(--color-muted, #777)", marginTop: "4px" }}>
             <Link to="/privacy" style={{ color: "inherit", textDecoration: "underline" }}>Privacy Policy</Link>
