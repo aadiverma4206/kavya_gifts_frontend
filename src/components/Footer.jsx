@@ -107,6 +107,9 @@ export default function Footer() {
             <div className="contact-item">
               <Mail size={15} /> <span>concierge@kavyagifts.com</span>
             </div>
+            <div className="contact-item">
+              <Phone size={15} /> <span>+91 99999 88888</span>
+            </div>
           </div>
         </div>
 
