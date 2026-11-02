@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin, Clock, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Truck, Sparkles, HeartHandshake, Send, Mail, Phone, MapPin, Clock, CheckCircle2, Award } from "lucide-react";
 import { subscribeNewsletter } from "../services/newsletterService.js";
 import { notify } from "../utils/notify.js";
 import "./Footer.css";
@@ -96,6 +96,9 @@ export default function Footer() {
           <div className="footer-brand-title">
             <Sparkles size={18} className="footer-brand-icon" />
             <span>Kavya Gifting</span>
+            <span title="Verified Luxury Artisan" style={{ display: "inline-flex", alignItems: "center", marginLeft: "4px" }}>
+              <Award size={16} color="#d4af37" />
+            </span>
           </div>
           <p className="footer-tagline">
             Thoughtfully curated luxury hampers for every milestone, festival, and corporate celebration.
