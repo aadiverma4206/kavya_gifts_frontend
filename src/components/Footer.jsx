@@ -17,6 +17,21 @@ function isValidEmail(email) {
   return Boolean(email && EMAIL_REGEX.test(String(email).trim()));
 }
 
+/**
+ * Footer - Global site footer for Kavya Luxury Gifting.
+ *
+ * Features:
+ * - Trust band highlighting handcrafted & express delivery perks
+ * - Luxury brand introduction with multi-city presence
+ * - Click-to-call, WhatsApp concierge, and direct mail contact links
+ * - Curated signature collection deep links
+ * - Customer care and legal navigation paths
+ * - Interactive newsletter subscription with instant feedback
+ * - SSL security seals, accepted payment gateways, and back-to-top action
+ *
+ * @component
+ * @returns {JSX.Element} Rendered global footer.
+ */
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
