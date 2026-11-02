@@ -105,7 +105,10 @@ export default function Footer() {
               <MapPin size={15} /> <span>New Delhi • Mumbai • Bengaluru</span>
             </div>
             <div className="contact-item">
-              <Mail size={15} /> <span>concierge@kavyagifts.com</span>
+              <Mail size={15} />{" "}
+              <a href="mailto:concierge@kavyagifts.com" style={{ color: "inherit", textDecoration: "none" }} title="Email Luxury Concierge">
+                concierge@kavyagifts.com
+              </a>
             </div>
             <div className="contact-item">
               <Phone size={15} />{" "}
