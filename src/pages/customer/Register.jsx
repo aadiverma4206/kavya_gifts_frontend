@@ -310,6 +310,11 @@ export default function Register() {
                   {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {Boolean(confirmPassword) && (
+                <p style={{ fontSize: "12px", marginTop: "4px", color: password === confirmPassword ? "#166534" : "#dc2626" }}>
+                  {password === confirmPassword ? "✓ Passwords match perfectly" : "✗ Passwords do not match yet"}
+                </p>
+              )}
             </div>
 
             <div className="form-group">
