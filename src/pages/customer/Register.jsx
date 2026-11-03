@@ -74,6 +74,10 @@ export default function Register() {
     setCaptchaInput("");
   }
 
+  /**
+   * Validates Step 1 payload and advances to security step on success.
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submission event.
+   */
   function handleStep1Submit(e) {
     e.preventDefault();
     setError("");
@@ -96,6 +100,10 @@ export default function Register() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  /**
+   * Validates Step 2 security payload and registers customer account in Firebase.
+   * @param {React.FormEvent<HTMLFormElement>} e - Form submission event.
+   */
   async function handleStep2Submit(e) {
     e.preventDefault();
     setError("");
