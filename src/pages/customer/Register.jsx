@@ -19,6 +19,19 @@ function sanitizeMobileInput(val) {
   return String(val || "").replace(/\D/g, "").slice(0, 10);
 }
 
+function computePasswordStrength(pwd) {
+  if (!pwd) return { score: 0, label: "Too Short", color: "#9ca3af" };
+  let score = 0;
+  if (pwd.length >= 6) score += 1;
+  if (pwd.length >= 8) score += 1;
+  if (/[A-Z]/.test(pwd)) score += 1;
+  if (/[0-9]/.test(pwd)) score += 1;
+  if (/[^A-Za-z0-9]/.test(pwd)) score += 1;
+  if (score <= 2) return { score: 1, label: "Weak", color: "#ef4444" };
+  if (score <= 3) return { score: 2, label: "Medium", color: "#f59e0b" };
+  return { score: 3, label: "Strong", color: "#10b981" };
+}
+
 export default function Register() {
   useDocumentTitle("Customer Registration - Kavya Luxury Gifts");
   const navigate = useNavigate();
