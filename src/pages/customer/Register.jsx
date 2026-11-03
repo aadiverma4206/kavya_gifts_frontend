@@ -267,6 +267,26 @@ export default function Register() {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {Boolean(password) && (
+                <div style={{ marginTop: "6px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11.5px", marginBottom: "3px" }}>
+                    <span style={{ color: "var(--color-muted, #777)" }}>Password Strength:</span>
+                    <strong style={{ color: computePasswordStrength(password).color }}>
+                      {computePasswordStrength(password).label}
+                    </strong>
+                  </div>
+                  <div style={{ height: "4px", width: "100%", background: "#e5e7eb", borderRadius: "2px", overflow: "hidden" }}>
+                    <div
+                      style={{
+                        height: "100%",
+                        width: `${(computePasswordStrength(password).score / 3) * 100}%`,
+                        backgroundColor: computePasswordStrength(password).color,
+                        transition: "width 0.3s ease, background-color 0.3s ease",
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="form-group">
