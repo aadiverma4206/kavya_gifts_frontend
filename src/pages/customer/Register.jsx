@@ -59,6 +59,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [captchaCode, setCaptchaCode] = useState("");
   const [captchaInput, setCaptchaInput] = useState("");
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // UI state
   const [error, setError] = useState("");
