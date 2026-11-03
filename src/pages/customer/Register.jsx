@@ -113,6 +113,11 @@ export default function Register() {
       return;
     }
 
+    if (!acceptedTerms) {
+      setError("Please accept the Terms of Service & Privacy Policy to create your account.");
+      return;
+    }
+
     setLoading(true);
     try {
       let cleanMobile = mobile.replace(/\D/g, "");
