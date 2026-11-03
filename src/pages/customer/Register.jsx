@@ -170,6 +170,7 @@ export default function Register() {
               <input
                 type="text"
                 placeholder="e.g. Priya Sharma"
+                autoComplete="name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -182,6 +183,7 @@ export default function Register() {
               <input
                 type="tel"
                 placeholder="e.g. 9876543210"
+                autoComplete="tel"
                 value={mobile}
                 onChange={(e) => setMobile(sanitizeMobileInput(e.target.value))}
                 maxLength={10}
@@ -194,6 +196,7 @@ export default function Register() {
               <input
                 type="email"
                 placeholder="e.g. priya@example.com"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -205,6 +208,7 @@ export default function Register() {
               <textarea
                 rows="2"
                 placeholder="Flat / House no, Building, Street, City, State, PIN"
+                autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 required
