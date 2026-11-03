@@ -19,6 +19,11 @@ function sanitizeMobileInput(val) {
   return String(val || "").replace(/\D/g, "").slice(0, 10);
 }
 
+/**
+ * Computes password security rating based on length, casing, numbers, and symbols.
+ * @param {string} pwd - Raw password string.
+ * @returns {{ score: number, label: string, color: string }}
+ */
 function computePasswordStrength(pwd) {
   if (!pwd) return { score: 0, label: "Too Short", color: "#9ca3af" };
   let score = 0;
