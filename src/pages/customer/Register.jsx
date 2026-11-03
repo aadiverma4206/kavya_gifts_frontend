@@ -157,7 +157,7 @@ export default function Register() {
 
       // Account is created in Firebase Auth and Firestore with sequential Customer ID
       const res = await register(step1Payload, step2Payload);
-      const assignedId = res?.profile?.customerId || "CUS-10001";
+      const assignedId = String(res?.profile?.customerId || res?.customerId || "CUS-10001");
 
       toast.success(`Registration Successful! Your Customer ID is ${assignedId}.`);
       navigate("/dashboard");
