@@ -10,6 +10,10 @@ import { generateCaptcha } from "../../utils/captcha";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
+function sanitizeMobileInput(val) {
+  return String(val || "").replace(/\D/g, "").slice(0, 10);
+}
+
 export default function Register() {
   useDocumentTitle("Customer Registration - Kavya Luxury Gifts");
   const navigate = useNavigate();
