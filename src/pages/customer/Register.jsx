@@ -348,7 +348,7 @@ export default function Register() {
                 type="text"
                 placeholder="Enter 5-character captcha code"
                 value={captchaInput}
-                onChange={(e) => setCaptchaInput(e.target.value)}
+                onChange={(e) => setCaptchaInput(e.target.value.toUpperCase())}
                 required
                 maxLength={5}
                 style={{ marginTop: "8px", textTransform: "uppercase" }}
