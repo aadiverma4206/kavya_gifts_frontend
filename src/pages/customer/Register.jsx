@@ -8,6 +8,7 @@ import {
 } from "../../controllers/authController";
 import { generateCaptcha } from "../../utils/captcha";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { Eye, EyeOff } from "lucide-react";
 import "./Auth.css";
 
 /**
