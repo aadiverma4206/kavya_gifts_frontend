@@ -207,15 +207,21 @@ export default function Register() {
 
             <div className="form-group">
               <label>Mobile Number (10 Digits) *</label>
-              <input
-                type="tel"
-                placeholder="e.g. 9876543210"
-                autoComplete="tel"
-                value={mobile}
-                onChange={(e) => setMobile(sanitizeMobileInput(e.target.value))}
-                maxLength={10}
-                required
-              />
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ background: "rgba(0,0,0,0.05)", border: "1px solid var(--color-border, #e5e7eb)", borderRadius: "6px", padding: "8px 10px", fontSize: "13.5px", fontWeight: 600, color: "var(--color-text)" }}>
+                  🇮🇳 +91
+                </span>
+                <input
+                  type="tel"
+                  placeholder="e.g. 9876543210"
+                  autoComplete="tel"
+                  value={mobile}
+                  onChange={(e) => setMobile(sanitizeMobileInput(e.target.value))}
+                  maxLength={10}
+                  style={{ flex: 1 }}
+                  required
+                />
+              </div>
             </div>
 
             <div className="form-group">
