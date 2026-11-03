@@ -38,6 +38,15 @@ function computePasswordStrength(pwd) {
   return { score: 3, label: "Strong", color: "#10b981" };
 }
 
+/**
+ * Register - Customer 2-Step Registration Wizard.
+ *
+ * Step 1: Personal Profile, Contact & Delivery/Billing Address
+ * Step 2: Password Security, Strength Meter, Verification Captcha & Legal Terms
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Register() {
   useDocumentTitle("Customer Registration - Kavya Luxury Gifts");
   const navigate = useNavigate();
