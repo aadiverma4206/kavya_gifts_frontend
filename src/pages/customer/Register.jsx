@@ -10,6 +10,11 @@ import { generateCaptcha } from "../../utils/captcha";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
+/**
+ * Sanitizes mobile number string by stripping non-digit characters and limiting to 10 digits.
+ * @param {string} val - Raw mobile input.
+ * @returns {string} Sanitized 10-digit number string.
+ */
 function sanitizeMobileInput(val) {
   return String(val || "").replace(/\D/g, "").slice(0, 10);
 }
