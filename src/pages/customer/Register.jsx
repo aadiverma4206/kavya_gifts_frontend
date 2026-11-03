@@ -187,7 +187,7 @@ export default function Register() {
           </div>
         </div>
 
-        {error && <div className="auth-alert error">{error}</div>}
+        {error && <div className="auth-alert error" role="alert" aria-live="assertive">{error}</div>}
 
         {/* STEP 1: Personal & Delivery Information */}
         {step === 1 && (
@@ -334,7 +334,7 @@ export default function Register() {
             <div className="form-group">
               <label>Captcha Verification *</label>
               <div className="captcha-wrapper">
-                <div className="captcha-display" aria-label="Captcha code">
+                <div className="captcha-display" role="img" aria-label={`Captcha security code: ${captchaCode}`}>
                   {captchaCode}
                 </div>
                 <button
