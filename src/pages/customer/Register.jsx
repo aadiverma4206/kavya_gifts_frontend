@@ -269,6 +269,9 @@ export default function Register() {
               </div>
             </div>
 
+            <p style={{ fontSize: "12px", color: "var(--color-muted, #777)", textAlign: "center", margin: "12px 0 16px" }}>
+              💼 Need a corporate account with tax invoice? Your GST & billing preferences can be configured in your account settings.
+            </p>
             <button type="submit" className="btn btn-primary btn-block">
               Continue to Step 2 →
             </button>
