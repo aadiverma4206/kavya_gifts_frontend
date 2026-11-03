@@ -93,6 +93,7 @@ export default function Register() {
 
     // Advance to Step 2
     setStep(2);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   async function handleStep2Submit(e) {
@@ -379,6 +380,7 @@ export default function Register() {
                 onClick={() => {
                   setError("");
                   setStep(1);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
                 disabled={loading}
               >
