@@ -183,7 +183,7 @@ export default function Register() {
                 type="tel"
                 placeholder="e.g. 9876543210"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => setMobile(sanitizeMobileInput(e.target.value))}
                 maxLength={10}
                 required
               />
