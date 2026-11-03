@@ -344,6 +344,21 @@ export default function Register() {
               />
             </div>
 
+            <div className="form-group" style={{ margin: "14px 0" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: "8px", fontSize: "13px", cursor: "pointer", fontWeight: "normal" }}>
+                <input
+                  type="checkbox"
+                  checked={acceptedTerms}
+                  onChange={(e) => setAcceptedTerms(e.target.checked)}
+                  style={{ marginTop: "3px" }}
+                  required
+                />
+                <span>
+                  I agree to the <Link to="/terms" target="_blank" style={{ color: "var(--color-primary, #7a1f2b)", textDecoration: "underline" }}>Terms of Service</Link> and <Link to="/privacy" target="_blank" style={{ color: "var(--color-primary, #7a1f2b)", textDecoration: "underline" }}>Privacy Policy</Link>.
+                </span>
+              </label>
+            </div>
+
             <div className="form-actions-row">
               <button
                 type="button"
