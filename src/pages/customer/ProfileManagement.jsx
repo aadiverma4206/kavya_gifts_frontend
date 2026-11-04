@@ -170,6 +170,7 @@ export default function ProfileManagement() {
               <label>Full Name *</label>
               <input
                 type="text"
+                autoComplete="name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -180,6 +181,7 @@ export default function ProfileManagement() {
               <label>Mobile Number *</label>
               <input
                 type="tel"
+                autoComplete="tel"
                 value={mobile}
                 onChange={(e) => setMobile(sanitizePhoneInput(e.target.value))}
                 maxLength={10}
@@ -191,6 +193,7 @@ export default function ProfileManagement() {
               <label>Default Delivery Address</label>
               <textarea
                 rows="3"
+                autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               />
