@@ -331,6 +331,11 @@ export default function ProfileManagement() {
                   {showConfirmPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {Boolean(confirmNewPassword) && (
+                <p style={{ fontSize: "12px", marginTop: "4px", color: newPassword === confirmNewPassword ? "#166534" : "#dc2626" }}>
+                  {newPassword === confirmNewPassword ? "✓ New passwords match" : "✗ Passwords do not match"}
+                </p>
+              )}
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={savingPwd}>
