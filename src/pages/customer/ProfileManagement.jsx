@@ -9,6 +9,11 @@ import "./ProfileManagement.css";
 
 const INDIAN_MOBILE_REGEX = /^[6-9]\d{9}$/;
 
+/**
+ * Evaluates password complexity and returns visual score, label and indicator color.
+ * @param {string} pwd - Raw password string.
+ * @returns {{ score: number, label: string, color: string }}
+ */
 function evaluatePasswordStrength(pwd) {
   if (!pwd) return { score: 0, label: "Too Short", color: "#9ca3af" };
   let score = 0;
