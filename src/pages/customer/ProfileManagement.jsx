@@ -7,6 +7,11 @@ import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import notify from "../../utils/notify";
 import "./ProfileManagement.css";
 
+/**
+ * Strips non-digit characters from mobile input and restricts to 10 digits.
+ * @param {string} val - Raw mobile number input.
+ * @returns {string} Sanitized 10-digit number string.
+ */
 function sanitizePhoneInput(val) {
   return String(val || "").replace(/\D/g, "").slice(0, 10);
 }
