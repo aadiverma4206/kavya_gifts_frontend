@@ -179,7 +179,8 @@ export default function ProfileManagement() {
               <input
                 type="tel"
                 value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
+                onChange={(e) => setMobile(sanitizePhoneInput(e.target.value))}
+                maxLength={10}
                 required
               />
             </div>
