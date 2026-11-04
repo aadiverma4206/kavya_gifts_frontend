@@ -107,6 +107,10 @@ export default function ProfileManagement() {
     }
   }
 
+  /**
+   * Validates passwords and updates user credential in Firebase Authentication.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit form event.
+   */
   async function handleChangePassword(e) {
     e.preventDefault();
     setPwdMsg("");
