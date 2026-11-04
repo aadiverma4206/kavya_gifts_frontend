@@ -223,6 +223,7 @@ export default function ProfileManagement() {
               <label>Current Password *</label>
               <input
                 type="password"
+                autoComplete="current-password"
                 placeholder="Current password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
@@ -234,6 +235,7 @@ export default function ProfileManagement() {
               <label>New Password *</label>
               <input
                 type="password"
+                autoComplete="new-password"
                 placeholder="At least 6 characters"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -245,6 +247,7 @@ export default function ProfileManagement() {
               <label>Confirm New Password *</label>
               <input
                 type="password"
+                autoComplete="new-password"
                 placeholder="Re-enter new password"
                 value={confirmNewPassword}
                 onChange={(e) => setConfirmNewPassword(e.target.value)}
