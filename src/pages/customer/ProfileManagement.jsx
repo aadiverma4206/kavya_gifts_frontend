@@ -5,6 +5,7 @@ import { saveUserProfile } from "../../services/userService";
 import { changeCustomerPassword } from "../../services/authService";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import notify from "../../utils/notify";
+import { Eye, EyeOff } from "lucide-react";
 import "./ProfileManagement.css";
 
 const INDIAN_MOBILE_REGEX = /^[6-9]\d{9}$/;
