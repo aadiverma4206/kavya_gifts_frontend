@@ -287,6 +287,26 @@ export default function ProfileManagement() {
                   {showNewPwd ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
+              {Boolean(newPassword) && (
+                <div style={{ marginTop: "6px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11.5px", marginBottom: "3px" }}>
+                    <span style={{ color: "var(--color-muted, #777)" }}>Strength:</span>
+                    <strong style={{ color: evaluatePasswordStrength(newPassword).color }}>
+                      {evaluatePasswordStrength(newPassword).label}
+                    </strong>
+                  </div>
+                  <div style={{ height: "4px", width: "100%", background: "#e5e7eb", borderRadius: "2px", overflow: "hidden" }}>
+                    <div
+                      style={{
+                        height: "100%",
+                        width: `${(evaluatePasswordStrength(newPassword).score / 3) * 100}%`,
+                        backgroundColor: evaluatePasswordStrength(newPassword).color,
+                        transition: "width 0.3s ease, background-color 0.3s ease",
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="form-group">
