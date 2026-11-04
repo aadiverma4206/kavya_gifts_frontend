@@ -267,14 +267,26 @@ export default function ProfileManagement() {
 
             <div className="form-group">
               <label>New Password *</label>
-              <input
-                type="password"
-                autoComplete="new-password"
-                placeholder="At least 6 characters"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showNewPwd ? "text" : "password"}
+                  autoComplete="new-password"
+                  placeholder="At least 6 characters"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                  style={{ paddingRight: "40px" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPwd((prev) => !prev)}
+                  style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--color-muted, #777)", display: "flex", alignItems: "center" }}
+                  title={showNewPwd ? "Hide password" : "Show password"}
+                  aria-label={showNewPwd ? "Hide new password" : "Show new password"}
+                >
+                  {showNewPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <div className="form-group">
