@@ -170,12 +170,28 @@ export default function ProfileManagement() {
           <form onSubmit={handleSaveProfile} className="auth-form">
             <div className="form-group">
               <label>Customer Reference ID</label>
-              <input
-                type="text"
-                value={userProfile?.customerId || "CUS-10001"}
-                disabled
-                style={{ background: "#fbf3e7" }}
-              />
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="text"
+                  value={userProfile?.customerId || "CUS-10001"}
+                  disabled
+                  style={{ background: "#fbf3e7", flex: 1 }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const cid = userProfile?.customerId || "CUS-10001";
+                    if (navigator.clipboard?.writeText) {
+                      navigator.clipboard.writeText(cid);
+                    }
+                    notify.success("Customer ID copied to clipboard!");
+                  }}
+                  className="btn btn-secondary btn-sm"
+                  title="Copy Customer ID to clipboard"
+                >
+                  📋 Copy
+                </button>
+              </div>
             </div>
 
             <div className="form-group">
