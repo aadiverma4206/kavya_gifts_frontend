@@ -7,6 +7,10 @@ import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import notify from "../../utils/notify";
 import "./ProfileManagement.css";
 
+function sanitizePhoneInput(val) {
+  return String(val || "").replace(/\D/g, "").slice(0, 10);
+}
+
 export default function ProfileManagement() {
   useDocumentTitle("Profile & Security - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
