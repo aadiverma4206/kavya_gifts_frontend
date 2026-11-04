@@ -243,14 +243,26 @@ export default function ProfileManagement() {
           <form onSubmit={handleChangePassword} className="auth-form">
             <div className="form-group">
               <label>Current Password *</label>
-              <input
-                type="password"
-                autoComplete="current-password"
-                placeholder="Current password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showCurrentPwd ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Current password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                  style={{ paddingRight: "40px" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPwd((prev) => !prev)}
+                  style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--color-muted, #777)", display: "flex", alignItems: "center" }}
+                  title={showCurrentPwd ? "Hide password" : "Show password"}
+                  aria-label={showCurrentPwd ? "Hide current password" : "Show current password"}
+                >
+                  {showCurrentPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <div className="form-group">
