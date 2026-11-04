@@ -234,7 +234,11 @@ export default function ProfileManagement() {
                 autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter street, landmark, city, state, and pin code"
               />
+              <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted, #777)", marginTop: "2px" }}>
+                {(address || "").length} characters entered
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={savingProfile}>
