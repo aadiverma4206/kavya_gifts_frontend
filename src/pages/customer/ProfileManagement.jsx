@@ -7,6 +7,8 @@ import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import notify from "../../utils/notify";
 import "./ProfileManagement.css";
 
+const INDIAN_MOBILE_REGEX = /^[6-9]\d{9}$/;
+
 /**
  * Strips non-digit characters from mobile input and restricts to 10 digits.
  * @param {string} val - Raw mobile number input.
@@ -55,7 +57,7 @@ export default function ProfileManagement() {
     }
 
     const cleanMobile = mobile.trim().replace(/\D/g, "");
-    if (!/^[6-9]\d{9}$/.test(cleanMobile)) {
+    if (!INDIAN_MOBILE_REGEX.test(cleanMobile)) {
       setProfileErr("Please enter a valid 10-digit Indian mobile number.");
       return;
     }
