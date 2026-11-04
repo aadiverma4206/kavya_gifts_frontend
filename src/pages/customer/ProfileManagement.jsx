@@ -164,8 +164,8 @@ export default function ProfileManagement() {
             </span>
           </div>
 
-          {profileMsg && <div className="auth-alert success">{profileMsg}</div>}
-          {profileErr && <div className="auth-alert error">{profileErr}</div>}
+          {profileMsg && <div className="auth-alert success" role="alert" aria-live="polite">{profileMsg}</div>}
+          {profileErr && <div className="auth-alert error" role="alert" aria-live="assertive">{profileErr}</div>}
 
           <form onSubmit={handleSaveProfile} className="auth-form">
             <div className="form-group">
@@ -257,8 +257,8 @@ export default function ProfileManagement() {
             For your security, enter your current password followed by your new password.
           </p>
 
-          {pwdMsg && <div className="auth-alert success">{pwdMsg}</div>}
-          {pwdErr && <div className="auth-alert error">{pwdErr}</div>}
+          {pwdMsg && <div className="auth-alert success" role="alert" aria-live="polite">{pwdMsg}</div>}
+          {pwdErr && <div className="auth-alert error" role="alert" aria-live="assertive">{pwdErr}</div>}
 
           <form onSubmit={handleChangePassword} className="auth-form">
             <div className="form-group">
