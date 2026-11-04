@@ -37,6 +37,19 @@ function sanitizePhoneInput(val) {
   return String(val || "").replace(/\D/g, "").slice(0, 10);
 }
 
+/**
+ * ProfileManagement - Customer profile and security settings view.
+ *
+ * Features:
+ * - Personal information editor with instant mobile sanitization
+ * - Copyable customer reference identification badge
+ * - Password security management with live strength evaluation
+ * - Interactive password visibility toggles and match indicator
+ * - Accessible alert regions and character counters
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ProfileManagement() {
   useDocumentTitle("Profile & Security - Kavya Luxury Gifts");
   const { currentUser, userProfile } = useAuth();
