@@ -68,6 +68,10 @@ export default function ProfileManagement() {
   const [pwdErr, setPwdErr] = useState("");
   const [savingPwd, setSavingPwd] = useState(false);
 
+  /**
+   * Validates profile input and persists user profile updates to Firestore.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit form event.
+   */
   async function handleSaveProfile(e) {
     e.preventDefault();
     setProfileMsg("");
