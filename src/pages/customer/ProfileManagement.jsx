@@ -291,14 +291,26 @@ export default function ProfileManagement() {
 
             <div className="form-group">
               <label>Confirm New Password *</label>
-              <input
-                type="password"
-                autoComplete="new-password"
-                placeholder="Re-enter new password"
-                value={confirmNewPassword}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                required
-              />
+              <div style={{ position: "relative" }}>
+                <input
+                  type={showConfirmPwd ? "text" : "password"}
+                  autoComplete="new-password"
+                  placeholder="Re-enter new password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  required
+                  style={{ paddingRight: "40px" }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPwd((prev) => !prev)}
+                  style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--color-muted, #777)", display: "flex", alignItems: "center" }}
+                  title={showConfirmPwd ? "Hide password" : "Show password"}
+                  aria-label={showConfirmPwd ? "Hide confirm password" : "Show confirm password"}
+                >
+                  {showConfirmPwd ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button type="submit" className="btn btn-primary" disabled={savingPwd}>
