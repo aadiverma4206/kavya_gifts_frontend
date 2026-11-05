@@ -306,6 +306,27 @@ export default function ProductReview() {
             </div>
           </div>
 
+          <div className="form-group" style={{ marginBottom: "12px" }}>
+            <span style={{ fontSize: "12px", color: "var(--color-muted, #777)", display: "block", marginBottom: "6px" }}>
+              Quick feedback tags (click to add):
+            </span>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+              {REVIEW_QUICK_TAGS.map((tag) => (
+                <button
+                  type="button"
+                  key={tag}
+                  onClick={() => {
+                    setComment((prev) => (prev ? `${prev} ${tag}` : tag).trim());
+                  }}
+                  style={{ background: "#fdfaf6", border: "1px solid #ebd9c8", borderRadius: "16px", padding: "4px 10px", fontSize: "11.5px", cursor: "pointer", color: "var(--color-primary, #7a1f2b)" }}
+                  title={`Add ${tag} to feedback`}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="form-actions-row">
             <Link to={`/product/${productId}`} className="btn btn-secondary">
               Cancel
