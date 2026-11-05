@@ -272,6 +272,9 @@ export default function ProductReview() {
               onChange={(e) => setTitle(e.target.value)}
               required
             />
+            <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted, #777)", marginTop: "2px" }}>
+              {(title || "").length} / 100 characters
+            </div>
           </div>
 
           <div className="form-group">
