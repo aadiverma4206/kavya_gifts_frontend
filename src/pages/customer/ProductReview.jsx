@@ -237,8 +237,8 @@ export default function ProductReview() {
           </div>
         )}
 
-        {error && <div className="auth-alert error">{error}</div>}
-        {successMsg && <div className="auth-alert success">{successMsg}</div>}
+        {error && <div className="auth-alert error" role="alert" aria-live="assertive">{error}</div>}
+        {successMsg && <div className="auth-alert success" role="alert" aria-live="polite">{successMsg}</div>}
 
         <form onSubmit={handleSubmit} className="review-form">
           <div className="form-group">
