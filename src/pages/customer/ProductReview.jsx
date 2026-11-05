@@ -225,8 +225,10 @@ export default function ProductReview() {
                 <button
                   type="button"
                   key={star}
-                  className={`star-btn ${star <= rating ? "selected" : ""}`}
+                  className={`star-btn ${star <= (hoverRating || rating) ? "selected" : ""}`}
                   onClick={() => setRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
                   aria-label={`Rate ${star} out of 5 stars`}
                 >
                   ★
