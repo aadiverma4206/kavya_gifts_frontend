@@ -220,7 +220,19 @@ export default function ProductReview() {
         <form onSubmit={handleSubmit} className="review-form">
           <div className="form-group">
             <label>Overall Rating</label>
-            <div className="star-rating-selector">
+            <div
+              className="star-rating-selector"
+              tabIndex={0}
+              role="radiogroup"
+              aria-label="Star Rating Selector"
+              onKeyDown={(e) => {
+                if (e.key === "ArrowRight" || e.key === "ArrowUp") {
+                  setRating((prev) => Math.min(5, prev + 1));
+                } else if (e.key === "ArrowLeft" || e.key === "ArrowDown") {
+                  setRating((prev) => Math.max(1, prev - 1));
+                }
+              }}
+            >
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   type="button"
