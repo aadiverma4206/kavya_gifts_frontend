@@ -116,7 +116,11 @@ export default function ProductReview() {
     setError("");
 
     if (!title.trim() || !comment.trim()) {
-      setError("Please provide both a headline and your review feedback.");
+      setError("Please provide both a headline and detailed review feedback (minimum 10 characters).");
+      return;
+    }
+    if (comment.trim().length < 10) {
+      setError("Please write at least 10 characters describing your unboxing experience.");
       return;
     }
 
