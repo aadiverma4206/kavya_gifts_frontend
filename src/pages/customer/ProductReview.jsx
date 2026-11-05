@@ -9,6 +9,7 @@ import {
 import { getProductById } from "../../services/productService.js";
 import { toDirectImageUrl } from "../../utils/driveImage.js";
 import useDocumentTitle from "../../hooks/useDocumentTitle.js";
+import { formatCurrency } from "../../utils/formatters.js";
 import "./ProductReview.css";
 
 const DEFAULT_REVIEW_PRODUCT_SVG =
@@ -219,7 +220,7 @@ export default function ProductReview() {
             />
             <div>
               <h4>{product.product_name || product.productName}</h4>
-              <p className="muted">₹{Number(product.price).toLocaleString("en-IN")}</p>
+              <p className="muted">{formatCurrency(product.price || 0)}</p>
             </div>
           </div>
         )}
