@@ -151,6 +151,7 @@ export default function ProductReview() {
           comment: comment.trim(),
         });
         setSuccessMsg("Your review has been updated successfully! ✨");
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         // Create new review
         const review = await submitProductReview({
@@ -163,6 +164,7 @@ export default function ProductReview() {
           comment: comment.trim(),
         });
         setSuccessMsg(`Thank you! Your review (${review.reviewId}) has been submitted.`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       navTimerRef.current = setTimeout(() => {
