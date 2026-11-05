@@ -200,7 +200,7 @@ export default function ProductReview() {
       <div className="review-card card">
         <div className="review-header">
           <span className="auth-tag">
-            {isEditing ? "Edit Your Review" : "Verified Customer Unboxing Experience"}
+            {isEditing ? "Edit Your Review" : "✓ Verified Customer Unboxing Experience"}
           </span>
           <h2>{isEditing ? "Update Your Review" : "Review Hamper"}</h2>
           <p className="muted">
