@@ -98,7 +98,7 @@ export default function ProductReview() {
         }
 
         // 2. Check purchase eligibility and existing review
-        const customerId = userProfile?.customerId || currentUser?.uid;
+        const customerId = String(userProfile?.customerId || currentUser?.uid || "");
         if (customerId && productId) {
           const check = await checkCanCustomerReview(customerId, productId);
           if (isMounted) {
