@@ -37,6 +37,7 @@ export default function ProductReview() {
   const [product, setProduct] = useState(null);
   const [productName, setProductName] = useState(location.state?.productName || "");
   const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
 
