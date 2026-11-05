@@ -235,7 +235,7 @@ export default function ProductReview() {
                 </button>
               ))}
               <span className="star-rating-text muted">
-                {getRatingDescription(rating)}
+                {getRatingDescription(hoverRating || rating)}
               </span>
             </div>
           </div>
