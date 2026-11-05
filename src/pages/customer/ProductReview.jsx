@@ -270,6 +270,7 @@ export default function ProductReview() {
               placeholder="e.g. Stunning Diwali presentation and fresh sweets!"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              maxLength={100}
               required
             />
             <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted, #777)", marginTop: "2px" }}>
@@ -284,6 +285,7 @@ export default function ProductReview() {
               placeholder="What made this hamper special? How was the packaging, presentation, and delivery?"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
+              maxLength={1000}
               required
             />
             <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted, #777)", marginTop: "2px" }}>
