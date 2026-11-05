@@ -11,6 +11,11 @@ import { toDirectImageUrl } from "../../utils/driveImage.js";
 import useDocumentTitle from "../../hooks/useDocumentTitle.js";
 import "./ProductReview.css";
 
+/**
+ * Returns localized descriptive label for a given 1-5 star review rating score.
+ * @param {number} rating - Score between 1 and 5.
+ * @returns {string} Formatted score and descriptive label.
+ */
 function getRatingDescription(rating) {
   switch (rating) {
     case 5: return "5 / 5 (Exceptional)";
