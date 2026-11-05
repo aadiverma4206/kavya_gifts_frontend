@@ -39,6 +39,19 @@ function getRatingDescription(rating) {
   }
 }
 
+/**
+ * ProductReview - Verified customer hamper review and unboxing ratings dashboard.
+ *
+ * Key capabilities:
+ * - Verified purchaser eligibility gating (only purchasers can review)
+ * - Interactive star rating selector with live hover feedback
+ * - Review creation and seamless editing of own previously submitted review
+ * - Quick feedback chip tags for swift review drafting
+ * - Accessible keyboard navigation and ARIA alerts
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ProductReview() {
   const { productId } = useParams();
   const location = useLocation();
