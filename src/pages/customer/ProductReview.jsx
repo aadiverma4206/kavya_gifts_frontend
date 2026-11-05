@@ -283,6 +283,9 @@ export default function ProductReview() {
               onChange={(e) => setComment(e.target.value)}
               required
             />
+            <div style={{ textAlign: "right", fontSize: "11.5px", color: "var(--color-muted, #777)", marginTop: "2px" }}>
+              {(comment || "").length} / 1000 characters
+            </div>
           </div>
 
           <div className="form-actions-row">
