@@ -122,6 +122,10 @@ export default function ProductReview() {
     };
   }, [productId, userProfile, currentUser, productName]);
 
+  /**
+   * Validates headline and feedback rating before persisting review to Firestore.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit form event.
+   */
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
