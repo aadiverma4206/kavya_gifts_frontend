@@ -11,6 +11,17 @@ import { toDirectImageUrl } from "../../utils/driveImage.js";
 import useDocumentTitle from "../../hooks/useDocumentTitle.js";
 import "./ProductReview.css";
 
+function getRatingDescription(rating) {
+  switch (rating) {
+    case 5: return "5 / 5 (Exceptional)";
+    case 4: return "4 / 5 (Very Good)";
+    case 3: return "3 / 5 (Average)";
+    case 2: return "2 / 5 (Below Average)";
+    case 1: return "1 / 5 (Poor)";
+    default: return `${rating} / 5`;
+  }
+}
+
 export default function ProductReview() {
   const { productId } = useParams();
   const location = useLocation();
@@ -216,15 +227,7 @@ export default function ProductReview() {
                 </button>
               ))}
               <span className="star-rating-text muted">
-                {rating === 5
-                  ? "5 / 5 (Exceptional)"
-                  : rating === 4
-                  ? "4 / 5 (Very Good)"
-                  : rating === 3
-                  ? "3 / 5 (Average)"
-                  : rating === 2
-                  ? "2 / 5 (Below Average)"
-                  : "1 / 5 (Poor)"}
+                {getRatingDescription(rating)}
               </span>
             </div>
           </div>
