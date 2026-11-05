@@ -333,7 +333,7 @@ export default function ProductReview() {
             <Link to={`/product/${productId}`} className="btn btn-secondary">
               Cancel
             </Link>
-            <button type="submit" className="btn btn-primary" style={{ flex: 1 }} disabled={loading}>
+            <button type="submit" className="btn btn-primary" style={{ flex: 1 }} disabled={loading} aria-busy={loading}>
               {loading ? "Submitting..." : isEditing ? "Save Review Updates" : "Submit Review"}
             </button>
           </div>
