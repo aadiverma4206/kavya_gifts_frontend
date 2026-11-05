@@ -178,7 +178,7 @@ export default function ProductReview() {
           productId,
           productName: productName || product?.product_name || product?.productName || "Gift Hamper",
           customerId,
-          customerName: userProfile?.fullName || "Valued Customer",
+          customerName: userProfile?.fullName || currentUser?.displayName || "Valued Customer",
           rating,
           title: title.trim(),
           comment: comment.trim(),
