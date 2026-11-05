@@ -209,7 +209,14 @@ export default function ProductReview() {
 
         {product && (
           <div className="review-product-preview">
-            <img src={toDirectImageUrl(product.image || product.thumbnail || product.image_url)} alt={product.product_name} />
+            <img
+              src={toDirectImageUrl(product.image || product.thumbnail || product.image_url) || DEFAULT_REVIEW_PRODUCT_SVG}
+              alt={product.product_name || "Gift Hamper"}
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = DEFAULT_REVIEW_PRODUCT_SVG;
+              }}
+            />
             <div>
               <h4>{product.product_name || product.productName}</h4>
               <p className="muted">₹{Number(product.price).toLocaleString("en-IN")}</p>
