@@ -67,6 +67,9 @@ export default function ProductReview() {
   useEffect(() => {
     let isMounted = true;
 
+    /**
+     * Asynchronously verifies order purchase eligibility and retrieves previous customer review.
+     */
     async function loadData() {
       setCheckingEligibility(true);
       setError("");
