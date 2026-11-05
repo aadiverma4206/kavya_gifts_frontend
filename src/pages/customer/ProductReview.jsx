@@ -268,6 +268,7 @@ export default function ProductReview() {
             <input
               type="text"
               placeholder="e.g. Stunning Diwali presentation and fresh sweets!"
+              autoFocus
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={100}
