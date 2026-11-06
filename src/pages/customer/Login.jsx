@@ -219,6 +219,7 @@ export default function Login() {
               <div style={{ display: "flex", gap: "8px" }}>
                 <input
                   type="email"
+                  autoComplete="email"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
                   onBlur={() => setForgotEmail((prev) => (prev || "").trim())}
