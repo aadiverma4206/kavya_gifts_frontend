@@ -197,6 +197,12 @@ export default function Login() {
 
           {showForgot && (
             <div
+              onKeyDown={(e) => {
+                if (e.key === "Escape") {
+                  setShowForgot(false);
+                  setForgotMsg("");
+                }
+              }}
               style={{
                 background: "var(--color-bg-secondary, #fcf8f5)",
                 padding: "14px",
