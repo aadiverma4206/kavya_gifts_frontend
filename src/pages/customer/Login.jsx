@@ -144,6 +144,7 @@ export default function Login() {
               type="text"
               placeholder="e.g. priya@example.com or CUS-10001"
               autoComplete="username"
+              onBlur={() => setEmail((prev) => (prev || "").trim())}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
