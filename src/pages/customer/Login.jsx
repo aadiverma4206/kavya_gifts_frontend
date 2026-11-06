@@ -245,6 +245,8 @@ export default function Login() {
               </div>
               {forgotMsg && (
                 <p
+                  role="status"
+                  aria-live="polite"
                   style={{
                     margin: "8px 0 0 0",
                     color: forgotMsg.includes("sent") ? "#0369a1" : "#c81e1e",
