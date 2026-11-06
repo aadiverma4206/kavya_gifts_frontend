@@ -26,6 +26,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(() => localStorage.getItem("kavya_remember_me") === "true");
 
   // Customer Forgot Password state
   const [showForgot, setShowForgot] = useState(false);
