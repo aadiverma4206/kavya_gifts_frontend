@@ -124,6 +124,8 @@ export default function Login() {
         {error && (
           <div
             className="auth-alert error"
+            role="alert"
+            aria-live="assertive"
             style={{
               marginBottom: "16px",
               padding: "10px 14px",
