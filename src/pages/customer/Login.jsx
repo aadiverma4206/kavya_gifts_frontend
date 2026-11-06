@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { Eye, EyeOff } from "lucide-react";
 import "./Auth.css";
 
 /**
