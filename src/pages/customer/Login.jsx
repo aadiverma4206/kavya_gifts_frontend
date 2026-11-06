@@ -304,6 +304,17 @@ export default function Login() {
           <p className="muted" style={{ marginTop: "12px", fontSize: "12px" }}>
             Store Administrator? <Link to="/owner/login">Owner Login</Link>
           </p>
+          <p style={{ marginTop: "16px", fontSize: "12px", color: "var(--color-muted, #777)" }}>
+            ✨ Need concierge sign-in support?{" "}
+            <a
+              href="https://wa.me/919999988888?text=Hello%20Kavya%20Concierge,%20I%20need%20assistance%20logging%20into%20my%20account"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "var(--color-primary, #b76e79)", textDecoration: "underline" }}
+            >
+              WhatsApp Concierge
+            </a>
+          </p>
         </div>
       </div>
     </div>
