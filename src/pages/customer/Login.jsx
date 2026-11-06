@@ -5,6 +5,11 @@ import { useAuth } from "../../context/AuthContext";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
+/**
+ * Checks whether input string conforms to sequential Customer ID format (e.g. CUS-10001).
+ * @param {string} input - Raw identifier string.
+ * @returns {boolean}
+ */
 function isCustomerIdFormat(input) {
   return /^CUS-\d+$/i.test(String(input || "").trim());
 }
