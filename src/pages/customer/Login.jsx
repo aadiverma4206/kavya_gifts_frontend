@@ -238,6 +238,17 @@ export default function Login() {
             </div>
           )}
 
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "12px 0 16px" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "13px", cursor: "pointer", margin: 0, fontWeight: "normal" }}>
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span>Remember my Email / Customer ID</span>
+            </label>
+          </div>
+
           <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
             {loading ? "Signing In..." : "Sign In"}
           </button>
