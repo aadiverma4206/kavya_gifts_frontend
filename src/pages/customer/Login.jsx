@@ -73,7 +73,7 @@ export default function Login() {
     setLoading(true);
     try {
       // Authenticate via controller which verifies role & blocked status
-      const { profile, redirectPath } = await loginCustomer(trimmedEmail, password);
+      const { profile, redirectPath } = await loginCustomer(String(trimmedEmail), String(password));
 
       if (rememberMe) {
         localStorage.setItem("kavya_remember_me", "true");
