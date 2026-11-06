@@ -270,7 +270,7 @@ export default function Login() {
             </label>
           </div>
 
-          <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+          <button type="submit" className="btn btn-primary btn-block" disabled={loading} aria-busy={loading}>
             {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
