@@ -90,6 +90,10 @@ export default function Login() {
     }
   }
 
+  /**
+   * Dispatches Firebase password reset instructions to user email.
+   * @param {React.FormEvent<HTMLFormElement>|Object} [e] - Optional submit event.
+   */
   async function handleResetPassword(e) {
     if (e && e.preventDefault) e.preventDefault();
     setForgotMsg("");
