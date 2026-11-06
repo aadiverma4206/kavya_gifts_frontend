@@ -143,6 +143,7 @@ export default function Login() {
             <input
               type="text"
               placeholder="e.g. priya@example.com or CUS-10001"
+              autoComplete="username"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
