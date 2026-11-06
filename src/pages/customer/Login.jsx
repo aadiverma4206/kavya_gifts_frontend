@@ -43,6 +43,10 @@ export default function Login() {
 
   const from = location.state?.from?.pathname || "/dashboard";
 
+  /**
+   * Authenticates customer via email or Customer ID and redirects on success.
+   * @param {React.FormEvent<HTMLFormElement>} e - Submit form event.
+   */
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
