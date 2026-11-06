@@ -15,6 +15,19 @@ function isCustomerIdFormat(input) {
   return /^CUS-\d+$/i.test(String(input || "").trim());
 }
 
+/**
+ * Login - Customer Authentication & Account Access view.
+ *
+ * Features:
+ * - Flexible authentication using either Email or Customer ID (e.g. CUS-10001)
+ * - Remember Me preference persistence with localStorage integration
+ * - Interactive password visibility toggling
+ * - In-place password reset recovery drawer
+ * - Accessible ARIA alerts, keyboard shortcuts and role verification
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Login() {
   useDocumentTitle("Customer Sign In - Kavya Luxury Gifts");
   const navigate = useNavigate();
