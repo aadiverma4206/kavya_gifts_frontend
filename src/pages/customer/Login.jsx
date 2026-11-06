@@ -239,6 +239,7 @@ export default function Login() {
                   className="btn btn-primary btn-sm"
                   onClick={handleResetPassword}
                   disabled={forgotLoading}
+                  aria-busy={forgotLoading}
                 >
                   {forgotLoading ? "Sending..." : "Send Reset Link"}
                 </button>
