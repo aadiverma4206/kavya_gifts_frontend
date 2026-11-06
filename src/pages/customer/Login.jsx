@@ -5,6 +5,10 @@ import { useAuth } from "../../context/AuthContext";
 import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import "./Auth.css";
 
+function isCustomerIdFormat(input) {
+  return /^CUS-\d+$/i.test(String(input || "").trim());
+}
+
 export default function Login() {
   useDocumentTitle("Customer Sign In - Kavya Luxury Gifts");
   const navigate = useNavigate();
