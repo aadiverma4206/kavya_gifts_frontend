@@ -221,6 +221,12 @@ export default function Login() {
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
                   placeholder="name@example.com"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleResetPassword();
+                    }
+                  }}
                   style={{ flex: 1, padding: "8px 10px", fontSize: "13px" }}
                 />
                 <button
