@@ -221,6 +221,7 @@ export default function Login() {
                   type="email"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
+                  onBlur={() => setForgotEmail((prev) => (prev || "").trim())}
                   placeholder="name@example.com"
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
