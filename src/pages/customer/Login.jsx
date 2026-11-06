@@ -58,6 +58,14 @@ export default function Login() {
       // Authenticate via controller which verifies role & blocked status
       const { profile, redirectPath } = await loginCustomer(trimmedEmail, password);
 
+      if (rememberMe) {
+        localStorage.setItem("kavya_remember_me", "true");
+        localStorage.setItem("kavya_saved_identifier", trimmedEmail);
+      } else {
+        localStorage.removeItem("kavya_remember_me");
+        localStorage.removeItem("kavya_saved_identifier");
+      }
+
       toast.success(`Welcome back, ${profile?.fullName || "Valued Customer"}!`);
       navigate(from === "/login" ? redirectPath : from, { replace: true });
     } catch (err) {
