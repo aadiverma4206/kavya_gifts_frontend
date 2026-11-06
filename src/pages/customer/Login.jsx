@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
@@ -33,6 +33,13 @@ export default function Login() {
   const [forgotEmail, setForgotEmail] = useState("");
   const [forgotMsg, setForgotMsg] = useState("");
   const [forgotLoading, setForgotLoading] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("kavya_saved_identifier");
+    if (saved && !email) {
+      setEmail(saved);
+    }
+  }, []);
 
   const from = location.state?.from?.pathname || "/dashboard";
 
