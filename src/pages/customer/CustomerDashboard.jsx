@@ -33,6 +33,7 @@ export default function CustomerDashboard() {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("orders"); // 'orders' | 'payments' | 'reviews' | 'activity'
+  const [orderSearchQuery, setOrderSearchQuery] = useState("");
   const [data, setData] = useState({
     orders: [],
     payments: [],
