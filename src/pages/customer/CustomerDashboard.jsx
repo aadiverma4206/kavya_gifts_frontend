@@ -254,6 +254,19 @@ export default function CustomerDashboard() {
                     <div className="history-card-header">
                       <div>
                         <span className="history-ref-badge">{ord.orderId}</span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (navigator.clipboard?.writeText) {
+                              navigator.clipboard.writeText(ord.orderId);
+                            }
+                            toast.success(`Order ID ${ord.orderId} copied!`);
+                          }}
+                          style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", marginLeft: "4px", padding: 0 }}
+                          title="Copy Order ID"
+                        >
+                          📋
+                        </button>
                         <span className="history-date" style={{ marginLeft: "12px" }}>
                           {formatDashboardDate(ord.date)}
                         </span>
