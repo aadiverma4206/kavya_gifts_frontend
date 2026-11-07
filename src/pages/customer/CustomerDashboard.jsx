@@ -27,6 +27,19 @@ function formatDashboardDate(dateVal) {
 const DEFAULT_DASHBOARD_THUMBNAIL_SVG =
   "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22100%22%20height%3D%22100%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22100%22%20height%3D%22100%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-size%3D%2224%22%20x%3D%2250%25%22%20y%3D%2255%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%3C%2Ftext%3E%3C%2Fsvg%3E";
 
+/**
+ * CustomerDashboard - Unified customer self-service hub.
+ *
+ * Capabilities:
+ * - Customer ID badge with one-click clipboard copy
+ * - Lifetime orders, payments, reviews, and total spend summary statistics
+ * - Tabbed history explorer for orders, financial ledgers, reviews, and audit trails
+ * - Real-time client-side search across order IDs and product titles
+ * - Direct navigation to write reviews or review detailed invoices
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function CustomerDashboard() {
   useDocumentTitle("Customer Portal - Kavya Luxury Gifts");
   const { currentUser, userProfile, logout } = useAuth();
