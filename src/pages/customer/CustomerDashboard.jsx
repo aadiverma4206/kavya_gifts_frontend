@@ -240,6 +240,14 @@ export default function CustomerDashboard() {
                     Showing {filteredOrders.length} of {orders.length} {orders.length === 1 ? "order" : "orders"}
                   </span>
                 </div>
+                {filteredOrders.length === 0 ? (
+                  <div className="empty-dash-card" style={{ padding: "32px 0" }}>
+                    <p className="muted">No orders match "{orderSearchQuery}".</p>
+                    <button type="button" className="btn btn-secondary btn-sm" onClick={() => setOrderSearchQuery("")} style={{ marginTop: "10px" }}>
+                      Clear Search Filter
+                    </button>
+                  </div>
+                ) : (
                 <div className="history-list">
                 {filteredOrders.map((ord) => (
                   <div key={ord.orderId} className="history-card">
@@ -311,6 +319,7 @@ export default function CustomerDashboard() {
                   </div>
                 ))}
               </div>
+                )}
               </>
             )}
           </div>
