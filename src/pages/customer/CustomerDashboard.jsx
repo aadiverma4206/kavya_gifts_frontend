@@ -164,10 +164,10 @@ export default function CustomerDashboard() {
 
       {/* HISTORY MANAGEMENT TABS */}
       <div className="history-section card" style={{ padding: "32px" }}>
-        <div className="history-tabs-nav">
+        <div className="history-tabs-nav" role="tablist" aria-label="Customer History Tabs">
           <button
             type="button"
-            className={`history-tab-btn ${activeTab === "orders" ? "active" : ""}`}
+            role="tab" aria-selected={activeTab === "orders"} className={`history-tab-btn ${activeTab === "orders" ? "active" : ""}`}
             onClick={() => setActiveTab("orders")}
           >
             <span>🎁</span> Order History
@@ -176,7 +176,7 @@ export default function CustomerDashboard() {
 
           <button
             type="button"
-            className={`history-tab-btn ${activeTab === "payments" ? "active" : ""}`}
+            role="tab" aria-selected={activeTab === "payments"} className={`history-tab-btn ${activeTab === "payments" ? "active" : ""}`}
             onClick={() => setActiveTab("payments")}
           >
             <span>💳</span> Payment History
@@ -185,7 +185,7 @@ export default function CustomerDashboard() {
 
           <button
             type="button"
-            className={`history-tab-btn ${activeTab === "reviews" ? "active" : ""}`}
+            role="tab" aria-selected={activeTab === "reviews"} className={`history-tab-btn ${activeTab === "reviews" ? "active" : ""}`}
             onClick={() => setActiveTab("reviews")}
           >
             <span>★</span> Review History
@@ -194,7 +194,7 @@ export default function CustomerDashboard() {
 
           <button
             type="button"
-            className={`history-tab-btn ${activeTab === "activity" ? "active" : ""}`}
+            role="tab" aria-selected={activeTab === "activity"} className={`history-tab-btn ${activeTab === "activity" ? "active" : ""}`}
             onClick={() => setActiveTab("activity")}
           >
             <span>📋</span> Activity History
