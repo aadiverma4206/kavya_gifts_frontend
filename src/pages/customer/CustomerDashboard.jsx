@@ -215,7 +215,32 @@ export default function CustomerDashboard() {
                 </Link>
               </div>
             ) : (
-              <div className="history-list">
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px", gap: "10px", flexWrap: "wrap" }}>
+                  <div style={{ position: "relative", flex: 1, minWidth: "240px" }}>
+                    <input
+                      type="text"
+                      placeholder="Search orders by ID or hamper name..."
+                      value={orderSearchQuery}
+                      onChange={(e) => setOrderSearchQuery(e.target.value)}
+                      style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid var(--color-border, #e5e7eb)", fontSize: "13px" }}
+                    />
+                    {orderSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setOrderSearchQuery("")}
+                        style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--color-muted, #777)" }}
+                        title="Clear search"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                  <span className="muted" style={{ fontSize: "12.5px" }}>
+                    Showing {filteredOrders.length} of {orders.length} {orders.length === 1 ? "order" : "orders"}
+                  </span>
+                </div>
+                <div className="history-list">
                 {filteredOrders.map((ord) => (
                   <div key={ord.orderId} className="history-card">
                     <div className="history-card-header">
@@ -286,6 +311,7 @@ export default function CustomerDashboard() {
                   </div>
                 ))}
               </div>
+              </>
             )}
           </div>
         )}
