@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext.jsx";
 import { loadFullCustomerDashboardHistory } from "../../controllers/historyController.js";
 import { toDirectImageUrl } from "../../utils/driveImage.js";
@@ -58,9 +59,26 @@ export default function CustomerDashboard() {
       {/* Welcome Hero Banner */}
       <div className="dashboard-hero card">
         <div className="dashboard-hero-content">
-          <span className="customer-badge">
-            Customer ID: {userProfile?.customerId || "CUS-10001"}
-          </span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+            <span className="customer-badge">
+              Customer ID: {userProfile?.customerId || "CUS-10001"}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                const cid = userProfile?.customerId || "CUS-10001";
+                if (navigator.clipboard?.writeText) {
+                  navigator.clipboard.writeText(cid);
+                }
+                toast.success("Customer ID copied to clipboard!");
+              }}
+              style={{ background: "none", border: "none", cursor: "pointer", fontSize: "14px", padding: "2px" }}
+              title="Copy Customer ID"
+              aria-label="Copy Customer ID"
+            >
+              📋
+            </button>
+          </div>
           <h2>Welcome, {userProfile?.fullName || currentUser?.email}</h2>
           <p className="muted">
             Track your bespoke hampers, verified payments, unboxing reviews, and personal activity log in one secure hub.
