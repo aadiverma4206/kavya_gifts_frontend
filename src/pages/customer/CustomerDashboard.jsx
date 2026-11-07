@@ -85,6 +85,9 @@ export default function CustomerDashboard() {
     }
   }
 
+  /**
+   * Signs current customer out of Firebase Auth and navigates to homepage.
+   */
   async function handleLogout() {
     await logout();
     navigate("/");
