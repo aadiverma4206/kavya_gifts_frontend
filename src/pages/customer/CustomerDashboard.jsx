@@ -190,7 +190,16 @@ export default function CustomerDashboard() {
                       <div className="products-summary-chips">
                         {ord.products.map((p, idx) => (
                           <div key={idx} className="product-chip">
-                            {p.image && <img src={toDirectImageUrl(p.image)} alt={p.productName} />}
+                            {p.image && (
+                              <img
+                                src={toDirectImageUrl(p.image) || DEFAULT_DASHBOARD_THUMBNAIL_SVG}
+                                alt={p.productName}
+                                onError={(e) => {
+                                  e.currentTarget.onerror = null;
+                                  e.currentTarget.src = DEFAULT_DASHBOARD_THUMBNAIL_SVG;
+                                }}
+                              />
+                            )}
                             <strong>{p.productName}</strong>
                             <span className="muted">×{p.quantity}</span>
                             {p.giftWrappingSelected && <span className="wrap-pill">Wrapped</span>}
