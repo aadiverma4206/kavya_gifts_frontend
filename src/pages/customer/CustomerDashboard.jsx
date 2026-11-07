@@ -483,7 +483,7 @@ export default function CustomerDashboard() {
               <div className="card" style={{ padding: 0, overflow: "hidden" }}>
                 {activities.map((act) => (
                   <div key={act.activityId} className="activity-item">
-                    <span className={`activity-badge ${act.action}`}>
+                    <span className={`activity-badge ${act.action}`} style={{ textTransform: "capitalize", fontWeight: 600 }}>
                       {act.action}
                     </span>
                     <div style={{ flex: 1 }}>
