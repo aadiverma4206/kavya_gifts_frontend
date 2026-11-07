@@ -362,7 +362,24 @@ export default function CustomerDashboard() {
                   <tbody>
                     {payments.map((p) => (
                       <tr key={p.paymentId}>
-                        <td><strong>{p.paymentId}</strong></td>
+                        <td>
+                          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                            <strong>{p.paymentId}</strong>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (navigator.clipboard?.writeText) {
+                                  navigator.clipboard.writeText(p.paymentId);
+                                }
+                                toast.success(`Payment ID ${p.paymentId} copied!`);
+                              }}
+                              style={{ background: "none", border: "none", cursor: "pointer", fontSize: "11px", padding: 0 }}
+                              title="Copy Payment Reference"
+                            >
+                              📋
+                            </button>
+                          </div>
+                        </td>
                         <td>
                           <Link to={`/order-confirmation/${p.orderId}`} style={{ color: "var(--color-primary)", fontWeight: 600 }}>
                             {p.orderId}
