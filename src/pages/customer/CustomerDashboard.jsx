@@ -71,6 +71,13 @@ export default function CustomerDashboard() {
 
   const { orders, payments, reviews, activities } = data;
   const totalSpend = orders.reduce((sum, ord) => sum + Number(ord.total || 0), 0);
+  const filteredOrders = orders.filter((ord) => {
+    if (!orderSearchQuery.trim()) return true;
+    const q = orderSearchQuery.trim().toLowerCase();
+    const idMatch = String(ord.orderId || "").toLowerCase().includes(q);
+    const prodMatch = ord.products?.some((p) => String(p.productName || "").toLowerCase().includes(q));
+    return idMatch || prodMatch;
+  });
 
 
   return (
@@ -209,7 +216,7 @@ export default function CustomerDashboard() {
               </div>
             ) : (
               <div className="history-list">
-                {orders.map((ord) => (
+                {filteredOrders.map((ord) => (
                   <div key={ord.orderId} className="history-card">
                     <div className="history-card-header">
                       <div>
