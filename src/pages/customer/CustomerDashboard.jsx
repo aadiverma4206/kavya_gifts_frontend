@@ -69,6 +69,8 @@ export default function CustomerDashboard() {
   }
 
   const { orders, payments, reviews, activities } = data;
+  const totalSpend = orders.reduce((sum, ord) => sum + Number(ord.total || 0), 0);
+
 
   return (
     <div className="dashboard-container container section">
@@ -140,6 +142,15 @@ export default function CustomerDashboard() {
             <p className="muted">Hamper unboxing feedback</p>
           </div>
           <span className="dash-card-arrow">{activeTab === "reviews" ? "●" : "→"}</span>
+        </div>
+
+        <div className="dash-card card" style={{ background: "linear-gradient(135deg, #fff9f5 0%, #fff 100%)" }}>
+          <div className="dash-card-icon">💎</div>
+          <div className="dash-card-text">
+            <h3>{formatCurrency(totalSpend)}</h3>
+            <p className="muted">Total lifetime value</p>
+          </div>
+          <span className="dash-card-arrow">★</span>
         </div>
       </div>
 
