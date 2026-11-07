@@ -57,7 +57,7 @@ export default function CustomerDashboard() {
 
   useEffect(() => {
     let isMounted = true;
-    const customerId = userProfile?.customerId;
+    const customerId = String(userProfile?.customerId || "");
     const userId = currentUser?.uid;
 
     if (customerId || userId) {
