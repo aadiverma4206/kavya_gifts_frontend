@@ -64,6 +64,24 @@ export default function CustomerDashboard() {
     };
   }, [userProfile, currentUser]);
 
+  function refreshDashboard() {
+    const customerId = userProfile?.customerId;
+    const userId = currentUser?.uid;
+    if (customerId || userId) {
+      setLoading(true);
+      loadFullCustomerDashboardHistory(customerId, userId)
+        .then((res) => {
+          setData(res);
+          toast.success("Dashboard data refreshed!");
+        })
+        .catch((err) => {
+          console.error("Error refreshing dashboard:", err);
+          toast.error("Could not refresh dashboard.");
+        })
+        .finally(() => setLoading(false));
+    }
+  }
+
   async function handleLogout() {
     await logout();
     navigate("/");
@@ -111,6 +129,15 @@ export default function CustomerDashboard() {
           </p>
         </div>
         <div className="dashboard-hero-actions">
+          <button
+            type="button"
+            onClick={refreshDashboard}
+            className="btn btn-secondary"
+            disabled={loading}
+            title="Refresh dashboard history"
+          >
+            ↻ Refresh
+          </button>
           <Link to="/" className="btn btn-primary">
             Explore Catalog
           </Link>
