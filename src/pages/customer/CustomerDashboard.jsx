@@ -259,7 +259,7 @@ export default function CustomerDashboard() {
                             {p.orderId}
                           </Link>
                         </td>
-                        <td>₹{p.amount.toLocaleString("en-IN")}</td>
+                        <td><strong>{formatCurrency(p.amount || 0)}</strong></td>
                         <td>{p.method}</td>
                         <td>
                           <span className="auth-tag" style={{ fontSize: "11px", padding: "2px 8px" }}>
