@@ -203,11 +203,7 @@ export default function CustomerDashboard() {
                       <div>
                         <span className="history-ref-badge">{ord.orderId}</span>
                         <span className="history-date" style={{ marginLeft: "12px" }}>
-                          {ord.date.toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {formatDashboardDate(ord.date)}
                         </span>
                       </div>
                       <div style={{ display: "flex", gap: "8px" }}>
