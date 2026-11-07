@@ -64,6 +64,9 @@ export default function CustomerDashboard() {
     };
   }, [userProfile, currentUser]);
 
+  /**
+   * Re-fetches all customer orders, payments, reviews, and activity logs from database.
+   */
   function refreshDashboard() {
     const customerId = userProfile?.customerId;
     const userId = currentUser?.uid;
