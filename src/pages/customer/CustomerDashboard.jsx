@@ -171,7 +171,7 @@ export default function CustomerDashboard() {
 
       {/* Quick Stat Summary Cards */}
       <div className="dashboard-grid">
-        <div className="dash-card card" onClick={() => setActiveTab("orders")} style={{ cursor: "pointer" }}>
+        <div className="dash-card card" onClick={() => { setActiveTab("orders"); window.scrollTo({ top: 300, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
           <div className="dash-card-icon">🎁</div>
           <div className="dash-card-text">
             <h3>{orders.length} {orders.length === 1 ? "Order" : "Orders"}</h3>
@@ -180,7 +180,7 @@ export default function CustomerDashboard() {
           <span className="dash-card-arrow">{activeTab === "orders" ? "●" : "→"}</span>
         </div>
 
-        <div className="dash-card card" onClick={() => setActiveTab("payments")} style={{ cursor: "pointer" }}>
+        <div className="dash-card card" onClick={() => { setActiveTab("payments"); window.scrollTo({ top: 300, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
           <div className="dash-card-icon">💳</div>
           <div className="dash-card-text">
             <h3>{payments.length} {payments.length === 1 ? "Payment" : "Payments"}</h3>
@@ -189,7 +189,7 @@ export default function CustomerDashboard() {
           <span className="dash-card-arrow">{activeTab === "payments" ? "●" : "→"}</span>
         </div>
 
-        <div className="dash-card card" onClick={() => setActiveTab("reviews")} style={{ cursor: "pointer" }}>
+        <div className="dash-card card" onClick={() => { setActiveTab("reviews"); window.scrollTo({ top: 300, behavior: "smooth" }); }} style={{ cursor: "pointer" }}>
           <div className="dash-card-icon">★</div>
           <div className="dash-card-text">
             <h3>{reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}</h3>
@@ -241,7 +241,7 @@ export default function CustomerDashboard() {
           <button
             type="button"
             role="tab" aria-selected={activeTab === "activity"} className={`history-tab-btn ${activeTab === "activity" ? "active" : ""}`}
-            onClick={() => setActiveTab("activity")}
+            onClick={() => { setActiveTab("activity"); window.scrollTo({ top: 300, behavior: "smooth" }); }}
           >
             <span>📋</span> Activity History
             <span className="tab-count-badge">{activities.length}</span>
