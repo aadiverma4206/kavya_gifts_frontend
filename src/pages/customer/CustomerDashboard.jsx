@@ -345,11 +345,7 @@ export default function CustomerDashboard() {
                           {rev.product}
                         </strong>
                         <span className="history-date" style={{ marginLeft: "12px" }}>
-                          {rev.date.toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {formatDashboardDate(rev.date)}
                         </span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
