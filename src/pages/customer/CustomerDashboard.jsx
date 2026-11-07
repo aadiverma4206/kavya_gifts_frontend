@@ -8,6 +8,11 @@ import useDocumentTitle from "../../hooks/useDocumentTitle.js";
 import { formatCurrency } from "../../utils/formatters.js";
 import "./CustomerDashboard.css";
 
+/**
+ * Safely formats Date, Firestore Timestamp, or ISO date string into Indian localized date format.
+ * @param {Date|Object|string|number} dateVal - Date value to format.
+ * @returns {string} Formatted date string (e.g. 5 Nov 2026).
+ */
 function formatDashboardDate(dateVal) {
   if (!dateVal) return "N/A";
   const d = dateVal instanceof Date ? dateVal : (dateVal?.toDate ? dateVal.toDate() : new Date(dateVal));
