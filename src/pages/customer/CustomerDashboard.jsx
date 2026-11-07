@@ -314,11 +314,7 @@ export default function CustomerDashboard() {
                           </span>
                         </td>
                         <td className="muted" style={{ fontSize: "13px" }}>
-                          {p.date.toLocaleDateString("en-IN", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}
+                          {formatDashboardDate(p.date)}
                         </td>
                       </tr>
                     ))}
