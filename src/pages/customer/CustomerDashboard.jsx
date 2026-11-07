@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext.jsx";
 import { loadFullCustomerDashboardHistory } from "../../controllers/historyController.js";
 import { toDirectImageUrl } from "../../utils/driveImage.js";
 import useDocumentTitle from "../../hooks/useDocumentTitle.js";
+import { formatCurrency } from "../../utils/formatters.js";
 import "./CustomerDashboard.css";
 
 export default function CustomerDashboard() {
@@ -203,7 +204,7 @@ export default function CustomerDashboard() {
                       <div>
                         <span className="muted">Order Total: </span>
                         <strong style={{ color: "var(--color-primary)", fontSize: "16px" }}>
-                          ₹{ord.total.toLocaleString("en-IN")}
+                          {formatCurrency(ord.total || 0)}
                         </strong>
                       </div>
                       <div style={{ display: "flex", gap: "10px" }}>
