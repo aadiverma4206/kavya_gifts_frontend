@@ -12,6 +12,10 @@ import "./Header.css";
  */
 const DEFAULT_HEADER_CATEGORIES = ["Diwali", "Wedding", "Corporate", "Birthday"];
 
+/**
+ * Smoothly locates and focuses catalog search input, or redirects user to catalog section.
+ * @param {Function} [navigate] - React Router navigate function.
+ */
 function triggerHamperSearch(navigate) {
   const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
   if (searchInput) {
