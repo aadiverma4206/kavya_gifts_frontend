@@ -224,7 +224,8 @@ export default function Header() {
           <Link
             to="/cart"
             className="icon-btn cart-icon-btn"
-            aria-label={`Cart with ${totalItems} items`}
+            title={`Shopping Bag (${totalItems} ${totalItems === 1 ? "item" : "items"})`}
+            aria-label={`Shopping bag with ${totalItems} items`}
           >
             <ShoppingBag size={20} />
             {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
