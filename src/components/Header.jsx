@@ -106,6 +106,9 @@ export default function Header() {
     };
   }, []);
 
+  /**
+   * Terminates active customer or owner session and redirects to homepage.
+   */
   async function handleLogout() {
     await logout();
     setMobileMenuOpen(false);
