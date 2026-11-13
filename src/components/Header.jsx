@@ -235,7 +235,7 @@ export default function Header() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)}>
+        <div className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)} role="presentation">
           <div
             className="mobile-nav-drawer"
             role="dialog"
