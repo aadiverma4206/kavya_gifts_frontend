@@ -6,6 +6,8 @@ import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import "./Header.css";
 
+const DEFAULT_HEADER_CATEGORIES = ["Diwali", "Wedding", "Corporate", "Birthday"];
+
 export default function Header() {
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,10 +59,10 @@ export default function Header() {
         const catNames = unique
           .map((c) => (typeof c === "object" ? c.categoryName || c.name || "" : c))
           .filter(Boolean);
-        setCategories(catNames.length > 0 ? catNames : ["Diwali", "Wedding", "Corporate", "Birthday"]);
+        setCategories(catNames.length > 0 ? catNames : DEFAULT_HEADER_CATEGORIES);
       })
       .catch(() => {
-        if (isMounted) setCategories(["Diwali", "Wedding", "Corporate", "Birthday"]);
+        if (isMounted) setCategories(DEFAULT_HEADER_CATEGORIES);
       });
 
     return () => {
