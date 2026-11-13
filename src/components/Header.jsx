@@ -38,6 +38,21 @@ function triggerHamperSearch(navigate) {
   }
 }
 
+/**
+ * Header - Global site navigation, branding, search shortcut, and user state manager.
+ *
+ * Key features:
+ * - Sticky frosted glass backdrop with scroll threshold detection
+ * - Dynamic luxury brand typography & SVG emblem
+ * - Dynamic categories navigation with active route highlights
+ * - Keyboard-driven Ctrl+K global catalog search shortcut
+ * - Role-aware user actions (Owner Dashboard vs Customer Account & Orders)
+ * - Real-time shopping bag counter with pulse notification
+ * - Accessible slide-out mobile drawer with body scroll lock
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Header() {
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
