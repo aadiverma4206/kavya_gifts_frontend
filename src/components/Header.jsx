@@ -57,7 +57,7 @@ export default function Header() {
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { totalItems } = useCart();
+  const { totalItems = 0 } = useCart() || {};
   const { currentUser, userProfile, isOwner, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
