@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ShoppingBag, User, Crown, LogOut, Package, Menu, X, Sparkles, Heart } from "lucide-react";
+import { ShoppingBag, User, Crown, LogOut, Package, Menu, X, Sparkles, Heart, Shield } from "lucide-react";
 import { getActiveCategories } from "../services/categoryService.js";
 import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
@@ -194,6 +194,9 @@ export default function Header() {
                   </Link>
                   <Link to="/orders" className="header-sublink hide-mobile" title="Order History">
                     <Package size={15} />
+                  </Link>
+                  <Link to="/profile" className="header-sublink hide-mobile" title="Account & Security">
+                    <Shield size={14} />
                   </Link>
                   <button
                     type="button"
