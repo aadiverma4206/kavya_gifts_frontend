@@ -12,6 +12,16 @@ import "./Header.css";
  */
 const DEFAULT_HEADER_CATEGORIES = ["Diwali", "Wedding", "Corporate", "Birthday"];
 
+function triggerHamperSearch(navigate) {
+  const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
+  if (searchInput) {
+    searchInput.focus();
+    searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else if (navigate) {
+    navigate("/#catalog");
+  }
+}
+
 export default function Header() {
   const [categories, setCategories] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
