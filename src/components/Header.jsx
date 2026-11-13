@@ -292,6 +292,9 @@ export default function Header() {
                       <Link to="/orders" onClick={() => setMobileMenuOpen(false)}>
                         <Package size={16} /> Order History
                       </Link>
+                      <Link to="/profile" onClick={() => setMobileMenuOpen(false)}>
+                        <Shield size={16} /> Profile & Security
+                      </Link>
                     </>
                   )}
                   <button type="button" onClick={handleLogout} className="mobile-logout-btn">
