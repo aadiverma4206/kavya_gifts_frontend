@@ -141,15 +141,7 @@ export default function Header() {
             type="button"
             className="header-sublink hide-mobile"
             style={{ border: "1px solid rgba(122, 31, 43, 0.15)", borderRadius: "999px", width: "auto", padding: "0 10px", gap: "6px", fontSize: "12px", height: "32px" }}
-            onClick={() => {
-              const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
-              if (searchInput) {
-                searchInput.focus();
-                searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-              } else {
-                navigate("/#catalog");
-              }
-            }}
+            onClick={() => triggerHamperSearch(navigate)}
             title="Search hampers (Ctrl + K)"
           >
             <span>🔍</span>
