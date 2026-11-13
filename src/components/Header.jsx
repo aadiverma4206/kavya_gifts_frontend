@@ -159,6 +159,7 @@ export default function Header() {
             className="header-sublink hide-mobile"
             style={{ border: "1px solid rgba(122, 31, 43, 0.15)", borderRadius: "999px", width: "auto", padding: "0 10px", gap: "6px", fontSize: "12px", height: "32px" }}
             onClick={() => triggerHamperSearch(navigate)}
+            aria-label="Search gift hampers (Ctrl+K)"
             title="Search hampers (Ctrl + K)"
           >
             <span>🔍</span>
