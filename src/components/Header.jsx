@@ -243,6 +243,8 @@ export default function Header() {
                 type="button"
                 className="drawer-close-btn"
                 onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close navigation drawer"
+                title="Close drawer (Esc)"
               >
                 <X size={20} />
               </button>
