@@ -180,7 +180,7 @@ export default function Header() {
                 <div className="user-dropdown-wrap">
                   <Link to="/dashboard" className="header-user-btn">
                     <div className="user-avatar-circle">
-                      {userProfile?.fullName?.[0]?.toUpperCase() || <User size={13} />}
+                      {userProfile?.fullName ? getUserInitials(userProfile.fullName) : <User size={13} />}
                     </div>
                     <span className="user-name">
                       {userProfile?.fullName?.split(" ")[0] || "Account"}
