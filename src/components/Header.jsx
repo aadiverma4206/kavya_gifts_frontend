@@ -16,6 +16,11 @@ const DEFAULT_HEADER_CATEGORIES = ["Diwali", "Wedding", "Corporate", "Birthday"]
  * Smoothly locates and focuses catalog search input, or redirects user to catalog section.
  * @param {Function} [navigate] - React Router navigate function.
  */
+/**
+ * Computes two-letter uppercase monogram initials from customer name string.
+ * @param {string} [name] - Customer full name.
+ * @returns {string} One or two letter monogram.
+ */
 function getUserInitials(name) {
   if (!name || typeof name !== "string") return "U";
   const parts = name.trim().split(/\s+/);
