@@ -137,7 +137,7 @@ export default function Header() {
         <nav className="nav" aria-label="Main Navigation">
           <Link
             to="/#catalog"
-            className={`nav-link ${location.pathname === "/" && location.hash === "#catalog" ? "active" : ""}`}
+            aria-current={location.pathname === "/" && location.hash === "#catalog" ? "page" : undefined} className={`nav-link ${location.pathname === "/" && location.hash === "#catalog" ? "active" : ""}`}
           >
             All Hampers
           </Link>
@@ -145,7 +145,7 @@ export default function Header() {
             <Link
               key={category}
               to={`/category/${encodeURIComponent(category)}`}
-              className={`nav-link ${isCurrentCategory(category) ? "active" : ""}`}
+              aria-current={isCurrentCategory(category) ? "page" : undefined} className={`nav-link ${isCurrentCategory(category) ? "active" : ""}`}
             >
               {category}
             </Link>
