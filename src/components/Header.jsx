@@ -56,13 +56,7 @@ export default function Header() {
       }
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        const searchInput = document.querySelector('input[type="text"][placeholder*="Search"]');
-        if (searchInput) {
-          searchInput.focus();
-          searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else {
-          navigate("/#catalog");
-        }
+        triggerHamperSearch(navigate);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
