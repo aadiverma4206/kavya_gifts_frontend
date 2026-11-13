@@ -47,7 +47,7 @@ export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Scroll detection for dynamic shadow/blur
+  /** Synchronizes scrolled state with viewport scroll offset for frosted glass effect */
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 15);
