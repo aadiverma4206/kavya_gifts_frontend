@@ -6,6 +6,10 @@ import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import "./Header.css";
 
+/**
+ * Fallback signature hamper categories displayed when dynamic fetch is pending or fails.
+ * @constant {string[]}
+ */
 const DEFAULT_HEADER_CATEGORIES = ["Diwali", "Wedding", "Corporate", "Birthday"];
 
 export default function Header() {
