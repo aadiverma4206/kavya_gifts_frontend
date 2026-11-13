@@ -343,6 +343,17 @@ export default function Header() {
                   </Link>
                 </div>
               )}
+              <div style={{ marginTop: "24px", padding: "12px", background: "rgba(122, 31, 43, 0.05)", borderRadius: "8px", textAlign: "center", fontSize: "12.5px" }}>
+                <span className="muted">Need gifting guidance?</span><br />
+                <a
+                  href="https://wa.me/919999988888?text=Hello%20Kavya%20Concierge,%20I%20need%20help%20selecting%20a%20luxury%20hamper"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "var(--color-primary, #7a1f2b)", fontWeight: 700, textDecoration: "underline", display: "inline-block", marginTop: "4px" }}
+                >
+                  💬 WhatsApp Concierge
+                </a>
+              </div>
             </nav>
           </div>
         </div>
