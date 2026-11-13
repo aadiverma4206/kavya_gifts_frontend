@@ -100,6 +100,11 @@ export default function Header() {
     navigate("/");
   }
 
+  /**
+   * Determines whether the given category is currently active in the URL route.
+   * @param {string} cat - Category name.
+   * @returns {boolean}
+   */
   const isCurrentCategory = (cat) =>
     decodeURIComponent(location.pathname) === `/category/${cat}`;
 
