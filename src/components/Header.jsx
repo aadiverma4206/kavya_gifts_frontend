@@ -87,6 +87,7 @@ export default function Header() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [mobileMenuOpen, navigate]);
 
+  /** Asynchronously retrieves published product categories from Firestore */
   useEffect(() => {
     let isMounted = true;
     getActiveCategories()
