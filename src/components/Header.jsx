@@ -228,7 +228,7 @@ export default function Header() {
             aria-label={`Shopping bag with ${totalItems} items`}
           >
             <ShoppingBag size={20} />
-            {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
+            {totalItems > 0 && <span className="cart-count has-items">{totalItems}</span>}
           </Link>
         </div>
       </div>
