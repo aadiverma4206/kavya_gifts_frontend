@@ -310,21 +310,23 @@ export default function Cart() {
 
                   {/* Quantity & Line Total Row */}
                   <div className="cart-line-bottom-row">
-                    <div className="quantity-selector-compact">
+                    <div className="quantity-selector-compact" role="group" aria-label={`Quantity selector for ${item.productName || item.product_name}`}>
                       <button
                         type="button"
                         disabled={item.quantity <= 1}
                         onClick={() => handleQtyChange(item, item.quantity - 1)}
                         aria-label="Decrease quantity"
+                        title="Decrease quantity by 1"
                       >
                         −
                       </button>
-                      <span className="qty-number">{item.quantity}</span>
+                      <span className="qty-number" aria-live="polite">{item.quantity}</span>
                       <button
                         type="button"
                         disabled={isMaxStock}
                         onClick={() => handleQtyChange(item, item.quantity + 1)}
                         aria-label="Increase quantity"
+                        title="Increase quantity by 1"
                       >
                         +
                       </button>
