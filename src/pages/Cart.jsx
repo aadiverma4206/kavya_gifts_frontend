@@ -204,7 +204,14 @@ export default function Cart() {
           </div>
           <span className="progress-percent-badge">{progressPercent}%</span>
         </div>
-        <div className="progress-track">
+        <div
+          className="progress-track"
+          role="progressbar"
+          aria-valuenow={progressPercent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`Free shipping unlock progress: ${progressPercent}%`}
+        >
           <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
         </div>
       </div>
