@@ -125,6 +125,9 @@ export default function Cart() {
     );
   }
 
+  /**
+   * Navigates customer to authentication or checkout step with preserved return routing.
+   */
   function handleProceedToCheckout() {
     if (!currentUser) {
       navigate("/login", { state: { from: { pathname: "/checkout" } } });
