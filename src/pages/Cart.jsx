@@ -88,6 +88,8 @@ export default function Cart() {
   const [appliedPromoName, setAppliedPromoName] = useState("");
   const [discountRate, setDiscountRate] = useState(0);
   const recommendedHampers = getDummyFeaturedProducts().slice(0, 4);
+  const discountAmount = calculateDiscountAmount(productSubtotal, discountRate);
+  const payableGrandTotal = Math.max(0, grandTotal - discountAmount);
 
   const amountNeeded = Math.max(0, FREE_SHIPPING_THRESHOLD - grandTotal);
   const progressPercent = Math.min(100, Math.round((grandTotal / FREE_SHIPPING_THRESHOLD) * 100));
