@@ -340,21 +340,33 @@ export default function Cart() {
             <h3 className="summary-card-title">Order Summary</h3>
 
             {/* Promo Code Input */}
-            <form className="promo-input-group" onSubmit={handleApplyPromo}>
-              <div className="promo-field-wrap">
-                <Tag size={15} className="promo-icon" />
-                <input
-                  type="text"
-                  placeholder="Enter Coupon (e.g. KAVYALUXE)"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                  disabled={promoApplied}
-                />
+            {promoApplied ? (
+              <div className="promo-applied-badge-card" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", background: "rgba(122, 31, 43, 0.06)", borderRadius: "8px", marginBottom: "16px", border: "1px dashed var(--color-primary, #7a1f2b)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <CheckCircle2 size={16} color="var(--color-primary, #7a1f2b)" />
+                  <span style={{ fontWeight: 600, fontSize: "13px" }}>{appliedPromoName} ({Math.round(discountRate * 100)}% OFF)</span>
+                </div>
+                <button type="button" onClick={handleRemovePromo} style={{ background: "none", border: "none", color: "#888", cursor: "pointer", fontSize: "12px", textDecoration: "underline" }}>
+                  Remove
+                </button>
               </div>
-              <button type="submit" className="btn btn-secondary btn-apply" disabled={promoApplied}>
-                {promoApplied ? "Applied" : "Apply"}
-              </button>
-            </form>
+            ) : (
+              <form className="promo-input-group" onSubmit={handleApplyPromo}>
+                <div className="promo-field-wrap">
+                  <Tag size={15} className="promo-icon" />
+                  <input
+                    type="text"
+                    placeholder="Enter Coupon (e.g. KAVYALUXE)"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                    disabled={promoApplied}
+                  />
+                </div>
+                <button type="submit" className="btn btn-secondary btn-apply" disabled={promoApplied}>
+                  Apply
+                </button>
+              </form>
+            )}
 
             <div className="summary-breakdown-list">
               <div className="summary-row">
