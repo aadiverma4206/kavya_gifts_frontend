@@ -435,6 +435,9 @@ export default function Cart() {
               <div className="trust-point-item">
                 <Truck size={16} /> <span>Fragile-Safe Thermal & Shock Packaging</span>
               </div>
+              <div className="trust-point-item">
+                <RotateCcw size={16} /> <span>Hassle-Free Replacement Guarantee on Transit Damage</span>
+              </div>
             </div>
           </div>
         </div>
