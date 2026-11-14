@@ -150,6 +150,10 @@ export default function Cart() {
     }
   }
 
+  /**
+   * Toggles custom artisan velvet gift wrapping and wax seal for a specific cart line item.
+   * @param {Object} item - Cart line item.
+   */
   function handleGiftWrapToggle(item) {
     try {
       const pId = item.productId || item.product_id;
