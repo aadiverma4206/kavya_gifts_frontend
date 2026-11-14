@@ -155,6 +155,14 @@ export default function Cart() {
     }
   }
 
+  function handleRemovePromo() {
+    setPromoApplied(false);
+    setAppliedPromoName("");
+    setDiscountRate(0);
+    setPromoCode("");
+    toast.info("Coupon code removed.");
+  }
+
   function handleClearCart() {
     if (window.confirm("Are you sure you want to remove all hampers from your cart?")) {
       clearCart();
