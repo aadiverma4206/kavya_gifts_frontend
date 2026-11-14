@@ -169,6 +169,9 @@ export default function Cart() {
     }
   }
 
+  /**
+   * Resets active discount and clears applied promo code state.
+   */
   function handleRemovePromo() {
     setPromoApplied(false);
     setAppliedPromoName("");
@@ -187,6 +190,10 @@ export default function Cart() {
     }
   }
 
+  /**
+   * Validates submitted coupon code against active discount rates and updates bag pricing.
+   * @param {React.FormEvent} e - Form submission event.
+   */
   function handleApplyPromo(e) {
     e.preventDefault();
     const cleanCode = promoCode.trim().toUpperCase();
