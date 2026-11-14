@@ -85,6 +85,8 @@ export default function Cart() {
   const { currentUser, isBlocked } = useAuth();
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
+  const [appliedPromoName, setAppliedPromoName] = useState("");
+  const [discountRate, setDiscountRate] = useState(0);
   const recommendedHampers = getDummyFeaturedProducts().slice(0, 4);
 
   const amountNeeded = Math.max(0, FREE_SHIPPING_THRESHOLD - grandTotal);
