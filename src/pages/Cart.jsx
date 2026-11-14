@@ -177,6 +177,9 @@ export default function Cart() {
     toast.info("Coupon code removed.");
   }
 
+  /**
+   * Prompts customer confirmation before completely purging all items from the shopping bag.
+   */
   function handleClearCart() {
     if (window.confirm("Are you sure you want to remove all hampers from your cart?")) {
       clearCart();
