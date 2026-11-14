@@ -136,6 +136,11 @@ export default function Cart() {
     }
   }
 
+  /**
+   * Safely dispatches quantity adjustment for a specific cart line item.
+   * @param {Object} item - Cart line item.
+   * @param {number} nextQty - Target quantity.
+   */
   function handleQtyChange(item, nextQty) {
     try {
       const pId = item.productId || item.product_id;
