@@ -401,6 +401,14 @@ export default function Cart() {
               </div>
             </div>
 
+            {/* Estimated Delivery Notice */}
+            <div className="cart-delivery-estimate-card" style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: "rgba(0, 0, 0, 0.02)", borderRadius: "8px", margin: "14px 0", fontSize: "12.5px" }}>
+              <Clock size={16} className="muted" />
+              <span>
+                Estimated Delivery: <strong>{calculateEstimatedDeliveryRange().minDateStr} – {calculateEstimatedDeliveryRange().maxDateStr}</strong>
+              </span>
+            </div>
+
             <button
               type="button"
               className="btn btn-primary btn-checkout-main"
