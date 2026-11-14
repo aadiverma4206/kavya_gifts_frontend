@@ -73,15 +73,15 @@ export default function Cart() {
   useDocumentTitle("Shopping Bag - Kavya Gifting");
   const navigate = useNavigate();
   const {
-    items,
+    items = [],
     updateQuantity,
     toggleGiftWrapping,
     removeFromCart,
     clearCart,
-    productSubtotal,
-    giftWrappingTotal,
-    grandTotal,
-  } = useCart();
+    productSubtotal = 0,
+    giftWrappingTotal = 0,
+    grandTotal = 0,
+  } = useCart() || {};
   const { currentUser, isBlocked } = useAuth();
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
