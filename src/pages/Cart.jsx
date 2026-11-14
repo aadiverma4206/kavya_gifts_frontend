@@ -35,6 +35,23 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
  * Valid promotional discount codes and their percentage deductions (0.10 = 10% off).
  * @constant {Record<string, number>}
  */
+/**
+ * Computes estimated delivery date range based on dispatch calendar (3 to 5 business days).
+ * @param {Date} [baseDate=new Date()]
+ * @returns {{ minDateStr: string, maxDateStr: string }}
+ */
+function calculateEstimatedDeliveryRange(baseDate = new Date()) {
+  const minDate = new Date(baseDate);
+  minDate.setDate(minDate.getDate() + 3);
+  const maxDate = new Date(baseDate);
+  maxDate.setDate(maxDate.getDate() + 5);
+  const options = { month: "short", day: "numeric" };
+  return {
+    minDateStr: minDate.toLocaleDateString("en-IN", options),
+    maxDateStr: maxDate.toLocaleDateString("en-IN", options),
+  };
+}
+
 const PROMO_DISCOUNTS = {
   KAVYALUXE: 0.1,
   FESTIVE10: 0.1,
