@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Trash2, ShoppingBag, ShieldCheck, Truck, Sparkles, ArrowRight, Tag } from "lucide-react";
+import { Trash2, ShoppingBag, ShieldCheck, Truck, Sparkles, ArrowRight, Tag, Clock, CheckCircle2, RotateCcw } from "lucide-react";
 import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toDirectImageUrl } from "../utils/driveImage.js";
