@@ -69,6 +69,20 @@ const PROMO_DISCOUNTS = {
   LUXURYVIP: 0.15,
 };
 
+/**
+ * Cart - Master shopping bag view, item configuration, coupon engine, and shipping calculator.
+ *
+ * Capabilities:
+ * - Real-time quantity adjustments and line item removal
+ * - Artisan velvet packaging toggles with dynamic fee recalculation
+ * - Free Pan-India express delivery progress meter
+ * - Coupon validation engine with live discount calculation
+ * - Dynamic dispatch and estimated arrival dates
+ * - Curated recommendation grid for empty and active shopping states
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Cart() {
   useDocumentTitle("Shopping Bag - Kavya Gifting");
   const navigate = useNavigate();
