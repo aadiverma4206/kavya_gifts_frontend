@@ -16,6 +16,7 @@ const FALLBACK_CART_IMAGE =
   "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
 
 const FREE_SHIPPING_THRESHOLD = 999;
+const DEFAULT_GIFT_WRAP_FEE = 120;
 
 export default function Cart() {
   useDocumentTitle("Shopping Bag - Kavya Gifting");
@@ -93,7 +94,7 @@ export default function Cart() {
       toggleGiftWrapping(pId, item.giftWrappingSelected, nextWrapState);
       toast.success(
         nextWrapState
-          ? `Gift wrapping added for ${item.productName || item.product_name} (+₹${item.giftWrappingPrice || 120} each)`
+          ? `Gift wrapping added for ${item.productName || item.product_name} (+₹${item.giftWrappingPrice || DEFAULT_GIFT_WRAP_FEE} each)`
           : `Gift wrapping removed for ${item.productName || item.product_name}`
       );
     } catch (err) {
@@ -228,7 +229,7 @@ export default function Cart() {
                         title="Toggle gift wrapping"
                       >
                         <Sparkles size={12} />
-                        <span>{isWrapSelected ? "Artisan Velvet Wrapped (+₹120)" : "+ Add Velvet Gift Wrap"}</span>
+                        <span>{isWrapSelected ? `Artisan Velvet Wrapped (+₹${item.giftWrappingPrice || DEFAULT_GIFT_WRAP_FEE})` : "+ Add Velvet Gift Wrap"}</span>
                       </button>
                     </div>
                   )}
