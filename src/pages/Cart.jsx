@@ -40,6 +40,17 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
  * @param {Date} [baseDate=new Date()]
  * @returns {{ minDateStr: string, maxDateStr: string }}
  */
+/**
+ * Calculates discount amount in INR based on subtotal and percentage discount rate.
+ * @param {number} subtotal - Products subtotal before discounts.
+ * @param {number} rate - Discount multiplier (e.g. 0.10 for 10%).
+ * @returns {number} Deducted discount value in INR.
+ */
+function calculateDiscountAmount(subtotal, rate) {
+  if (!subtotal || subtotal <= 0 || !rate || rate <= 0) return 0;
+  return Math.round(subtotal * rate);
+}
+
 function calculateEstimatedDeliveryRange(baseDate = new Date()) {
   const minDate = new Date(baseDate);
   minDate.setDate(minDate.getDate() + 3);
