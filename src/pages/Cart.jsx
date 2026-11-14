@@ -388,9 +388,16 @@ export default function Cart() {
                 </span>
               </div>
 
+              {discountAmount > 0 && (
+                <div className="summary-row promo-discount-row" style={{ color: "#16a34a" }}>
+                  <span>Promo Discount ({appliedPromoName})</span>
+                  <strong>-{formatCurrency(discountAmount)}</strong>
+                </div>
+              )}
+
               <div className="summary-row grand-total-row">
                 <span>Grand Total</span>
-                <strong className="grand-total-amount">{formatCurrency(grandTotal)}</strong>
+                <strong className="grand-total-amount">{formatCurrency(payableGrandTotal)}</strong>
               </div>
             </div>
 
