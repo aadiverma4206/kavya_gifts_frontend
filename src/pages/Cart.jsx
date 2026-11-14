@@ -46,6 +46,18 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
  * @param {number} rate - Discount multiplier (e.g. 0.10 for 10%).
  * @returns {number} Deducted discount value in INR.
  */
+/**
+ * Generates a stable and deterministic React key for cart items based on ID and wrapping state.
+ * @param {Object} item - Cart item object.
+ * @param {number} idx - Line index.
+ * @returns {string} Unique React key.
+ */
+function getCartItemKey(item, idx) {
+  const pId = item.productId || item.product_id || `item-${idx}`;
+  const wrap = item.giftWrappingSelected ? "wrapped" : "standard";
+  return `${pId}_${wrap}_${idx}`;
+}
+
 function calculateDiscountAmount(subtotal, rate) {
   if (!subtotal || subtotal <= 0 || !rate || rate <= 0) return 0;
   return Math.round(subtotal * rate);
@@ -294,7 +306,7 @@ export default function Cart() {
         {/* Left Column: Items */}
         <div className="cart-items-column">
           {items.map((item, idx) => {
-            const itemKey = `${item.productId || item.product_id}_${item.giftWrappingSelected ? "wrap" : "nowrap"}_${idx}`;
+            const itemKey = getCartItemKey(item, idx);
             const isMaxStock = item.quantity >= (item.stockQuantity || 99);
             const isWrapSelected = Boolean(item.giftWrappingSelected);
             const wrapAvailable = item.giftWrappingAvailable !== false;
