@@ -108,6 +108,19 @@ export default function Cart() {
           Explore 100+ Hampers <ArrowRight size={16} />
         </Link>
 
+        <div className="empty-cart-category-shortcuts" style={{ display: "flex", gap: "8px", flexWrap: "wrap", justifyContent: "center", margin: "16px 0 8px 0" }}>
+          {["Diwali", "Wedding", "Corporate", "Birthday"].map((cat) => (
+            <Link
+              key={cat}
+              to={`/category/${encodeURIComponent(cat)}`}
+              className="btn btn-secondary btn-sm"
+              style={{ borderRadius: "999px", fontSize: "12px", padding: "6px 14px" }}
+            >
+              {cat} Hampers
+            </Link>
+          ))}
+        </div>
+
         {recommendedHampers.length > 0 && (
           <div className="empty-cart-recommendations">
             <div className="recommendations-header">
