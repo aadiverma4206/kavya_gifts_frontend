@@ -31,6 +31,16 @@ const FREE_SHIPPING_THRESHOLD = 999;
  */
 const DEFAULT_GIFT_WRAP_FEE = 120;
 
+/**
+ * Valid promotional discount codes and their percentage deductions (0.10 = 10% off).
+ * @constant {Record<string, number>}
+ */
+const PROMO_DISCOUNTS = {
+  KAVYALUXE: 0.1,
+  FESTIVE10: 0.1,
+  LUXURYVIP: 0.15,
+};
+
 export default function Cart() {
   useDocumentTitle("Shopping Bag - Kavya Gifting");
   const navigate = useNavigate();
