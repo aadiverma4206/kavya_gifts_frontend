@@ -164,12 +164,16 @@ export default function Cart() {
 
   function handleApplyPromo(e) {
     e.preventDefault();
-    if (!promoCode.trim()) return;
-    if (promoCode.trim().toUpperCase() === "KAVYALUXE") {
+    const cleanCode = promoCode.trim().toUpperCase();
+    if (!cleanCode) return;
+    if (PROMO_DISCOUNTS[cleanCode]) {
+      const rate = PROMO_DISCOUNTS[cleanCode];
       setPromoApplied(true);
-      toast.success("Promo code KAVYALUXE applied successfully!");
+      setAppliedPromoName(cleanCode);
+      setDiscountRate(rate);
+      toast.success(`Promo code ${cleanCode} applied! (${Math.round(rate * 100)}% off subtotal)`);
     } else {
-      toast.error("Invalid coupon code. Try 'KAVYALUXE'");
+      toast.error("Invalid coupon code. Try 'KAVYALUXE' or 'FESTIVE10'");
     }
   }
 
