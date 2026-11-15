@@ -111,6 +111,9 @@ export default function Product() {
   const availableStock = stockInfo.availableStock;
   const isOutOfStock = !stockInfo.inStock;
 
+  /**
+   * Triggers native Web Share dialog or copies product URL directly to clipboard.
+   */
   async function handleShareProduct() {
     const url = window.location.href;
     const title = product?.productName || product?.product_name || "Kavya Luxury Hamper";
