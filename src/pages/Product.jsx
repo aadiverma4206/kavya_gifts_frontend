@@ -62,8 +62,8 @@ function calculateAverageRating(reviewsList) {
 export default function Product() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
-  const { currentUser } = useAuth();
+  const { addToCart } = useCart() || {};
+  const { currentUser } = useAuth() || {};
 
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
