@@ -221,7 +221,7 @@ export default function Product() {
           </div>
 
           <h1>{product.productName || product.product_name}</h1>
-          <p className="product-detail-price">₹{unitPrice.toLocaleString("en-IN")}</p>
+          <p className="product-detail-price">{formatProductPrice(unitPrice)}</p>
           <p className="muted product-detail-desc">{product.description}</p>
 
           {/* Stock Availability Indicator */}
@@ -392,7 +392,7 @@ export default function Product() {
           >
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
               <span className="muted">Hamper Subtotal ({quantity} × ₹{unitPrice.toLocaleString("en-IN")}):</span>
-              <span>₹{itemSubtotal.toLocaleString("en-IN")}</span>
+              <span>{formatProductPrice(itemSubtotal)}</span>
             </div>
             {giftWrappingSelected && (
               <div
@@ -419,7 +419,7 @@ export default function Product() {
               }}
             >
               <span>Estimated Total:</span>
-              <span style={{ color: "var(--color-primary, #b76e79)" }}>₹{estimatedTotal.toLocaleString("en-IN")}</span>
+              <span style={{ color: "var(--color-primary, #b76e79)" }}>{formatProductPrice(estimatedTotal)}</span>
             </div>
           </div>
 
