@@ -612,8 +612,8 @@ export default function Product() {
 
         {reviews.length > 0 && (
           <div className="reviews-grid">
-            {reviews.map((rev) => (
-              <div key={rev.id || rev.reviewId} className="card review-card-item">
+            {(Array.isArray(reviews) ? reviews : []).map((rev, rIdx) => (
+              <div key={rev.id || rev.reviewId || `review-${rIdx}`} className="card review-card-item">
                 <div className="review-card-top">
                   <div>
                     <strong>{rev.customerName || "Verified Customer"}</strong>
