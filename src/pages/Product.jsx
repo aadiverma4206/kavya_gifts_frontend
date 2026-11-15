@@ -315,23 +315,25 @@ export default function Product() {
           </div>
 
           {/* Quantity Selector */}
-          <div className="quantity-wrapper">
+          <div className="quantity-wrapper" role="group" aria-label="Quantity selector">
             <label className="qty-label">Quantity:</label>
             <div className="quantity-selector">
               <button
                 type="button"
                 disabled={quantity <= 1 || isOutOfStock}
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                aria-label="Decrease quantity"
+                aria-label="Decrease quantity by 1"
+                title="Decrease quantity"
               >
                 −
               </button>
-              <span style={{ minWidth: "24px", textAlign: "center" }}>{quantity}</span>
+              <span style={{ minWidth: "24px", textAlign: "center" }} aria-live="polite">{quantity}</span>
               <button
                 type="button"
                 disabled={quantity >= availableStock || isOutOfStock}
                 onClick={() => setQuantity((q) => Math.min(availableStock, q + 1))}
-                aria-label="Increase quantity"
+                aria-label="Increase quantity by 1"
+                title="Increase quantity"
               >
                 +
               </button>
