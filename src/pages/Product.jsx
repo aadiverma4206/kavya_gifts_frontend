@@ -12,6 +12,10 @@ import "./Product.css";
  * Fallback SVG data URI rendered when hamper imagery is missing or encounters a network error.
  * @constant {string}
  */
+/**
+ * Default fee in INR applied for artisan satin gift wrapping, wax seal, and calligraphed card.
+ * @constant {number}
+ */
 const DEFAULT_GIFT_WRAP_FEE = 120;
 
 const FALLBACK_PRODUCT_IMAGE =
