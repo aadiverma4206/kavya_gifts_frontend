@@ -155,6 +155,9 @@ export default function Product() {
     }
   }
 
+  /**
+   * Directly registers item into cart and redirects customer to checkout or login.
+   */
   function handleBookNow() {
     try {
       const validation = validateProductForCart(product, quantity, giftWrappingSelected);
