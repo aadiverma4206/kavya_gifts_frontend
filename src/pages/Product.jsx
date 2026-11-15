@@ -251,6 +251,28 @@ export default function Product() {
             {averageRating && (
               <span className="product-rating-badge">★ {averageRating} ({reviews.length} reviews)</span>
             )}
+            <button
+              type="button"
+              className="share-product-btn"
+              onClick={handleShareProduct}
+              title="Share hamper link"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "5px",
+                marginLeft: "auto",
+                background: "none",
+                border: "1px solid rgba(0,0,0,0.1)",
+                borderRadius: "999px",
+                padding: "3px 10px",
+                fontSize: "12px",
+                cursor: "pointer",
+                color: "var(--color-muted, #666)"
+              }}
+            >
+              {copiedLink ? <Check size={13} color="#16a34a" /> : <Share2 size={13} />}
+              <span>{copiedLink ? "Copied!" : "Share"}</span>
+            </button>
           </div>
 
           <h1>{product.productName || product.product_name}</h1>
