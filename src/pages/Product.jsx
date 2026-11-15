@@ -193,6 +193,32 @@ export default function Product() {
 
   return (
     <div className="product-page-wrapper">
+      {/* Breadcrumb Navigation */}
+      <nav aria-label="Breadcrumb" className="container" style={{ padding: "16px 0 0", fontSize: "13px" }}>
+        <ol style={{ display: "flex", alignItems: "center", gap: "6px", listStyle: "none", margin: 0, padding: 0, color: "var(--color-muted, #777)" }}>
+          <li>
+            <Link to="/" style={{ color: "inherit", textDecoration: "none" }}>Home</Link>
+          </li>
+          <li><ChevronRight size={13} /></li>
+          <li>
+            <Link to="/#catalog" style={{ color: "inherit", textDecoration: "none" }}>Hampers</Link>
+          </li>
+          {(product.categoryName || product.category) && (
+            <>
+              <li><ChevronRight size={13} /></li>
+              <li>
+                <Link to={`/category/${encodeURIComponent(product.categoryName || product.category)}`} style={{ color: "inherit", textDecoration: "none" }}>
+                  {product.categoryName || product.category}
+                </Link>
+              </li>
+            </>
+          )}
+          <li><ChevronRight size={13} /></li>
+          <li aria-current="page" style={{ color: "var(--color-primary, #7a1f2b)", fontWeight: 600 }}>
+            {product.productName || product.product_name}
+          </li>
+        </ol>
+      </nav>
       <section className="section container product-detail">
         <div className="product-detail-image">
           <img
