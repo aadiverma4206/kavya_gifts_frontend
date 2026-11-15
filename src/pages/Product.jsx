@@ -27,6 +27,11 @@ const FALLBACK_PRODUCT_IMAGE =
  * @param {Array<Object>} reviewsList - List of review objects containing numerical ratings.
  * @returns {string|null} Formatted average rating to one decimal place, or null if empty.
  */
+function formatProductPrice(price) {
+  const num = Number(price) || 0;
+  return `₹${num.toLocaleString("en-IN")}`;
+}
+
 function calculateAverageRating(reviewsList) {
   if (!Array.isArray(reviewsList) || reviewsList.length === 0) return null;
   const valid = reviewsList.filter((r) => typeof r.rating === "number" && !isNaN(r.rating));
