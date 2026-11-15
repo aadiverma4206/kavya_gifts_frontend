@@ -60,6 +60,14 @@ export default function Product() {
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState("");
 
+  // Synchronize document title with product name
+  useEffect(() => {
+    if (product) {
+      const name = product.productName || product.product_name || "Luxury Hamper";
+      document.title = `${name} | Kavya Luxury Gifting`;
+    }
+  }, [product]);
+
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
