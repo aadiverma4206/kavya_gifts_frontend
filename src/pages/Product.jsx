@@ -27,6 +27,11 @@ const FALLBACK_PRODUCT_IMAGE =
  * @param {Array<Object>} reviewsList - List of review objects containing numerical ratings.
  * @returns {string|null} Formatted average rating to one decimal place, or null if empty.
  */
+/**
+ * Formats monetary amounts in Indian Rupee denomination currency styling.
+ * @param {number|string} price - Price value.
+ * @returns {string} Formatted currency string (e.g. ₹2,499).
+ */
 function formatProductPrice(price) {
   const num = Number(price) || 0;
   return `₹${num.toLocaleString("en-IN")}`;
