@@ -507,6 +507,14 @@ export default function Product() {
             </div>
           </div>
 
+          {/* Dispatch Notice Card */}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", background: "rgba(122, 31, 43, 0.04)", borderRadius: "8px", margin: "14px 0", fontSize: "12.5px" }}>
+            <Truck size={16} color="var(--color-primary, #7a1f2b)" />
+            <span>
+              <strong>Fast Dispatch:</strong> Dispatched within 24-48 hours in luxury transit-proof packaging.
+            </span>
+          </div>
+
           {/* Action Buttons */}
           <div className="product-detail-actions">
             <button
