@@ -22,6 +22,11 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
 const FALLBACK_PRODUCT_IMAGE =
   "data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22400%22%20height%3D%22300%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20400%20300%22%3E%3Crect%20fill%3D%22%23fbf3e7%22%20width%3D%22400%22%20height%3D%22300%22%2F%3E%3Ctext%20fill%3D%22%237a1f2b%22%20font-family%3D%22serif%22%20font-size%3D%2222%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%F0%9F%8E%81%20Kavya%20Luxury%20Hamper%3C%2Ftext%3E%3C%2Fsvg%3E";
 
+/**
+ * Computes arithmetic mean rating from an array of review records.
+ * @param {Array<Object>} reviewsList - List of review objects containing numerical ratings.
+ * @returns {string|null} Formatted average rating to one decimal place, or null if empty.
+ */
 function calculateAverageRating(reviewsList) {
   if (!Array.isArray(reviewsList) || reviewsList.length === 0) return null;
   const valid = reviewsList.filter((r) => typeof r.rating === "number" && !isNaN(r.rating));
