@@ -537,6 +537,18 @@ export default function Product() {
               </button>
             )}
           </div>
+
+          {/* Trust Guarantees */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "20px", paddingTop: "16px", borderTop: "1px solid #f0e6e8", fontSize: "12px", color: "var(--color-muted, #666)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ShieldCheck size={16} color="var(--color-primary, #7a1f2b)" />
+              <span>100% Curated Artisan Quality</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <Sparkles size={16} color="var(--color-primary, #7a1f2b)" />
+              <span>Bespoke Wax-Sealed Presentation</span>
+            </div>
+          </div>
         </div>
       </section>
 
