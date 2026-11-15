@@ -6,6 +6,7 @@ import { getProductReviews } from "../services/reviewService.js";
 import { useCart } from "../context/CartContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toDirectImageUrl } from "../utils/driveImage.js";
+import { Sparkles, ShieldCheck, Truck, Share2, Check, ChevronRight } from "lucide-react";
 import "./Product.css";
 
 /**
