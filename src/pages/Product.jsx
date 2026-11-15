@@ -59,6 +59,7 @@ export default function Product() {
   const [error, setError] = useState(null);
   const [added, setAdded] = useState(false);
   const [activeImage, setActiveImage] = useState("");
+  const [copiedLink, setCopiedLink] = useState(false);
 
   // Synchronize document title with product name
   useEffect(() => {
@@ -109,6 +110,27 @@ export default function Product() {
   const stockInfo = checkStockStatus(product);
   const availableStock = stockInfo.availableStock;
   const isOutOfStock = !stockInfo.inStock;
+
+  async function handleShareProduct() {
+    const url = window.location.href;
+    const title = product?.productName || product?.product_name || "Kavya Luxury Hamper";
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, text: `Check out ${title} on Kavya Luxury Gifting`, url });
+        return;
+      } catch (err) {
+        if (err.name === "AbortError") return;
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedLink(true);
+      toast.success("Link copied to clipboard! Share it with loved ones. 🎁");
+      setTimeout(() => setCopiedLink(false), 2500);
+    } catch {
+      toast.error("Could not copy link.");
+    }
+  }
 
   function handleAddToCart() {
     try {
