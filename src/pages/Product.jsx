@@ -259,6 +259,7 @@ export default function Product() {
                     flexShrink: 0,
                   }}
                   aria-label={`View photo ${idx + 1}`}
+                  aria-current={activeImage === img || (!activeImage && idx === 0) ? "true" : undefined}
                 >
                   <img
                     src={toDirectImageUrl(img)}
