@@ -69,6 +69,7 @@ export default function Product() {
     }
   }, [product]);
 
+  /** Asynchronously retrieves product details and verified reviews by ID */
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
