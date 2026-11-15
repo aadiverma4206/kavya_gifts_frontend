@@ -45,6 +45,20 @@ function calculateAverageRating(reviewsList) {
   return (total / valid.length).toFixed(1);
 }
 
+/**
+ * Product - Detailed single hamper showcase, interactive gallery, gift packaging, and checkout initiator.
+ *
+ * Capabilities:
+ * - Dynamic image gallery with direct thumbnail switcher
+ * - Real-time stock status monitoring & out-of-stock guards
+ * - Artisan gift wrap selection with live price recalculation
+ * - Social sharing with clipboard feedback
+ * - Star rating aggregation and verified customer review cards
+ * - Direct "Book & Checkout Now" accelerated buying flow
+ *
+ * @component
+ * @returns {JSX.Element|null}
+ */
 export default function Product() {
   const { id } = useParams();
   const navigate = useNavigate();
