@@ -135,6 +135,9 @@ export default function Product() {
     }
   }
 
+  /**
+   * Adds the configured product, quantity, and gift wrapping selection into the persistent cart.
+   */
   function handleAddToCart() {
     try {
       const validation = validateProductForCart(product, quantity, giftWrappingSelected);
