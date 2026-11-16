@@ -69,6 +69,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState("default");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  /** Asynchronously fetches live published hamper products and categories */
   useEffect(() => {
     let isMounted = true;
     Promise.all([getActiveProducts(), getActiveCategories()])
