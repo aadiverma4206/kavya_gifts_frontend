@@ -47,6 +47,16 @@ const TESTIMONIALS = [
  * @param {Array<Object>} productsList - Full array of active hamper products.
  * @returns {Record<string, number>} Map of category names to active product counts.
  */
+/**
+ * Computes a unique and deterministic React key for catalog product cards.
+ * @param {Object} product - Product record.
+ * @param {number} idx - Product index.
+ * @returns {string} Unique React key.
+ */
+function getProductItemKey(product, idx) {
+  return product.product_id || product.productId || product.id || `product-card-${idx}`;
+}
+
 function calculateCategoryCounts(productsList) {
   if (!Array.isArray(productsList)) return {};
   return productsList.reduce((acc, p) => {
@@ -385,9 +395,9 @@ export default function Home() {
         {!loading && !error && displayedProducts.length > 0 && (
           <>
             <div className="product-grid">
-              {displayedProducts.map((product) => (
+              {displayedProducts.map((product, idx) => (
                 <ProductCard
-                  key={product.product_id || product.productId || product.id}
+                  key={getProductItemKey(product, idx)}
                   product={product}
                 />
               ))}
