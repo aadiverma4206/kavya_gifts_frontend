@@ -100,6 +100,9 @@ export default function Home() {
     };
   }, []);
 
+  // Calculate dynamic category item counts
+  const categoryCounts = useMemo(() => calculateCategoryCounts(products), [products]);
+
   // Filtered & sorted products
   const filteredProducts = useMemo(() => {
     return filterAndSortProducts(products, {
@@ -259,7 +262,7 @@ export default function Home() {
               className={`category-chip ${selectedCategory === cat ? "active" : ""}`}
               onClick={() => handleCategorySelect(cat)}
             >
-              {cat}
+              {cat} ({categoryCounts[cat] || 0})
             </button>
           ))}
         </div>
