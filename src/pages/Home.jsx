@@ -223,6 +223,8 @@ export default function Home() {
               <input
                 type="text"
                 className="catalog-search-input"
+                aria-label="Search hampers by title, fragrance or sweet"
+                title="Search hampers (Esc to clear)"
                 placeholder="Search hampers, perfumes, sweets..."
                 value={searchQuery}
                 onChange={(e) => {
@@ -235,7 +237,8 @@ export default function Home() {
                   type="button"
                   className="catalog-search-clear"
                   onClick={() => setSearchQuery("")}
-                  aria-label="Clear search"
+                  aria-label="Clear search keywords"
+                  title="Clear search query"
                 >
                   ✕
                 </button>
