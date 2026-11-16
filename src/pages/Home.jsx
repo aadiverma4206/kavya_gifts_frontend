@@ -42,6 +42,15 @@ const TESTIMONIALS = [
   },
 ];
 
+function calculateCategoryCounts(productsList) {
+  if (!Array.isArray(productsList)) return {};
+  return productsList.reduce((acc, p) => {
+    const cat = p.categoryName || p.category;
+    if (cat) acc[cat] = (acc[cat] || 0) + 1;
+    return acc;
+  }, {});
+}
+
 export default function Home() {
   useDocumentTitle("Home - Handcrafted Luxury Gifts");
   const [products, setProducts] = useState([]);
