@@ -17,6 +17,10 @@ import "./Home.css";
 const DEFAULT_PAGE_SIZE = 12;
 const PAGE_SIZE = DEFAULT_PAGE_SIZE;
 
+/**
+ * Featured patron testimonials celebrating hampers for Diwali, corporate, and weddings.
+ * @constant {Array<{ name: string, city: string, rating: number, text: string }>}
+ */
 const TESTIMONIALS = [
   {
     name: "Ananya Sharma",
