@@ -104,6 +104,17 @@ export default function Home() {
   // Calculate dynamic category item counts
   const categoryCounts = useMemo(() => calculateCategoryCounts(products), [products]);
 
+  // Escape key shortcut to instantly clear search query
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && searchQuery) {
+        setSearchQuery("");
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [searchQuery]);
+
   // Filtered & sorted products
   const filteredProducts = useMemo(() => {
     return filterAndSortProducts(products, {
