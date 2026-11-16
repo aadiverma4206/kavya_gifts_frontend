@@ -123,6 +123,13 @@ export default function Home() {
     setVisibleCount((prev) => prev + PAGE_SIZE);
   };
 
+  const handleResetFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory("all");
+    setSortBy("default");
+    setVisibleCount(PAGE_SIZE);
+  };
+
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat);
     setVisibleCount(PAGE_SIZE);
