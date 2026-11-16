@@ -117,7 +117,8 @@ export default function Home() {
 
   // Filtered & sorted products
   const filteredProducts = useMemo(() => {
-    return filterAndSortProducts(products, {
+    const safeProducts = Array.isArray(products) ? products : [];
+    return filterAndSortProducts(safeProducts, {
       searchQuery,
       selectedCategory,
       sortBy,
