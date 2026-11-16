@@ -184,6 +184,40 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ---------- Luxury Value Pillars & Trust Strip ---------- */}
+      <section className="container" aria-label="Why Choose Kavya" style={{ margin: "24px auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", padding: "20px 24px", background: "rgba(122, 31, 43, 0.03)", borderRadius: "14px", border: "1px solid rgba(122, 31, 43, 0.08)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <Truck size={22} color="var(--color-primary, #7a1f2b)" />
+            <div>
+              <strong style={{ fontSize: "14px", display: "block" }}>Pan-India Express</strong>
+              <span className="muted" style={{ fontSize: "12px" }}>Temperature & shock protected</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <ShieldCheck size={22} color="var(--color-primary, #7a1f2b)" />
+            <div>
+              <strong style={{ fontSize: "14px", display: "block" }}>100% Curated Goodies</strong>
+              <span className="muted" style={{ fontSize: "12px" }}>Pure gourmet & handcrafted keepsakes</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <Gift size={22} color="var(--color-primary, #7a1f2b)" />
+            <div>
+              <strong style={{ fontSize: "14px", display: "block" }}>Velvet & Wax Seal</strong>
+              <span className="muted" style={{ fontSize: "12px" }}>Heirloom packaging presentation</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <CheckCircle2 size={22} color="var(--color-primary, #7a1f2b)" />
+            <div>
+              <strong style={{ fontSize: "14px", display: "block" }}>Corporate Concierge</strong>
+              <span className="muted" style={{ fontSize: "12px" }}>Custom bulk branding & GST invoice</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ---------- Shop by Occasion ---------- */}
       <section className="section container" id="occasions">
         <div className="section-header-row">
