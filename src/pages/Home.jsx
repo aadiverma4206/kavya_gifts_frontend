@@ -136,6 +136,10 @@ export default function Home() {
     setVisibleCount(PAGE_SIZE);
   };
 
+  /**
+   * Filters catalog by chosen occasion category and resets pagination offset.
+   * @param {string} cat - Category name or "all".
+   */
   const handleCategorySelect = (cat) => {
     setSelectedCategory(cat);
     setVisibleCount(PAGE_SIZE);
