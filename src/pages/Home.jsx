@@ -119,6 +119,9 @@ export default function Home() {
 
   const hasMore = visibleCount < filteredProducts.length;
 
+  /**
+   * Increments current catalog pagination slice by PAGE_SIZE items.
+   */
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + PAGE_SIZE);
   };
