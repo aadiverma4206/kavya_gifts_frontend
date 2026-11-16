@@ -123,6 +123,9 @@ export default function Home() {
     setVisibleCount((prev) => prev + PAGE_SIZE);
   };
 
+  /**
+   * Clears active search term and restores category filter and sorting to default state.
+   */
   const handleResetFilters = () => {
     setSearchQuery("");
     setSelectedCategory("all");
