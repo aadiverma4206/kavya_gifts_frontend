@@ -295,12 +295,9 @@ export default function Home() {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-              }}
+              onClick={handleResetFilters}
             >
-              Reset Filters
+              Reset All Filters
             </button>
           </div>
         )}
