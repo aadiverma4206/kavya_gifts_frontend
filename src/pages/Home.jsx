@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Sparkles, Search, ArrowRight, ShieldCheck, Heart, Award, Star, Quote } from "lucide-react";
+import { Sparkles, Search, ArrowRight, ShieldCheck, Heart, Award, Star, Quote, Truck, CheckCircle2, Gift } from "lucide-react";
 import { getActiveProducts } from "../services/productService.js";
 import { getActiveCategories } from "../services/categoryService.js";
 import ProductCard from "../components/ProductCard.jsx";
