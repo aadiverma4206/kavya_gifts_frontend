@@ -255,6 +255,11 @@ export default function Home() {
               {loading
                 ? "Loading our luxury collection..."
                 : `Showing ${displayedProducts.length} of ${filteredProducts.length} handcrafted hampers`}
+              {(searchQuery || selectedCategory !== "all") && (
+                <span style={{ marginLeft: "8px", color: "var(--color-primary, #7a1f2b)", fontWeight: 600 }}>
+                  (Filtered by {searchQuery ? `"${searchQuery}"` : ""}{searchQuery && selectedCategory !== "all" ? " in " : ""}{selectedCategory !== "all" ? selectedCategory : ""})
+                </span>
+              )}
             </p>
           </div>
 
