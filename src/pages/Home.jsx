@@ -10,7 +10,12 @@ import useDocumentTitle from "../hooks/useDocumentTitle.js";
 import { filterAndSortProducts } from "../utils/searchFilter.js";
 import "./Home.css";
 
-const PAGE_SIZE = 12;
+/**
+ * Default number of hampers rendered initially in the infinite catalog view.
+ * @constant {number}
+ */
+const DEFAULT_PAGE_SIZE = 12;
+const PAGE_SIZE = DEFAULT_PAGE_SIZE;
 
 const TESTIMONIALS = [
   {
