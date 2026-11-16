@@ -260,6 +260,8 @@ export default function Home() {
         <div className="category-filter-chips" role="tablist" aria-label="Category filter">
           <button
             type="button"
+            role="tab"
+            aria-selected={selectedCategory === "all"}
             className={`category-chip ${selectedCategory === "all" ? "active" : ""}`}
             onClick={() => handleCategorySelect("all")}
           >
@@ -269,6 +271,8 @@ export default function Home() {
             <button
               key={cat}
               type="button"
+              role="tab"
+              aria-selected={selectedCategory === cat}
               className={`category-chip ${selectedCategory === cat ? "active" : ""}`}
               onClick={() => handleCategorySelect(cat)}
             >
