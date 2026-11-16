@@ -42,6 +42,11 @@ const TESTIMONIALS = [
   },
 ];
 
+/**
+ * Aggregates live product counts indexed by individual category name.
+ * @param {Array<Object>} productsList - Full array of active hamper products.
+ * @returns {Record<string, number>} Map of category names to active product counts.
+ */
 function calculateCategoryCounts(productsList) {
   if (!Array.isArray(productsList)) return {};
   return productsList.reduce((acc, p) => {
