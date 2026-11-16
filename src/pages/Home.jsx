@@ -56,6 +56,20 @@ function calculateCategoryCounts(productsList) {
   }, {});
 }
 
+/**
+ * Home - Landing page for Kavya Luxury Gifting studio.
+ *
+ * Architecture & Features:
+ * - Interactive Three.js 3D luxury hamper showcase
+ * - Dynamic occasion navigation grid with category count badges
+ * - Live multi-term search, category filter chips, and sorting engine
+ * - Progressive catalog pagination with seamless "Load More" controls
+ * - Verified patron testimonials celebrating festive & corporate luxury
+ * - Keyboard shortcuts (Esc to clear search) and ARIA accessibility
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Home() {
   useDocumentTitle("Home - Handcrafted Luxury Gifts");
   const [products, setProducts] = useState([]);
