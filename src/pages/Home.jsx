@@ -104,7 +104,7 @@ export default function Home() {
   // Calculate dynamic category item counts
   const categoryCounts = useMemo(() => calculateCategoryCounts(products), [products]);
 
-  // Escape key shortcut to instantly clear search query
+  /** Registers global Escape key shortcut to clear active search query */
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape" && searchQuery) {
