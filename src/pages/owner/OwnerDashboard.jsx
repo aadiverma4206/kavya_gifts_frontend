@@ -26,6 +26,10 @@ import "./OwnerDashboard.css";
  */
 const LOW_STOCK_THRESHOLD = 5;
 
+/**
+ * Maximum number of recent transactions and registrations shown in dashboard tables.
+ * @constant {number}
+ */
 const RECENT_ENTRIES_LIMIT = 5;
 
 export default function OwnerDashboard() {
