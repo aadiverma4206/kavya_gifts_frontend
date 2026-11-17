@@ -48,6 +48,18 @@ function calculateInventoryBreakdown(productsList, threshold = 5) {
   return { activeCount, lowStockProducts };
 }
 
+function calculateOrderMetrics(ordersList) {
+  if (!Array.isArray(ordersList)) return { totalOrders: 0, pendingOrders: 0, completedOrders: 0 };
+  const totalOrders = ordersList.length;
+  const pendingOrders = ordersList.filter(
+    (o) => o.orderStatus === "pending" || o.orderStatus === "placed"
+  ).length;
+  const completedOrders = ordersList.filter(
+    (o) => o.orderStatus === "confirmed" || o.orderStatus === "delivered"
+  ).length;
+  return { totalOrders, pendingOrders, completedOrders };
+}
+
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
