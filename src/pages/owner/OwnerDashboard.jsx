@@ -20,6 +20,8 @@ import { getAllPaymentsForOwner } from "../../services/paymentService";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import "./OwnerDashboard.css";
 
+const LOW_STOCK_THRESHOLD = 5;
+
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
@@ -78,7 +80,7 @@ export default function OwnerDashboard() {
   const lowStockProducts = useMemo(() => {
     return products.filter((p) => {
       const q = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
-      return q <= 5;
+      return q <= LOW_STOCK_THRESHOLD;
     });
   }, [products]);
 
