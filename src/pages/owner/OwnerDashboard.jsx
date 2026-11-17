@@ -95,6 +95,7 @@ export default function OwnerDashboard() {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  /** Asynchronously aggregates orders, products, patrons, and payment ledgers */
   useEffect(() => {
     Promise.all([
       getAllOrdersForOwner(),
