@@ -18,6 +18,7 @@ import { getAllProductsForOwner } from "../../services/productService";
 import { getAllUsersForOwner } from "../../services/userService";
 import { getAllPaymentsForOwner } from "../../services/paymentService";
 import { formatCurrency, formatDate } from "../../utils/formatters";
+import { AlertTriangle, TrendingUp, Users, ShoppingBag, CreditCard, PackageCheck, Star, Sliders, ExternalLink } from "lucide-react";
 import "./OwnerDashboard.css";
 
 /**
