@@ -381,7 +381,10 @@ export default function OwnerDashboard() {
                             {ord.customerSnapshot?.mobile || ord.customer?.phone}
                           </span>
                         </td>
-                        <td>{ord.items?.map((i) => i.product_name || i.productName).join(", ")}</td>
+                        <td>
+                          <div>{ord.items?.map((i) => i.product_name || i.productName).join(", ")}</div>
+                          <span className="muted" style={{ fontSize: "11px" }}>({ord.items?.length || 1} {ord.items?.length === 1 ? "hamper" : "hampers"})</span>
+                        </td>
                         <td>
                           {ord.giftWrap?.enabled ? (
                             <span className="wrap-tag-sm">🎁 {ord.giftWrap.optionName}</span>
