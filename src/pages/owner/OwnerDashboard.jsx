@@ -416,7 +416,7 @@ export default function OwnerDashboard() {
               <p className="muted" style={{ padding: "30px", textAlign: "center" }}>No customer accounts registered yet.</p>
             ) : (
               <div className="owner-table-wrapper">
-                <table className="owner-table">
+                <table className="owner-table" aria-label="Recent registered patrons">
                   <thead>
                     <tr>
                       <th>Customer ID</th>
