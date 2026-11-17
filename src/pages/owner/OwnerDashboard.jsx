@@ -20,6 +20,10 @@ import { getAllPaymentsForOwner } from "../../services/paymentService";
 import { formatCurrency, formatDate } from "../../utils/formatters";
 import "./OwnerDashboard.css";
 
+/**
+ * Threshold quantity below which a hamper is flagged for inventory replenishment radar.
+ * @constant {number}
+ */
 const LOW_STOCK_THRESHOLD = 5;
 
 export default function OwnerDashboard() {
