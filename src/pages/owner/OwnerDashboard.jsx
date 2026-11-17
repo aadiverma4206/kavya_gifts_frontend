@@ -65,6 +65,12 @@ function calculateOrderMetrics(ordersList) {
   return { totalOrders, pendingOrders, completedOrders };
 }
 
+/**
+ * Computes total payments volume, pending count, and gross settlement revenue.
+ * @param {Array<Object>} paymentsList
+ * @param {Array<Object>} ordersList
+ * @returns {{ totalPayments: number, pendingPayments: number, totalRevenue: number }}
+ */
 function calculatePaymentMetrics(paymentsList, ordersList) {
   const safePayments = Array.isArray(paymentsList) ? paymentsList : [];
   const safeOrders = Array.isArray(ordersList) ? ordersList : [];
