@@ -146,7 +146,8 @@ export default function OwnerDashboard() {
   }, [totalRevenue]);
 
   const categoryChartData = useMemo(() => {
-    const counts = products.reduce((acc, p) => {
+    const safeProducts = Array.isArray(products) ? products : [];
+    const counts = safeProducts.reduce((acc, p) => {
       const cat = p.categoryName || p.category || "Festive";
       acc[cat] = (acc[cat] || 0) + 1;
       return acc;
