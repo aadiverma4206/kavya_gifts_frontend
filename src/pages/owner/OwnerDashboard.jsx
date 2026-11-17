@@ -118,35 +118,17 @@ export default function OwnerDashboard() {
   const recentCustomers = users.slice(0, RECENT_ENTRIES_LIMIT);
 
   // Order Metrics
-  const totalOrders = orders.length;
-  const pendingOrders = orders.filter(
-    (o) => o.orderStatus === "pending" || o.orderStatus === "placed"
-  ).length;
-  const completedOrders = orders.filter(
-    (o) => o.orderStatus === "confirmed" || o.orderStatus === "delivered"
-  ).length;
+  const { totalOrders, pendingOrders, completedOrders } = calculateOrderMetrics(orders);
   const recentOrders = orders.slice(0, RECENT_ENTRIES_LIMIT);
 
   // Payment Metrics
-  const totalPayments = payments.length;
-  const pendingPayments = payments.filter(
-    (p) => p.paymentStatus === "pending" || p.status === "pending"
-  ).length;
-  const totalRevenue =
-    payments
-      .filter((p) => p.paymentStatus === "paid" || p.status === "completed")
-      .reduce((sum, p) => sum + (p.amount || 0), 0) ||
-    orders.reduce((sum, ord) => sum + (ord.totalAmount || ord.total || 0), 0);
+  const { totalPayments, pendingPayments, totalRevenue } = calculatePaymentMetrics(payments, orders);
 
-  const activeProductsCount = products.filter((p) => (p.status || "active") === "active").length;
-
-  // Low stock alert products
-  const lowStockProducts = useMemo(() => {
-    return products.filter((p) => {
-      const q = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
-      return q <= LOW_STOCK_THRESHOLD;
-    });
-  }, [products]);
+  // Inventory Metrics
+  const { activeCount: activeProductsCount, lowStockProducts } = useMemo(
+    () => calculateInventoryBreakdown(products, LOW_STOCK_THRESHOLD),
+    [products]
+  );
 
   // Chart data
   const revenueChartData = useMemo(() => {
