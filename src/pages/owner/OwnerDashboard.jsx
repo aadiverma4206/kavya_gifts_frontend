@@ -26,6 +26,8 @@ import "./OwnerDashboard.css";
  */
 const LOW_STOCK_THRESHOLD = 5;
 
+const RECENT_ENTRIES_LIMIT = 5;
+
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
@@ -55,7 +57,7 @@ export default function OwnerDashboard() {
   const totalCustomers = users.length;
   const activeCustomers = users.filter((u) => !u.isBlocked && u.status !== "blocked").length;
   const blockedCustomers = users.filter((u) => u.isBlocked || u.status === "blocked").length;
-  const recentCustomers = users.slice(0, 5);
+  const recentCustomers = users.slice(0, RECENT_ENTRIES_LIMIT);
 
   // Order Metrics
   const totalOrders = orders.length;
@@ -65,7 +67,7 @@ export default function OwnerDashboard() {
   const completedOrders = orders.filter(
     (o) => o.orderStatus === "confirmed" || o.orderStatus === "delivered"
   ).length;
-  const recentOrders = orders.slice(0, 5);
+  const recentOrders = orders.slice(0, RECENT_ENTRIES_LIMIT);
 
   // Payment Metrics
   const totalPayments = payments.length;
