@@ -32,6 +32,16 @@ const LOW_STOCK_THRESHOLD = 5;
  */
 const RECENT_ENTRIES_LIMIT = 5;
 
+function calculateInventoryBreakdown(productsList, threshold = 5) {
+  if (!Array.isArray(productsList)) return { activeCount: 0, lowStockProducts: [] };
+  const activeCount = productsList.filter((p) => (p.status || "active") === "active").length;
+  const lowStockProducts = productsList.filter((p) => {
+    const q = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
+    return q <= threshold;
+  });
+  return { activeCount, lowStockProducts };
+}
+
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
