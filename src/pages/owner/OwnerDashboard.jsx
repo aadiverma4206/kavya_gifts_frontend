@@ -32,6 +32,12 @@ const LOW_STOCK_THRESHOLD = 5;
  */
 const RECENT_ENTRIES_LIMIT = 5;
 
+/**
+ * Computes active count, low stock count, and out-of-stock list from products catalog.
+ * @param {Array<Object>} productsList
+ * @param {number} [threshold=5]
+ * @returns {{ activeCount: number, lowStockProducts: Array<Object> }}
+ */
 function calculateInventoryBreakdown(productsList, threshold = 5) {
   if (!Array.isArray(productsList)) return { activeCount: 0, lowStockProducts: [] };
   const activeCount = productsList.filter((p) => (p.status || "active") === "active").length;
