@@ -338,6 +338,13 @@ export default function OwnerDashboard() {
                 <p className="muted">Moderate customer testimonials and product ratings</p>
               </div>
             </Link>
+            <Link to="/owner/settings" className="card action-tile">
+              <div className="action-tile-icon">⚙️</div>
+              <div className="action-tile-info">
+                <h4>Store Settings</h4>
+                <p className="muted">Configure delivery policies, tax, and notifications</p>
+              </div>
+            </Link>
           </div>
 
           {/* Recent Orders Table */}
