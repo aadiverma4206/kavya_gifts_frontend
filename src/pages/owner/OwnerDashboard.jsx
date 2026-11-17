@@ -72,6 +72,16 @@ function calculateOrderMetrics(ordersList) {
  * @param {Array<Object>} ordersList
  * @returns {{ totalPayments: number, pendingPayments: number, totalRevenue: number }}
  */
+/**
+ * Computes a unique and deterministic React key for orders table rows.
+ * @param {Object} order - Order record.
+ * @param {number} idx - Row index.
+ * @returns {string} Unique React key.
+ */
+function getOrderRowKey(order, idx) {
+  return order.id || order.orderId || `order-row-${idx}`;
+}
+
 function calculatePaymentMetrics(paymentsList, ordersList) {
   const safePayments = Array.isArray(paymentsList) ? paymentsList : [];
   const safeOrders = Array.isArray(ordersList) ? ordersList : [];
@@ -388,8 +398,8 @@ export default function OwnerDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {recentOrders.map((ord) => (
-                      <tr key={ord.id}>
+                    {recentOrders.map((ord, idx) => (
+                      <tr key={getOrderRowKey(ord, idx)}>
                         <td><strong>{ord.orderId}</strong></td>
                         <td>
                           <div>{ord.customerSnapshot?.name || ord.customer?.name}</div>
