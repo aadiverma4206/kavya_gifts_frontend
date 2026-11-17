@@ -48,6 +48,11 @@ function calculateInventoryBreakdown(productsList, threshold = 5) {
   return { activeCount, lowStockProducts };
 }
 
+/**
+ * Aggregates order volume metrics grouped by status categories.
+ * @param {Array<Object>} ordersList
+ * @returns {{ totalOrders: number, pendingOrders: number, completedOrders: number }}
+ */
 function calculateOrderMetrics(ordersList) {
   if (!Array.isArray(ordersList)) return { totalOrders: 0, pendingOrders: 0, completedOrders: 0 };
   const totalOrders = ordersList.length;
