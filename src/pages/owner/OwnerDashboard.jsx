@@ -87,6 +87,20 @@ function calculatePaymentMetrics(paymentsList, ordersList) {
   return { totalPayments, pendingPayments, totalRevenue };
 }
 
+/**
+ * OwnerDashboard - Central analytics, fulfillment monitor, and inventory radar for store operators.
+ *
+ * Capabilities:
+ * - Real-time gross revenue, order volume, and customer growth KPI cards
+ * - Visual revenue velocity area chart and category distribution bar chart
+ * - Dynamic low-stock inventory alert radar with direct restock links
+ * - Quick administrative shortcuts (inventory, orders, occasions, payments, reviews, settings)
+ * - Recent orders snapshot with live status badges and gift wrap indicators
+ * - Recent customer accounts ledger with active/blocked status
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
