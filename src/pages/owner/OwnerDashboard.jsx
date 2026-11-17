@@ -360,7 +360,7 @@ export default function OwnerDashboard() {
               <p className="muted" style={{ padding: "30px", textAlign: "center" }}>No orders recorded yet.</p>
             ) : (
               <div className="owner-table-wrapper">
-                <table className="owner-table">
+                <table className="owner-table" aria-label="Recent hamper bookings">
                   <thead>
                     <tr>
                       <th>Order ID</th>
