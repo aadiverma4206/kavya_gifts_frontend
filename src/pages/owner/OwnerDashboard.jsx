@@ -65,6 +65,21 @@ function calculateOrderMetrics(ordersList) {
   return { totalOrders, pendingOrders, completedOrders };
 }
 
+function calculatePaymentMetrics(paymentsList, ordersList) {
+  const safePayments = Array.isArray(paymentsList) ? paymentsList : [];
+  const safeOrders = Array.isArray(ordersList) ? ordersList : [];
+  const totalPayments = safePayments.length;
+  const pendingPayments = safePayments.filter(
+    (p) => p.paymentStatus === "pending" || p.status === "pending"
+  ).length;
+  const totalRevenue =
+    safePayments
+      .filter((p) => p.paymentStatus === "paid" || p.status === "completed")
+      .reduce((sum, p) => sum + (p.amount || 0), 0) ||
+    safeOrders.reduce((sum, ord) => sum + (ord.totalAmount || ord.total || 0), 0);
+  return { totalPayments, pendingPayments, totalRevenue };
+}
+
 export default function OwnerDashboard() {
   useDocumentTitle("Executive Dashboard - Kavya Gifting");
   const [orders, setOrders] = useState([]);
