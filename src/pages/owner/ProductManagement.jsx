@@ -355,10 +355,10 @@ export default function ProductManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProducts.map((p) => {
+                  {filteredProducts.map((p, idx) => {
                     const curStock = p.stockQuantity !== undefined ? Number(p.stockQuantity) : (p.stock_qty !== undefined ? Number(p.stock_qty) : 0);
                     return (
-                      <tr key={p.id}>
+                      <tr key={getProductRowKey(p, idx)}>
                         <td><strong style={{ fontFamily: "monospace", fontSize: "13px" }}>{p.productId || p.product_id}</strong></td>
                         <td>
                           <img
