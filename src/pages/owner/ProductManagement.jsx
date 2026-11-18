@@ -37,6 +37,23 @@ const DEFAULT_STOCK_QUANTITY = 25;
  */
 const FALLBACK_THUMBNAIL_URL = "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80";
 
+function calculateInventoryStats(productsList, threshold = 5) {
+  if (!Array.isArray(productsList)) return { total: 0, active: 0, lowStock: 0, outOfStock: 0 };
+  const total = productsList.length;
+  let active = 0;
+  let lowStock = 0;
+  let outOfStock = 0;
+
+  productsList.forEach((p) => {
+    if ((p.status || "active") === "active") active++;
+    const stock = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
+    if (stock === 0) outOfStock++;
+    else if (stock <= threshold) lowStock++;
+  });
+
+  return { total, active, lowStock, outOfStock };
+}
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
