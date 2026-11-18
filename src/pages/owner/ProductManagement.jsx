@@ -19,6 +19,8 @@ import "./ProductManagement.css";
  */
 const DEFAULT_GIFT_WRAP_FEE = 120;
 
+const LOW_STOCK_THRESHOLD = 5;
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
@@ -76,7 +78,7 @@ export default function ProductManagement() {
       if ((p.status || "active") === "active") active++;
       const stock = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
       if (stock === 0) outOfStock++;
-      else if (stock <= 5) lowStock++;
+      else if (stock <= LOW_STOCK_THRESHOLD) lowStock++;
     });
 
     return { total, active, lowStock, outOfStock };
@@ -233,7 +235,7 @@ export default function ProductManagement() {
           <div className="prod-stat-card">
             <div className="prod-stat-icon" style={{ background: "#fffbeb", color: "#b45309" }}>⚠️</div>
             <div className="prod-stat-info">
-              <h4>Low Stock (&le; 5)</h4>
+              <h4>Low Stock (&le; {LOW_STOCK_THRESHOLD})</h4>
               <p className="prod-stat-val" style={{ color: "#b45309" }}>{stats.lowStock}</p>
             </div>
           </div>
@@ -342,7 +344,7 @@ export default function ProductManagement() {
                         <td>
                           {curStock <= 0 ? (
                             <span className="stock-warning-badge out">Sold Out</span>
-                          ) : curStock <= 5 ? (
+                          ) : curStock <= LOW_STOCK_THRESHOLD ? (
                             <span className="stock-warning-badge low">{curStock} left (Low)</span>
                           ) : (
                             <span className="stock-warning-badge healthy">{curStock} in stock</span>
