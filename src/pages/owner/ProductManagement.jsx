@@ -177,6 +177,10 @@ export default function ProductManagement() {
     setShowModal(true);
   }
 
+  /**
+   * Validates form inputs, formats gallery images, and commits create or update mutation.
+   * @param {React.FormEvent} e - Form submission event.
+   */
   async function handleSave(e) {
     e.preventDefault();
     setSaving(true);
