@@ -221,6 +221,10 @@ export default function ProductManagement() {
     }
   }
 
+  /**
+   * Toggles product visibility status between active and inactive in the customer storefront.
+   * @param {Object} prod - Product record.
+   */
   async function handleToggleStatus(prod) {
     const nextStatus = prod.status === "active" ? "inactive" : "active";
     try {
