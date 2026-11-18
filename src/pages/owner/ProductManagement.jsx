@@ -25,6 +25,10 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
  */
 const LOW_STOCK_THRESHOLD = 5;
 
+/**
+ * Default initial stock quantity for newly drafted luxury gift hampers.
+ * @constant {number}
+ */
 const DEFAULT_STOCK_QUANTITY = 25;
 
 export default function ProductManagement() {
