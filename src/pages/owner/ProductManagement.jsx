@@ -75,6 +75,12 @@ function parseGalleryImageUrls(thumbnailUrl, rawAdditionalText) {
   return thumb ? [thumb, ...extraUrls] : extraUrls;
 }
 
+/**
+ * Returns a stable and deterministic React key for catalog inventory table rows.
+ * @param {Object} product - Product record.
+ * @param {number} idx - Row index.
+ * @returns {string} Unique React key.
+ */
 function getProductRowKey(product, idx) {
   return product.id || product.productId || product.product_id || `product-row-${idx}`;
 }
