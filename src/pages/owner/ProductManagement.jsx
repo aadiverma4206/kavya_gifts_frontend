@@ -340,7 +340,7 @@ export default function ProductManagement() {
         ) : (
           <div className="card owner-table-card">
             <div className="owner-table-wrapper">
-              <table className="owner-table">
+              <table className="owner-table" aria-label="Hamper catalog inventory table">
                 <thead>
                   <tr>
                     <th>Product ID</th>
