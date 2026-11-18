@@ -132,6 +132,17 @@ export default function ProductManagement() {
     loadData();
   }, []);
 
+  // Close hamper editor modal on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && showModal) {
+        setShowModal(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [showModal]);
+
   const stats = useMemo(() => calculateInventoryStats(products, LOW_STOCK_THRESHOLD), [products]);
 
   /**
