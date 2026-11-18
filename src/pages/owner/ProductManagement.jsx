@@ -107,21 +107,7 @@ export default function ProductManagement() {
     loadData();
   }, []);
 
-  const stats = useMemo(() => {
-    const total = products.length;
-    let active = 0;
-    let lowStock = 0;
-    let outOfStock = 0;
-
-    products.forEach((p) => {
-      if ((p.status || "active") === "active") active++;
-      const stock = Number(p.stockQuantity !== undefined ? p.stockQuantity : p.stock_qty) || 0;
-      if (stock === 0) outOfStock++;
-      else if (stock <= LOW_STOCK_THRESHOLD) lowStock++;
-    });
-
-    return { total, active, lowStock, outOfStock };
-  }, [products]);
+  const stats = useMemo(() => calculateInventoryStats(products, LOW_STOCK_THRESHOLD), [products]);
 
   function handleOpenCreate() {
     setEditingProduct(null);
