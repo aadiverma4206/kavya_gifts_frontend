@@ -444,9 +444,9 @@ export default function ProductManagement() {
         {/* Product Modal */}
         {showModal && (
           <div className="modal-backdrop" onClick={() => setShowModal(false)}>
-            <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h3>{editingProduct ? `Edit Hamper: ${editingProduct.productId || editingProduct.product_id}` : "Add New Luxury Hamper"}</h3>
+                <h3 id="modal-title">{editingProduct ? `Edit Hamper: ${editingProduct.productId || editingProduct.product_id}` : "Add New Luxury Hamper"}</h3>
                 <button
                   type="button"
                   className="modal-close-btn"
