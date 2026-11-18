@@ -31,6 +31,10 @@ const LOW_STOCK_THRESHOLD = 5;
  */
 const DEFAULT_STOCK_QUANTITY = 25;
 
+/**
+ * Image URL used as placeholder when hamper thumbnail is missing or breaks.
+ * @constant {string}
+ */
 const FALLBACK_THUMBNAIL_URL = "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80";
 
 export default function ProductManagement() {
