@@ -37,6 +37,12 @@ const DEFAULT_STOCK_QUANTITY = 25;
  */
 const FALLBACK_THUMBNAIL_URL = "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80";
 
+/**
+ * Computes aggregate catalog counts for active, low stock, and depleted products.
+ * @param {Array<Object>} productsList - Full array of catalog products.
+ * @param {number} [threshold=5] - Low stock threshold.
+ * @returns {{ total: number, active: number, lowStock: number, outOfStock: number }}
+ */
 function calculateInventoryStats(productsList, threshold = 5) {
   if (!Array.isArray(productsList)) return { total: 0, active: 0, lowStock: 0, outOfStock: 0 };
   const total = productsList.length;
