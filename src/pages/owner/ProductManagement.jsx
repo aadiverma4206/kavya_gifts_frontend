@@ -19,6 +19,10 @@ import "./ProductManagement.css";
  */
 const DEFAULT_GIFT_WRAP_FEE = 120;
 
+/**
+ * Threshold quantity below which a hamper is flagged as low inventory.
+ * @constant {number}
+ */
 const LOW_STOCK_THRESHOLD = 5;
 
 export default function ProductManagement() {
