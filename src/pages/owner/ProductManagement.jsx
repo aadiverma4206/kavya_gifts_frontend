@@ -60,6 +60,15 @@ function calculateInventoryStats(productsList, threshold = 5) {
   return { total, active, lowStock, outOfStock };
 }
 
+function parseGalleryImageUrls(thumbnailUrl, rawAdditionalText) {
+  const thumb = (thumbnailUrl || "").trim();
+  const extraUrls = (rawAdditionalText || "")
+    .split(/[\n,]/)
+    .map((u) => u.trim())
+    .filter((u) => Boolean(u) && u !== thumb);
+  return thumb ? [thumb, ...extraUrls] : extraUrls;
+}
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
