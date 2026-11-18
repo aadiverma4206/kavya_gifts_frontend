@@ -13,6 +13,10 @@ import { formatCurrency } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./ProductManagement.css";
 
+/**
+ * Default fee in INR applied for bespoke gift wrapping when not customized.
+ * @constant {number}
+ */
 const DEFAULT_GIFT_WRAP_FEE = 120;
 
 export default function ProductManagement() {
