@@ -13,6 +13,8 @@ import { formatCurrency } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./ProductManagement.css";
 
+const DEFAULT_GIFT_WRAP_FEE = 120;
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
@@ -37,7 +39,7 @@ export default function ProductManagement() {
   const [shortDescription, setShortDescription] = useState("");
   const [description, setDescription] = useState("");
   const [giftWrappingAvailable, setGiftWrappingAvailable] = useState(true);
-  const [giftWrappingPrice, setGiftWrappingPrice] = useState("120");
+  const [giftWrappingPrice, setGiftWrappingPrice] = useState(String(DEFAULT_GIFT_WRAP_FEE));
   const [featured, setFeatured] = useState(false);
   const [status, setStatus] = useState("active");
   const [saving, setSaving] = useState(false);
@@ -87,7 +89,7 @@ export default function ProductManagement() {
     setShortDescription("");
     setDescription("");
     setGiftWrappingAvailable(true);
-    setGiftWrappingPrice("120");
+    setGiftWrappingPrice(String(DEFAULT_GIFT_WRAP_FEE));
     setFeatured(false);
     setStatus("active");
     setShowModal(true);
@@ -106,7 +108,7 @@ export default function ProductManagement() {
     setShortDescription(prod.shortDescription || "");
     setDescription(prod.description || "");
     setGiftWrappingAvailable(prod.giftWrappingAvailable !== undefined ? prod.giftWrappingAvailable : true);
-    setGiftWrappingPrice(String(prod.giftWrappingPrice || 120));
+    setGiftWrappingPrice(String(prod.giftWrappingPrice || DEFAULT_GIFT_WRAP_FEE));
     setFeatured(Boolean(prod.featured));
     setStatus(prod.status || "active");
     setShowModal(true);
@@ -344,7 +346,7 @@ export default function ProductManagement() {
                         </td>
                         <td>
                           <span className="muted" style={{ fontSize: "12px" }}>
-                            {p.giftWrappingAvailable ? `+${formatCurrency(p.giftWrappingPrice || 120)}` : "No"}
+                            {p.giftWrappingAvailable ? `+${formatCurrency(p.giftWrappingPrice || DEFAULT_GIFT_WRAP_FEE)}` : "No"}
                           </span>
                         </td>
                         <td>
