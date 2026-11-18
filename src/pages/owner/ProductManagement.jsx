@@ -165,11 +165,7 @@ export default function ProductManagement() {
     setSaving(true);
 
     try {
-      const extraUrls = additionalImages
-        .split(/[\n,]/)
-        .map((u) => u.trim())
-        .filter(Boolean);
-      const allImages = [thumbnail.trim(), ...extraUrls.filter((u) => u !== thumbnail.trim())];
+      const allImages = parseGalleryImageUrls(thumbnail, additionalImages);
 
       const payload = {
         productName: productName.trim(),
