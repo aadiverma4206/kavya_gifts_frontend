@@ -60,6 +60,12 @@ function calculateInventoryStats(productsList, threshold = 5) {
   return { total, active, lowStock, outOfStock };
 }
 
+/**
+ * Splits and cleans multiline or comma-separated gallery image URLs.
+ * @param {string} thumbnailUrl - Primary thumbnail link.
+ * @param {string} rawAdditionalText - Raw textarea string.
+ * @returns {Array<string>} Unique list of image URLs.
+ */
 function parseGalleryImageUrls(thumbnailUrl, rawAdditionalText) {
   const thumb = (thumbnailUrl || "").trim();
   const extraUrls = (rawAdditionalText || "")
