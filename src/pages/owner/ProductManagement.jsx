@@ -31,6 +31,8 @@ const LOW_STOCK_THRESHOLD = 5;
  */
 const DEFAULT_STOCK_QUANTITY = 25;
 
+const FALLBACK_THUMBNAIL_URL = "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80";
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
@@ -326,12 +328,12 @@ export default function ProductManagement() {
                         <td><strong style={{ fontFamily: "monospace", fontSize: "13px" }}>{p.productId || p.product_id}</strong></td>
                         <td>
                           <img
-                            src={toDirectImageUrl(p.thumbnail || p.image_url || p.image || (Array.isArray(p.images) && p.images[0])) || "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80"}
+                            src={toDirectImageUrl(p.thumbnail || p.image_url || p.image || (Array.isArray(p.images) && p.images[0])) || FALLBACK_THUMBNAIL_URL}
                             alt={p.productName || p.product_name}
                             className="prod-thumb-cell"
                             onError={(e) => {
                               e.currentTarget.onerror = null;
-                              e.currentTarget.src = "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=300&q=80";
+                              e.currentTarget.src = FALLBACK_THUMBNAIL_URL;
                             }}
                           />
                         </td>
