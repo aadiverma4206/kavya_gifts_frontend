@@ -85,6 +85,19 @@ function getProductRowKey(product, idx) {
   return product.id || product.productId || product.product_id || `product-row-${idx}`;
 }
 
+/**
+ * ProductManagement - Complete CRUD, live inventory stock control, and catalog management for store operators.
+ *
+ * Capabilities:
+ * - Real-time total, active, low stock, and out-of-stock KPI cards
+ * - Multi-attribute search (title, hamper ID, occasion) and category chips filtering
+ * - Add and edit modal with image gallery URL parser, wax wrap fee configuration, and featured hero toggle
+ * - Instant catalog status toggling (active / inactive) and soft deletion
+ * - Full accessibility with ARIA modal dialogs and table labels
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
