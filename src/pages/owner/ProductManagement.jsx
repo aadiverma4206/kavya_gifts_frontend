@@ -25,6 +25,8 @@ const DEFAULT_GIFT_WRAP_FEE = 120;
  */
 const LOW_STOCK_THRESHOLD = 5;
 
+const DEFAULT_STOCK_QUANTITY = 25;
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
@@ -93,7 +95,7 @@ export default function ProductManagement() {
     setProductName("");
     setCategoryName(categories[0] || "Diwali");
     setPrice("");
-    setStockQuantity("25");
+    setStockQuantity(String(DEFAULT_STOCK_QUANTITY));
     setThumbnail("");
     setAdditionalImages("");
     setShortDescription("");
