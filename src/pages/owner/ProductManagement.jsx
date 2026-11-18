@@ -134,6 +134,9 @@ export default function ProductManagement() {
 
   const stats = useMemo(() => calculateInventoryStats(products, LOW_STOCK_THRESHOLD), [products]);
 
+  /**
+   * Resets form fields to default state and opens creation modal.
+   */
   function handleOpenCreate() {
     setEditingProduct(null);
     setProductName("");
@@ -151,6 +154,10 @@ export default function ProductManagement() {
     setShowModal(true);
   }
 
+  /**
+   * Pre-populates form fields with existing product data and opens editor modal.
+   * @param {Object} prod - Product record to edit.
+   */
   function handleOpenEdit(prod) {
     setEditingProduct(prod);
     setProductName(prod.productName || prod.product_name);
