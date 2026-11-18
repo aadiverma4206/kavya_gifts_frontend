@@ -238,6 +238,10 @@ export default function ProductManagement() {
     }
   }
 
+  /**
+   * Confirms and permanently deletes product item from catalog.
+   * @param {Object} prod - Product record.
+   */
   async function handleDelete(prod) {
     if (!window.confirm(`Are you sure you want to delete ${prod.productName || prod.product_name}?`)) {
       return;
