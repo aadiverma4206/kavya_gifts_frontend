@@ -75,6 +75,10 @@ function parseGalleryImageUrls(thumbnailUrl, rawAdditionalText) {
   return thumb ? [thumb, ...extraUrls] : extraUrls;
 }
 
+function getProductRowKey(product, idx) {
+  return product.id || product.productId || product.product_id || `product-row-${idx}`;
+}
+
 export default function ProductManagement() {
   useDocumentTitle("Product Inventory - Owner Portal");
   const [products, setProducts] = useState([]);
