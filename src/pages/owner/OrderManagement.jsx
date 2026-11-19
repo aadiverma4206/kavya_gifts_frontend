@@ -17,6 +17,15 @@ import "./OrderManagement.css";
  */
 const ORDER_WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
 
+const ORDER_STATUS_OPTIONS = [
+  { value: "placed", label: "Placed" },
+  { value: "confirmed", label: "Confirmed" },
+  { value: "packed", label: "Packed" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
+];
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
