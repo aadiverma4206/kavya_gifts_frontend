@@ -96,6 +96,14 @@ function filterOrdersList(orders = [], statusFilter = "all", searchTerm = "") {
   });
 }
 
+function extractCustomerDetails(order) {
+  if (!order) return { name: "Customer", mobile: "", address: "Not specified" };
+  const name = order.customerSnapshot?.name || order.customer?.name || "Customer";
+  const mobile = order.customerSnapshot?.mobile || order.customer?.phone || "";
+  const address = order.deliveryAddress || order.customerSnapshot?.address || order.customer?.address || "Address not provided";
+  return { name, mobile, address };
+}
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
