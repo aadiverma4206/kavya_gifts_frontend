@@ -42,6 +42,16 @@ const PAYMENT_STATUS_OPTIONS = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
+function computeOrderCounts(orders = []) {
+  const res = { all: orders.length, placed: 0, confirmed: 0, packed: 0, shipped: 0, delivered: 0, cancelled: 0 };
+  orders.forEach((o) => {
+    const st = (o.orderStatus || "placed").toLowerCase();
+    if (st === "pending" || st === "placed") res.placed++;
+    else if (res[st] !== undefined) res[st]++;
+  });
+  return res;
+}
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
