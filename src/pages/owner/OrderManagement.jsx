@@ -109,6 +109,13 @@ function extractCustomerDetails(order) {
   return { name, mobile, address };
 }
 
+/**
+ * Generates a concise human-readable summary string for hamper line items.
+ * Truncates and appends an overflow counter when items exceed maxDisplay.
+ * @param {Array<Object>} [items=[]] - Array of hamper order items.
+ * @param {number} [maxDisplay=3] - Maximum number of items to display inline.
+ * @returns {string} Formatted comma-delimited items summary string.
+ */
 function formatOrderItemsSummary(items = [], maxDisplay = 3) {
   if (!items || !items.length) return "No items recorded";
   const displayed = items.slice(0, maxDisplay).map(
