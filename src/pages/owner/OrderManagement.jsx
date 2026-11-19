@@ -58,6 +58,17 @@ function computeOrderCounts(orders = []) {
   return res;
 }
 
+function matchesOrderSearch(ord, searchTerm) {
+  if (!searchTerm || !searchTerm.trim()) return true;
+  const term = searchTerm.toLowerCase().trim();
+  const oid = (ord.orderId || "").toLowerCase();
+  const cname = (ord.customerSnapshot?.name || ord.customer?.name || "").toLowerCase();
+  const cphone = (ord.customerSnapshot?.mobile || ord.customer?.phone || "").toLowerCase();
+  const cid = (ord.customerId || "").toLowerCase();
+
+  return oid.includes(term) || cname.includes(term) || cphone.includes(term) || cid.includes(term);
+}
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
