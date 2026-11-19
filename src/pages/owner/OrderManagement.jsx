@@ -96,6 +96,11 @@ function filterOrdersList(orders = [], statusFilter = "all", searchTerm = "") {
   });
 }
 
+/**
+ * Safely extracts recipient customer details and delivery destination from an order snapshot.
+ * @param {Object} order - Order object containing customer details.
+ * @returns {{ name: string, mobile: string, address: string }} Extracted customer fields.
+ */
 function extractCustomerDetails(order) {
   if (!order) return { name: "Customer", mobile: "", address: "Not specified" };
   const name = order.customerSnapshot?.name || order.customer?.name || "Customer";
