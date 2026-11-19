@@ -309,8 +309,7 @@ export default function OrderManagement() {
                   <tbody>
                     {filteredOrders.map((ord) => {
                       const currSt = ord.orderStatus || "placed";
-                      const customerName = ord.customerSnapshot?.name || ord.customer?.name || "Customer";
-                      const customerPhone = ord.customerSnapshot?.mobile || ord.customer?.phone || "";
+                      const { name: customerName, mobile: customerPhone } = extractCustomerDetails(ord);
                       return (
                         <tr key={ord.id || ord.orderId}>
                           <td>
@@ -455,14 +454,19 @@ export default function OrderManagement() {
               )}
 
               {/* Customer Box */}
-              <div style={{ background: "#fdfaf6", padding: "14px 16px", borderRadius: "10px", border: "1px solid #f3ebe1", marginTop: "12px" }}>
-                <h4 style={{ margin: "0 0 8px", fontSize: "14px" }}>Customer & Delivery Destination</h4>
-                <div style={{ fontSize: "13.5px", lineHeight: "1.6" }}>
-                  <div>Name: <strong>{selectedOrder.customerSnapshot?.name || selectedOrder.customer?.name}</strong></div>
-                  <div>Mobile: <strong>{selectedOrder.customerSnapshot?.mobile || selectedOrder.customer?.phone}</strong></div>
-                  <div>Address: {selectedOrder.deliveryAddress || selectedOrder.customerSnapshot?.address || selectedOrder.customer?.address}</div>
-                </div>
-              </div>
+              {(() => {
+                const customer = extractCustomerDetails(selectedOrder);
+                return (
+                  <div style={{ background: "#fdfaf6", padding: "14px 16px", borderRadius: "10px", border: "1px solid #f3ebe1", marginTop: "12px" }}>
+                    <h4 style={{ margin: "0 0 8px", fontSize: "14px" }}>Customer & Delivery Destination</h4>
+                    <div style={{ fontSize: "13.5px", lineHeight: "1.6" }}>
+                      <div>Name: <strong>{customer.name}</strong></div>
+                      {customer.mobile && <div>Mobile: <strong>{customer.mobile}</strong></div>}
+                      <div>Address: {customer.address}</div>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Gift Wrap Notice */}
               {selectedOrder.giftWrap?.enabled && (
