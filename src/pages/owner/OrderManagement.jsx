@@ -109,6 +109,17 @@ function extractCustomerDetails(order) {
   return { name, mobile, address };
 }
 
+function formatOrderItemsSummary(items = [], maxDisplay = 3) {
+  if (!items || !items.length) return "No items recorded";
+  const displayed = items.slice(0, maxDisplay).map(
+    (i) => `${i.product_name || i.productName || "Product"} (×${i.quantity || 1})`
+  );
+  if (items.length > maxDisplay) {
+    displayed.push(`+${items.length - maxDisplay} more`);
+  }
+  return displayed.join(", ");
+}
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
@@ -335,7 +346,7 @@ export default function OrderManagement() {
                           <td>
                             <span style={{ fontWeight: 600 }}>{ord.items?.length || 0} items</span>
                             <span className="muted" style={{ display: "block", fontSize: "12px", maxWidth: "220px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                              {ord.items?.map((i) => `${i.product_name || i.productName} (×${i.quantity})`).join(", ")}
+                              {formatOrderItemsSummary(ord.items)}
                             </span>
                           </td>
                           <td>
