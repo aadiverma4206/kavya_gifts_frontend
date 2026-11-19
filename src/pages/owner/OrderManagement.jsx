@@ -344,11 +344,11 @@ export default function OrderManagement() {
                                 color: ord.paymentStatus === "paid" || ord.paymentStatus === "completed" ? "#166534" : "#4b5563",
                               }}
                             >
-                              <option value="pending">Pending</option>
-                              <option value="paid">Paid</option>
-                              <option value="completed">Completed</option>
-                              <option value="failed">Failed</option>
-                              <option value="cancelled">Cancelled</option>
+                              {PAYMENT_STATUS_OPTIONS.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </option>
+                              ))}
                             </select>
                           </td>
                           <td style={{ textAlign: "right" }}>
