@@ -316,12 +316,11 @@ export default function OrderManagement() {
                                 color: currSt === "delivered" ? "#166534" : currSt === "cancelled" ? "#991b1b" : "#b45309",
                               }}
                             >
-                              <option value="placed">Placed</option>
-                              <option value="confirmed">Confirmed</option>
-                              <option value="packed">Packed</option>
-                              <option value="shipped">Shipped</option>
-                              <option value="delivered">Delivered</option>
-                              <option value="cancelled">Cancelled</option>
+                              {ORDER_STATUS_OPTIONS.map((opt) => (
+                                <option key={opt.value} value={opt.value}>
+                                  {opt.label}
+                                </option>
+                              ))}
                             </select>
                           </td>
                           <td>
