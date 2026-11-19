@@ -58,6 +58,12 @@ function computeOrderCounts(orders = []) {
   return res;
 }
 
+/**
+ * Determines whether an order matches a given search query against ID, customer name, or phone.
+ * @param {Object} ord - Order object.
+ * @param {string} searchTerm - User input search term.
+ * @returns {boolean} True if order matches query criteria.
+ */
 function matchesOrderSearch(ord, searchTerm) {
   if (!searchTerm || !searchTerm.trim()) return true;
   const term = searchTerm.toLowerCase().trim();
