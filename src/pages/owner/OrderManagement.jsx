@@ -143,15 +143,7 @@ export default function OrderManagement() {
     }
   }
 
-  const counts = useMemo(() => {
-    const res = { all: orders.length, placed: 0, confirmed: 0, packed: 0, shipped: 0, delivered: 0, cancelled: 0 };
-    orders.forEach((o) => {
-      const st = (o.orderStatus || "placed").toLowerCase();
-      if (st === "pending" || st === "placed") res.placed++;
-      else if (res[st] !== undefined) res[st]++;
-    });
-    return res;
-  }, [orders]);
+  const counts = useMemo(() => computeOrderCounts(orders), [orders]);
 
   const filteredOrders = useMemo(() => {
     return orders.filter((ord) => {
