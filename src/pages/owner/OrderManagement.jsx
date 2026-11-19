@@ -1,3 +1,9 @@
+/**
+ * @file OrderManagement.jsx
+ * @description Owner portal fulfillment dashboard for tracking luxury gift hamper orders,
+ * managing status transitions, verifying artisan wrap messages, and inspecting customer shipments.
+ */
+
 import { useEffect, useState, useMemo } from "react";
 import OwnerLayout from "../../components/owner/OwnerLayout";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
@@ -137,6 +143,14 @@ const DEFAULT_ALLOWED_TRANSITIONS = {
   cancelled: [],
 };
 
+/**
+ * OrderManagement component.
+ * Provides the owner with end-to-end order processing, search filtering,
+ * fulfillment state machines, payment updates, and inspection modals.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered order management console.
+ */
 export default function OrderManagement() {
   useDocumentTitle("Orders Console - Owner Portal");
   const [orders, setOrders] = useState([]);
