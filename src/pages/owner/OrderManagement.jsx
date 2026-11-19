@@ -6,6 +6,11 @@ import { formatCurrency, formatDate } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./OrderManagement.css";
 
+/**
+ * Permitted status state transitions for luxury hamper order fulfillment.
+ * Enforces sequential progression from placed to delivered with cancellation escape hatches.
+ * @constant {Record<string, string[]>}
+ */
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
