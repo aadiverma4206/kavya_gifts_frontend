@@ -30,6 +30,10 @@ const ORDER_STATUS_OPTIONS = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
+/**
+ * Available payment status options for order transaction management.
+ * @constant {Array<{ value: string, label: string }>}
+ */
 const PAYMENT_STATUS_OPTIONS = [
   { value: "pending", label: "Pending" },
   { value: "paid", label: "Paid" },
