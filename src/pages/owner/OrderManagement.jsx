@@ -75,6 +75,13 @@ function matchesOrderSearch(ord, searchTerm) {
   return oid.includes(term) || cname.includes(term) || cphone.includes(term) || cid.includes(term);
 }
 
+/**
+ * Filters the orders collection by fulfillment status and search query.
+ * @param {Array<Object>} [orders=[]] - Collection of order objects.
+ * @param {string} [statusFilter="all"] - Selected status filter ('all', 'placed', 'shipped', etc.).
+ * @param {string} [searchTerm=""] - Search query substring.
+ * @returns {Array<Object>} Filtered array of matching orders.
+ */
 function filterOrdersList(orders = [], statusFilter = "all", searchTerm = "") {
   return orders.filter((ord) => {
     if (statusFilter !== "all") {
