@@ -11,6 +11,10 @@ import "./OrderManagement.css";
  * Enforces sequential progression from placed to delivered with cancellation escape hatches.
  * @constant {Record<string, string[]>}
  */
+/**
+ * Canonical chronological workflow milestones displayed on the tracking stepper.
+ * @constant {string[]}
+ */
 const ORDER_WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
 
 const DEFAULT_ALLOWED_TRANSITIONS = {
