@@ -42,6 +42,12 @@ const PAYMENT_STATUS_OPTIONS = [
   { value: "cancelled", label: "Cancelled" },
 ];
 
+/**
+ * Aggregates order count statistics categorized by fulfillment state.
+ * Normalizes 'pending' status into the 'placed' category for owner workflow.
+ * @param {Array<Object>} [orders=[]] - List of order records.
+ * @returns {Record<string, number>} Count map per fulfillment status.
+ */
 function computeOrderCounts(orders = []) {
   const res = { all: orders.length, placed: 0, confirmed: 0, packed: 0, shipped: 0, delivered: 0, cancelled: 0 };
   orders.forEach((o) => {
