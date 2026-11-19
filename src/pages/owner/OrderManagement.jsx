@@ -6,6 +6,16 @@ import { formatCurrency, formatDate } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./OrderManagement.css";
 
+const DEFAULT_ALLOWED_TRANSITIONS = {
+  placed: ["confirmed", "cancelled"],
+  pending: ["confirmed", "cancelled"],
+  confirmed: ["packed", "cancelled"],
+  packed: ["shipped", "cancelled"],
+  shipped: ["delivered", "cancelled"],
+  delivered: [],
+  cancelled: [],
+};
+
 export default function OrderManagement() {
   useDocumentTitle("Orders Console - Owner Portal");
   const [orders, setOrders] = useState([]);
@@ -14,15 +24,7 @@ export default function OrderManagement() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const ALLOWED_TRANSITIONS = {
-    placed: ["confirmed", "cancelled"],
-    pending: ["confirmed", "cancelled"],
-    confirmed: ["packed", "cancelled"],
-    packed: ["shipped", "cancelled"],
-    shipped: ["delivered", "cancelled"],
-    delivered: [],
-    cancelled: [],
-  };
+  const ALLOWED_TRANSITIONS = DEFAULT_ALLOWED_TRANSITIONS;
 
   const WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
 
