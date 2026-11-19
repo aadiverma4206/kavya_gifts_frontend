@@ -183,27 +183,10 @@ export default function OrderManagement() {
 
   const counts = useMemo(() => computeOrderCounts(orders), [orders]);
 
-  const filteredOrders = useMemo(() => {
-    return orders.filter((ord) => {
-      if (statusFilter !== "all") {
-        const ordSt = (ord.orderStatus || "placed").toLowerCase();
-        if (statusFilter === "placed") {
-          if (ordSt !== "pending" && ordSt !== "placed") return false;
-        } else if (ordSt !== statusFilter) {
-          return false;
-        }
-      }
-
-      if (!searchTerm.trim()) return true;
-      const term = searchTerm.toLowerCase();
-      const oid = (ord.orderId || "").toLowerCase();
-      const cname = (ord.customerSnapshot?.name || ord.customer?.name || "").toLowerCase();
-      const cphone = (ord.customerSnapshot?.mobile || ord.customer?.phone || "").toLowerCase();
-      const cid = (ord.customerId || "").toLowerCase();
-
-      return oid.includes(term) || cname.includes(term) || cphone.includes(term) || cid.includes(term);
-    });
-  }, [orders, statusFilter, searchTerm]);
+  const filteredOrders = useMemo(
+    () => filterOrdersList(orders, statusFilter, searchTerm),
+    [orders, statusFilter, searchTerm]
+  );
 
   return (
     <OwnerLayout
