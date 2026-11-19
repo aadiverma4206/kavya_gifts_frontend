@@ -17,6 +17,10 @@ import "./OrderManagement.css";
  */
 const ORDER_WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
 
+/**
+ * Available status options for order fulfillment state selection.
+ * @constant {Array<{ value: string, label: string }>}
+ */
 const ORDER_STATUS_OPTIONS = [
   { value: "placed", label: "Placed" },
   { value: "confirmed", label: "Confirmed" },
