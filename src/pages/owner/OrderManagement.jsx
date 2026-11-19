@@ -75,6 +75,20 @@ function matchesOrderSearch(ord, searchTerm) {
   return oid.includes(term) || cname.includes(term) || cphone.includes(term) || cid.includes(term);
 }
 
+function filterOrdersList(orders = [], statusFilter = "all", searchTerm = "") {
+  return orders.filter((ord) => {
+    if (statusFilter !== "all") {
+      const ordSt = (ord.orderStatus || "placed").toLowerCase();
+      if (statusFilter === "placed") {
+        if (ordSt !== "pending" && ordSt !== "placed") return false;
+      } else if (ordSt !== statusFilter) {
+        return false;
+      }
+    }
+    return matchesOrderSearch(ord, searchTerm);
+  });
+}
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
