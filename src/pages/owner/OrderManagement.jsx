@@ -164,6 +164,16 @@ export default function OrderManagement() {
     loadOrders();
   }, []);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape" && selectedOrder) {
+        setSelectedOrder(null);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedOrder]);
+
   async function handleStatusChange(orderId, currentStatus, nextStatus) {
     const curr = (currentStatus || "placed").toLowerCase();
     const next = nextStatus.toLowerCase();
@@ -311,7 +321,7 @@ export default function OrderManagement() {
               </p>
             ) : (
               <div className="owner-table-wrapper">
-                <table className="owner-table">
+                <table className="owner-table" aria-label="Customer orders table">
                   <thead>
                     <tr>
                       <th>Order ID & Date</th>
@@ -432,10 +442,10 @@ export default function OrderManagement() {
         {/* Order Inspection Modal */}
         {selectedOrder && (
           <div className="modal-backdrop" onClick={() => setSelectedOrder(null)}>
-            <div className="modal-card order-modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-card order-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="order-modal-title" onClick={(e) => e.stopPropagation()}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
-                  <h3 style={{ margin: 0, color: "var(--color-primary, #7a1f2b)" }}>
+                  <h3 id="order-modal-title" style={{ margin: 0, color: "var(--color-primary, #7a1f2b)" }}>
                     Order {selectedOrder.orderId}
                   </h3>
                   <span className="muted" style={{ fontSize: "12px" }}>
