@@ -11,6 +11,8 @@ import "./OrderManagement.css";
  * Enforces sequential progression from placed to delivered with cancellation escape hatches.
  * @constant {Record<string, string[]>}
  */
+const ORDER_WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
+
 const DEFAULT_ALLOWED_TRANSITIONS = {
   placed: ["confirmed", "cancelled"],
   pending: ["confirmed", "cancelled"],
@@ -31,7 +33,7 @@ export default function OrderManagement() {
 
   const ALLOWED_TRANSITIONS = DEFAULT_ALLOWED_TRANSITIONS;
 
-  const WORKFLOW_STEPS = ["placed", "confirmed", "packed", "shipped", "delivered"];
+  const WORKFLOW_STEPS = ORDER_WORKFLOW_STEPS;
 
   function loadOrders() {
     setLoading(true);
