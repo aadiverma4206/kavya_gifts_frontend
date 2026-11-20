@@ -38,6 +38,16 @@ function isUserBlocked(usr) {
   return Boolean(usr.isBlocked || usr.status === "blocked");
 }
 
+function matchesUserSearch(usr, searchTerm = "") {
+  if (!searchTerm || !searchTerm.trim()) return true;
+  const term = searchTerm.toLowerCase().trim();
+  const name = (usr.fullName || usr.name || "").toLowerCase();
+  const email = (usr.email || "").toLowerCase();
+  const phone = (usr.mobile || usr.phone || "").toLowerCase();
+  const id = (usr.customerId || usr.uid || "").toLowerCase();
+  return name.includes(term) || email.includes(term) || phone.includes(term) || id.includes(term);
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
