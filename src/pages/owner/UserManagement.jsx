@@ -70,6 +70,11 @@ function filterUsersList(users = [], statusFilter = "all", searchTerm = "") {
   });
 }
 
+/**
+ * Formats avatar monogram initials from a patron's full name.
+ * @param {string} [name=""] - Patron's full name.
+ * @returns {string} One or two letter uppercase avatar monogram.
+ */
 function getPatronInitials(name = "") {
   if (!name || typeof name !== "string") return "C";
   const parts = name.trim().split(/\s+/);
