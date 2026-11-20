@@ -69,12 +69,7 @@ export default function UserManagement() {
     loadUsers();
   }, []);
 
-  const stats = useMemo(() => {
-    const total = users.length;
-    const blocked = users.filter((u) => u.isBlocked || u.status === "blocked").length;
-    const active = total - blocked;
-    return { total, active, blocked };
-  }, [users]);
+  const stats = useMemo(() => computeUserStats(users), [users]);
 
   async function handleToggleBlock(usr) {
     const currentlyBlocked = Boolean(usr.isBlocked || usr.status === "blocked");
