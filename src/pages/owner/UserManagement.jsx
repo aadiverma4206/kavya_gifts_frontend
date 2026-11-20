@@ -82,6 +82,11 @@ function getPatronInitials(name = "") {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
+/**
+ * Formats a cohesive address string combining street address, city, and pincode.
+ * @param {Object} [user] - Patron user object.
+ * @returns {string} Formatted postal address or fallback text.
+ */
 function formatPatronAddress(user) {
   if (!user) return "Address not provided";
   const parts = [];
