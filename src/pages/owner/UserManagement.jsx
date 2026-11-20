@@ -12,6 +12,10 @@ import "./UserManagement.css";
  * Available filter options for patron account status selection.
  * @constant {Array<{ value: string, label: string }>}
  */
+/**
+ * Navigation tabs configuration for customer 360 inspection modal.
+ * @constant {Array<{ key: string, label: string }>}
+ */
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
