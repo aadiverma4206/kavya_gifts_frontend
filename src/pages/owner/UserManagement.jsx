@@ -1,3 +1,9 @@
+/**
+ * @file UserManagement.jsx
+ * @description Owner portal customer directory for viewing patron profiles, order histories,
+ * transaction ledgers, and toggling account access restrictions.
+ */
+
 import { useEffect, useState, useMemo } from "react";
 import OwnerLayout from "../../components/owner/OwnerLayout";
 import useDocumentTitle from "../../hooks/useDocumentTitle";
@@ -108,6 +114,14 @@ const STATUS_FILTER_OPTIONS = [
   { value: "blocked", label: "Blocked Only" },
 ];
 
+/**
+ * UserManagement component.
+ * Provides the owner with 360-degree customer inspection, status filtering,
+ * account restriction controls, and contact verification.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered customer directory console.
+ */
 export default function UserManagement() {
   useDocumentTitle("Customer Directory - Owner Portal");
   const [users, setUsers] = useState([]);
