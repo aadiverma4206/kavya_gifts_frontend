@@ -12,6 +12,12 @@ import "./UserManagement.css";
  * Available filter options for patron account status selection.
  * @constant {Array<{ value: string, label: string }>}
  */
+const INSPECT_MODAL_TABS = [
+  { key: "profile", label: "Profile Overview" },
+  { key: "orders", label: "Orders" },
+  { key: "payments", label: "Payments" },
+];
+
 const STATUS_FILTER_OPTIONS = [
   { value: "all", label: "All Patrons" },
   { value: "active", label: "Active Only" },
