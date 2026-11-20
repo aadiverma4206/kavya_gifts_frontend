@@ -162,20 +162,10 @@ export default function UserManagement() {
     }
   }
 
-  const filteredUsers = useMemo(() => {
-    return users.filter((u) => {
-      if (statusFilter === "active" && (u.isBlocked || u.status === "blocked")) return false;
-      if (statusFilter === "blocked" && !u.isBlocked && u.status !== "blocked") return false;
-
-      if (!searchTerm.trim()) return true;
-      const term = searchTerm.toLowerCase();
-      const name = (u.fullName || u.name || "").toLowerCase();
-      const email = (u.email || "").toLowerCase();
-      const phone = (u.mobile || u.phone || "").toLowerCase();
-      const id = (u.customerId || "").toLowerCase();
-      return name.includes(term) || email.includes(term) || phone.includes(term) || id.includes(term);
-    });
-  }, [users, statusFilter, searchTerm]);
+  const filteredUsers = useMemo(
+    () => filterUsersList(users, statusFilter, searchTerm),
+    [users, statusFilter, searchTerm]
+  );
 
   return (
     <OwnerLayout
