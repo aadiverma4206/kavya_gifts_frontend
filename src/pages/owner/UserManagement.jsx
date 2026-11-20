@@ -271,7 +271,7 @@ export default function UserManagement() {
                     {filteredUsers.map((u) => {
                       const isBlk = isUserBlocked(u);
                       const name = u.fullName || u.name || "Customer";
-                      const initial = name.charAt(0).toUpperCase();
+                      const initial = getPatronInitials(name);
                       return (
                         <tr key={u.id || u.uid}>
                           <td>
