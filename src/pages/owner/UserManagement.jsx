@@ -16,6 +16,13 @@ import "./UserManagement.css";
  * Navigation tabs configuration for customer 360 inspection modal.
  * @constant {Array<{ key: string, label: string }>}
  */
+function computeUserStats(users = []) {
+  const total = users.length;
+  const blocked = users.filter((u) => u.isBlocked || u.status === "blocked").length;
+  const active = total - blocked;
+  return { total, active, blocked };
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
