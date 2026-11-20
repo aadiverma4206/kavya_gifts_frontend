@@ -54,6 +54,13 @@ function matchesUserSearch(usr, searchTerm = "") {
   return name.includes(term) || email.includes(term) || phone.includes(term) || id.includes(term);
 }
 
+/**
+ * Filters the list of patrons based on active/blocked status and query term.
+ * @param {Array<Object>} [users=[]] - Array of patron user records.
+ * @param {string} [statusFilter="all"] - Selected status filter ('all', 'active', 'blocked').
+ * @param {string} [searchTerm=""] - Search query substring.
+ * @returns {Array<Object>} Filtered collection of patron records.
+ */
 function filterUsersList(users = [], statusFilter = "all", searchTerm = "") {
   return users.filter((u) => {
     const isBlk = isUserBlocked(u);
