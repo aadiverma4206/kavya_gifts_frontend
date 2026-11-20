@@ -82,7 +82,7 @@ export default function UserManagement() {
   const stats = useMemo(() => computeUserStats(users), [users]);
 
   async function handleToggleBlock(usr) {
-    const currentlyBlocked = Boolean(usr.isBlocked || usr.status === "blocked");
+    const currentlyBlocked = isUserBlocked(usr);
     const nextBlocked = !currentlyBlocked;
     try {
       await toggleBlockUser(usr.uid || usr.id, nextBlocked);
@@ -235,7 +235,7 @@ export default function UserManagement() {
                   </thead>
                   <tbody>
                     {filteredUsers.map((u) => {
-                      const isBlk = u.isBlocked || u.status === "blocked";
+                      const isBlk = isUserBlocked(u);
                       const name = u.fullName || u.name || "Customer";
                       const initial = name.charAt(0).toUpperCase();
                       return (
