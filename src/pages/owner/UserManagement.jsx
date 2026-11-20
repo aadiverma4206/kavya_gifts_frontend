@@ -8,6 +8,10 @@ import { formatCurrency, formatDate } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./UserManagement.css";
 
+/**
+ * Available filter options for patron account status selection.
+ * @constant {Array<{ value: string, label: string }>}
+ */
 const STATUS_FILTER_OPTIONS = [
   { value: "all", label: "All Patrons" },
   { value: "active", label: "Active Only" },
