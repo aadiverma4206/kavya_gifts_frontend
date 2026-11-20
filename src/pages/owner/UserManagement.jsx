@@ -16,6 +16,11 @@ import "./UserManagement.css";
  * Navigation tabs configuration for customer 360 inspection modal.
  * @constant {Array<{ key: string, label: string }>}
  */
+/**
+ * Calculates aggregate patron statistics (total, active, restricted/blocked).
+ * @param {Array<Object>} [users=[]] - Array of registered patron user objects.
+ * @returns {{ total: number, active: number, blocked: number }} Patron metric statistics.
+ */
 function computeUserStats(users = []) {
   const total = users.length;
   const blocked = users.filter((u) => u.isBlocked || u.status === "blocked").length;
