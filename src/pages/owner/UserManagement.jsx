@@ -306,27 +306,21 @@ export default function UserManagement() {
 
               {/* Modal Tabs */}
               <div className="user-tab-nav">
-                <button
-                  type="button"
-                  className={`user-tab-item ${inspectTab === "profile" ? "active" : ""}`}
-                  onClick={() => setInspectTab("profile")}
-                >
-                  Profile Overview
-                </button>
-                <button
-                  type="button"
-                  className={`user-tab-item ${inspectTab === "orders" ? "active" : ""}`}
-                  onClick={() => setInspectTab("orders")}
-                >
-                  Orders ({inspectOrders.length})
-                </button>
-                <button
-                  type="button"
-                  className={`user-tab-item ${inspectTab === "payments" ? "active" : ""}`}
-                  onClick={() => setInspectTab("payments")}
-                >
-                  Payments ({inspectPayments.length})
-                </button>
+                {INSPECT_MODAL_TABS.map((tab) => {
+                  let countSuffix = "";
+                  if (tab.key === "orders") countSuffix = ` (${inspectOrders.length})`;
+                  else if (tab.key === "payments") countSuffix = ` (${inspectPayments.length})`;
+                  return (
+                    <button
+                      key={tab.key}
+                      type="button"
+                      className={`user-tab-item ${inspectTab === tab.key ? "active" : ""}`}
+                      onClick={() => setInspectTab(tab.key)}
+                    >
+                      {tab.label}{countSuffix}
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Tab Contents */}
