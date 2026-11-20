@@ -28,6 +28,11 @@ function computeUserStats(users = []) {
   return { total, active, blocked };
 }
 
+function isUserBlocked(usr) {
+  if (!usr) return false;
+  return Boolean(usr.isBlocked || usr.status === "blocked");
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
