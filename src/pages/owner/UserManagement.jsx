@@ -280,7 +280,7 @@ export default function UserManagement() {
               </p>
             ) : (
               <div className="owner-table-wrapper">
-                <table className="owner-table">
+                <table className="owner-table" aria-label="Customer patron directory table">
                   <thead>
                     <tr>
                       <th>Patron Profile</th>
@@ -360,10 +360,10 @@ export default function UserManagement() {
         {/* 360 Inspect Modal */}
         {inspectUser && (
           <div className="modal-backdrop" onClick={() => setInspectUser(null)}>
-            <div className="modal-card" style={{ maxWidth: "640px", maxHeight: "85vh", overflowY: "auto" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-card" role="dialog" aria-modal="true" aria-labelledby="inspect-patron-modal-title" style={{ maxWidth: "640px", maxHeight: "85vh", overflowY: "auto" }} onClick={(e) => e.stopPropagation()}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                 <div>
-                  <h3 style={{ margin: 0, color: "var(--color-primary, #7a1f2b)" }}>
+                  <h3 id="inspect-patron-modal-title" style={{ margin: 0, color: "var(--color-primary, #7a1f2b)" }}>
                     Patron Profile: {inspectUser.fullName || inspectUser.name || "Customer"}
                   </h3>
                   <span className="muted" style={{ fontSize: "12.5px" }}>
