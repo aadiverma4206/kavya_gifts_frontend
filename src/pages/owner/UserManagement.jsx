@@ -169,9 +169,11 @@ export default function UserManagement() {
               onChange={(e) => setStatusFilter(e.target.value)}
               style={{ padding: "10px 14px", borderRadius: "999px", border: "1px solid rgba(122, 31, 43, 0.2)", fontSize: "13px" }}
             >
-              <option value="all">All Patrons ({users.length})</option>
-              <option value="active">Active Only</option>
-              <option value="blocked">Blocked Only</option>
+              {STATUS_FILTER_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.value === "all" ? `${opt.label} (${users.length})` : opt.label}
+                </option>
+              ))}
             </select>
           </div>
 
