@@ -54,6 +54,15 @@ function matchesUserSearch(usr, searchTerm = "") {
   return name.includes(term) || email.includes(term) || phone.includes(term) || id.includes(term);
 }
 
+function filterUsersList(users = [], statusFilter = "all", searchTerm = "") {
+  return users.filter((u) => {
+    const isBlk = isUserBlocked(u);
+    if (statusFilter === "active" && isBlk) return false;
+    if (statusFilter === "blocked" && !isBlk) return false;
+    return matchesUserSearch(u, searchTerm);
+  });
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
