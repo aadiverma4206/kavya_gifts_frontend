@@ -70,6 +70,13 @@ function filterUsersList(users = [], statusFilter = "all", searchTerm = "") {
   });
 }
 
+function getPatronInitials(name = "") {
+  if (!name || typeof name !== "string") return "C";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+  return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
