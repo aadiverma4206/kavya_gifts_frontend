@@ -137,6 +137,16 @@ export default function UserManagement() {
     loadUsers();
   }, []);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.key === "Escape" && inspectUser) {
+        setInspectUser(null);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [inspectUser]);
+
   const stats = useMemo(() => computeUserStats(users), [users]);
 
   async function handleToggleBlock(usr) {
