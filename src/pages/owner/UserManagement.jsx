@@ -28,6 +28,11 @@ function computeUserStats(users = []) {
   return { total, active, blocked };
 }
 
+/**
+ * Determines whether a patron user account is in blocked or restricted state.
+ * @param {Object} [usr] - User object.
+ * @returns {boolean} True if user is blocked or has blocked status.
+ */
 function isUserBlocked(usr) {
   if (!usr) return false;
   return Boolean(usr.isBlocked || usr.status === "blocked");
