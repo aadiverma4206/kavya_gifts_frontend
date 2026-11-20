@@ -38,6 +38,12 @@ function isUserBlocked(usr) {
   return Boolean(usr.isBlocked || usr.status === "blocked");
 }
 
+/**
+ * Checks whether a patron record matches search criteria across name, email, phone, or customer ID.
+ * @param {Object} usr - User object.
+ * @param {string} [searchTerm=""] - Search query substring.
+ * @returns {boolean} True if patron matches search query.
+ */
 function matchesUserSearch(usr, searchTerm = "") {
   if (!searchTerm || !searchTerm.trim()) return true;
   const term = searchTerm.toLowerCase().trim();
