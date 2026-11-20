@@ -82,6 +82,15 @@ function getPatronInitials(name = "") {
   return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
 }
 
+function formatPatronAddress(user) {
+  if (!user) return "Address not provided";
+  const parts = [];
+  if (user.address) parts.push(user.address);
+  if (user.city) parts.push(user.city);
+  if (user.pincode) parts.push(`(${user.pincode})`);
+  return parts.length ? parts.join(", ") : "No saved address";
+}
+
 const INSPECT_MODAL_TABS = [
   { key: "profile", label: "Profile Overview" },
   { key: "orders", label: "Orders" },
