@@ -8,6 +8,12 @@ import { formatCurrency, formatDate } from "../../utils/formatters";
 import { notify } from "../../utils/notify";
 import "./UserManagement.css";
 
+const STATUS_FILTER_OPTIONS = [
+  { value: "all", label: "All Patrons" },
+  { value: "active", label: "Active Only" },
+  { value: "blocked", label: "Blocked Only" },
+];
+
 export default function UserManagement() {
   useDocumentTitle("Customer Directory - Owner Portal");
   const [users, setUsers] = useState([]);
@@ -45,7 +51,8 @@ export default function UserManagement() {
   }, [users]);
 
   async function handleToggleBlock(usr) {
-    const nextBlocked = !usr.isBlocked;
+    const currentlyBlocked = Boolean(usr.isBlocked || usr.status === "blocked");
+    const nextBlocked = !currentlyBlocked;
     try {
       await toggleBlockUser(usr.uid || usr.id, nextBlocked);
       setUsers((prev) =>
