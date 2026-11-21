@@ -44,6 +44,33 @@ function LoadingFallback({ message = "Verifying secure credentials..." }) {
   );
 }
 
+function AccessDeniedBanner({ onSwitchAccount }) {
+  return (
+    <div
+      className="container section"
+      role="alert"
+      aria-labelledby="access-denied-heading"
+      style={{ textAlign: "center", padding: "60px 20px", maxWidth: "600px", margin: "0 auto" }}
+    >
+      <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔒</div>
+      <h2 id="access-denied-heading">Administrative Access Denied</h2>
+      <p className="muted" style={{ margin: "16px 0 24px" }}>
+        This section is strictly restricted to verified Kavya Gifting store owners. Your current account does not have owner privileges.
+      </p>
+      <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
+        <Link to="/" className="btn btn-primary">Return to Storefront</Link>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={onSwitchAccount}
+        >
+          Sign In with Owner Account
+        </button>
+      </div>
+    </div>
+  );
+}
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
