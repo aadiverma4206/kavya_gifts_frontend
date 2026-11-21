@@ -21,6 +21,10 @@ const AUTH_REDIRECT_PATHS = {
   default: "/login",
 };
 
+/**
+ * Canonical landing destinations for cross-role redirections.
+ * @constant {Record<string, string>}
+ */
 const DASHBOARD_ROUTES = {
   owner: "/owner/dashboard",
   storefront: "/",
