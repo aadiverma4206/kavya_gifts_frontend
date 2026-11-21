@@ -165,26 +165,12 @@ export default function ProtectedRoute({ children, roleRequired }) {
     // Check blocked status
     if (isBlocked) {
       return (
-        <div className="container section" style={{ textAlign: "center", padding: "60px 20px", maxWidth: "600px", margin: "0 auto" }}>
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>⚠️</div>
-          <h2>Account Temporarily Suspended</h2>
-          <p className="muted" style={{ margin: "16px 0 24px" }}>
-            Your customer account has been suspended by store administration. Access to checkout, profile, and orders is disabled.
-          </p>
-          <p style={{ fontSize: "14px", color: "var(--color-primary, #b76e79)", marginBottom: "24px" }}>
-            For assistance, please contact support at <strong>{SUPPORT_CONTACT_EMAIL}</strong>
-          </p>
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={async () => {
-              await logout();
-              navigate("/");
-            }}
-          >
-            Sign Out & Return Home
-          </button>
-        </div>
+        <AccountSuspendedBanner
+          onSignOut={async () => {
+            await logout();
+            navigate(DASHBOARD_ROUTES.storefront);
+          }}
+        />
       );
     }
 
