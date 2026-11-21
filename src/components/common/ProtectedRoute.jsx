@@ -106,7 +106,7 @@ export default function ProtectedRoute({ children, roleRequired }) {
             Your customer account has been suspended by store administration. Access to checkout, profile, and orders is disabled.
           </p>
           <p style={{ fontSize: "14px", color: "var(--color-primary, #b76e79)", marginBottom: "24px" }}>
-            For assistance, please contact support at <strong>care@kavyagifting.com</strong>
+            For assistance, please contact support at <strong>{SUPPORT_CONTACT_EMAIL}</strong>
           </p>
           <button
             type="button"
