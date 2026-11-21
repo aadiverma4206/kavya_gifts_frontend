@@ -111,28 +111,13 @@ export default function ProtectedRoute({ children, roleRequired }) {
   // 2. Owner Route requested
   if (roleRequired === "owner") {
     if (!isOwner) {
-      // Customer or non-owner attempting unauthorized access
       return (
-        <div className="container section" style={{ textAlign: "center", padding: "60px 20px", maxWidth: "600px", margin: "0 auto" }}>
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>🔒</div>
-          <h2>Administrative Access Denied</h2>
-          <p className="muted" style={{ margin: "16px 0 24px" }}>
-            This section is strictly restricted to verified Kavya Gifting store owners. Your current account does not have owner privileges.
-          </p>
-          <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
-            <Link to="/" className="btn btn-primary">Return to Storefront</Link>
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={async () => {
-                await logout();
-                navigate("/owner/login");
-              }}
-            >
-              Sign In with Owner Account
-            </button>
-          </div>
-        </div>
+        <AccessDeniedBanner
+          onSwitchAccount={async () => {
+            await logout();
+            navigate(AUTH_REDIRECT_PATHS.owner);
+          }}
+        />
       );
     }
     return children;
