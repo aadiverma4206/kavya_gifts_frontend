@@ -21,6 +21,11 @@ const AUTH_REDIRECT_PATHS = {
   default: "/login",
 };
 
+const DASHBOARD_ROUTES = {
+  owner: "/owner/dashboard",
+  storefront: "/",
+};
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
