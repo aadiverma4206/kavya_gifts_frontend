@@ -196,3 +196,17 @@ export function OwnerRoute({ children }) {
 export function CustomerRoute({ children }) {
   return <ProtectedRoute roleRequired="customer">{children}</ProtectedRoute>;
 }
+
+export function GuestRoute({ children, fallback = "/" }) {
+  const { currentUser, isOwner, loading } = useAuth();
+
+  if (loading) {
+    return <LoadingFallback message="Checking session state..." />;
+  }
+
+  if (currentUser) {
+    return <Navigate to={isOwner ? DASHBOARD_ROUTES.owner : fallback} replace />;
+  }
+
+  return children;
+}
