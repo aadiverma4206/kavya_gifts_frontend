@@ -76,6 +76,11 @@ function AccessDeniedBanner({ onSwitchAccount }) {
   );
 }
 
+/**
+ * Renders an accessible account suspension notice for restricted customers.
+ * @param {{ onSignOut: () => void, supportEmail?: string }} props
+ * @returns {JSX.Element}
+ */
 function AccountSuspendedBanner({ onSignOut, supportEmail = SUPPORT_CONTACT_EMAIL }) {
   return (
     <div
