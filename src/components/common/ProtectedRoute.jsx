@@ -30,6 +30,11 @@ const DASHBOARD_ROUTES = {
   storefront: "/",
 };
 
+/**
+ * Accessible credential verification loading indicator.
+ * @param {{ message?: string }} props
+ * @returns {JSX.Element}
+ */
 function LoadingFallback({ message = "Verifying secure credentials..." }) {
   return (
     <div className="container section" role="status" aria-live="polite" style={{ textAlign: "center", padding: "100px 0" }}>
