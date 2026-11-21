@@ -5,6 +5,10 @@ import { useAuth } from "../../context/AuthContext";
  * Inline style object for the credential verification spinner.
  * @constant {Object}
  */
+/**
+ * Official customer care support email address displayed on suspended account notices.
+ * @constant {string}
+ */
 const SUPPORT_CONTACT_EMAIL = "care@kavyagifting.com";
 
 const DEFAULT_SPINNER_STYLE = {
