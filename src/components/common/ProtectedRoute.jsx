@@ -30,6 +30,15 @@ const DASHBOARD_ROUTES = {
   storefront: "/",
 };
 
+function LoadingFallback({ message = "Verifying secure credentials..." }) {
+  return (
+    <div className="container section" role="status" aria-live="polite" style={{ textAlign: "center", padding: "100px 0" }}>
+      <div style={DEFAULT_SPINNER_STYLE} />
+      <p className="muted">{message}</p>
+    </div>
+  );
+}
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
