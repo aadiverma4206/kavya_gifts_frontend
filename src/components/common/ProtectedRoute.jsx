@@ -1,6 +1,10 @@
 import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
+/**
+ * Inline style object for the credential verification spinner.
+ * @constant {Object}
+ */
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
