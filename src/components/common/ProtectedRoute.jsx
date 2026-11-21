@@ -112,7 +112,7 @@ export default function ProtectedRoute({ children, roleRequired }) {
   if (roleRequired === "customer") {
     // If authenticated user is owner, redirect to owner portal
     if (isOwner) {
-      return <Navigate to="/owner/dashboard" replace />;
+      return <Navigate to={DASHBOARD_ROUTES.owner} replace />;
     }
 
     // Check blocked status
