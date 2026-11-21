@@ -11,6 +11,12 @@ import { useAuth } from "../../context/AuthContext";
  */
 const SUPPORT_CONTACT_EMAIL = "care@kavyagifting.com";
 
+const AUTH_REDIRECT_PATHS = {
+  owner: "/owner/login",
+  customer: "/login",
+  default: "/login",
+};
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
