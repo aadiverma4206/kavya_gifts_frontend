@@ -1,3 +1,9 @@
+/**
+ * @file ProtectedRoute.jsx
+ * @description Comprehensive route and authorization guard enforcing authentication,
+ * administrative owner privileges, patron tier restrictions, and account suspension handling.
+ */
+
 import { Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -132,6 +138,14 @@ const DEFAULT_SPINNER_STYLE = {
 /**
  * Route & Role Guard Component.
  * Enforces authentication, role checks ('owner' vs 'customer'), and customer blocked status.
+ */
+/**
+ * Primary ProtectedRoute gatekeeper component.
+ * Verifies active session, compares role credentials, and prevents unauthorized or suspended access.
+ *
+ * @component
+ * @param {{ children: React.ReactNode, roleRequired?: "owner" | "customer" }} props
+ * @returns {JSX.Element}
  */
 export default function ProtectedRoute({ children, roleRequired }) {
   const { currentUser, userProfile, loading, isOwner, isBlocked, logout } = useAuth();
