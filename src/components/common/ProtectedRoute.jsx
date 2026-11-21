@@ -108,6 +108,11 @@ function AccountSuspendedBanner({ onSignOut, supportEmail = SUPPORT_CONTACT_EMAI
   );
 }
 
+function resolveAuthRedirect(roleRequired) {
+  if (roleRequired === "owner") return AUTH_REDIRECT_PATHS.owner;
+  return AUTH_REDIRECT_PATHS.customer;
+}
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
