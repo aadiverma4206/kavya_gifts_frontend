@@ -44,6 +44,11 @@ function LoadingFallback({ message = "Verifying secure credentials..." }) {
   );
 }
 
+/**
+ * Renders an accessible unauthorized access notice for owner routes.
+ * @param {{ onSwitchAccount: () => void }} props
+ * @returns {JSX.Element}
+ */
 function AccessDeniedBanner({ onSwitchAccount }) {
   return (
     <div
