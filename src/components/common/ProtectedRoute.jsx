@@ -189,14 +189,30 @@ export default function ProtectedRoute({ children, roleRequired }) {
   return children;
 }
 
+/**
+ * Specialized route guard strictly requiring verified store owner privileges.
+ * @param {{ children: React.ReactNode }} props
+ * @returns {JSX.Element}
+ */
 export function OwnerRoute({ children }) {
   return <ProtectedRoute roleRequired="owner">{children}</ProtectedRoute>;
 }
 
+/**
+ * Specialized route guard requiring authenticated customer status and active account.
+ * @param {{ children: React.ReactNode }} props
+ * @returns {JSX.Element}
+ */
 export function CustomerRoute({ children }) {
   return <ProtectedRoute roleRequired="customer">{children}</ProtectedRoute>;
 }
 
+/**
+ * Route wrapper for public-only screens (e.g. login, registration).
+ * Redirects authenticated patrons to their appropriate dashboard.
+ * @param {{ children: React.ReactNode, fallback?: string }} props
+ * @returns {JSX.Element}
+ */
 export function GuestRoute({ children, fallback = "/" }) {
   const { currentUser, isOwner, loading } = useAuth();
 
