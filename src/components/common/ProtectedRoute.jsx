@@ -144,10 +144,8 @@ export default function ProtectedRoute({ children, roleRequired }) {
 
   // 1. Not authenticated
   if (!currentUser) {
-    if (roleRequired === "owner") {
-      return <Navigate to="/owner/login" state={{ from: location }} replace />;
-    }
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    const redirectPath = resolveAuthRedirect(roleRequired);
+    return <Navigate to={redirectPath} state={{ from: location }} replace />;
   }
 
   // 2. Owner Route requested
