@@ -76,6 +76,33 @@ function AccessDeniedBanner({ onSwitchAccount }) {
   );
 }
 
+function AccountSuspendedBanner({ onSignOut, supportEmail = SUPPORT_CONTACT_EMAIL }) {
+  return (
+    <div
+      className="container section"
+      role="alert"
+      aria-labelledby="account-suspended-heading"
+      style={{ textAlign: "center", padding: "60px 20px", maxWidth: "600px", margin: "0 auto" }}
+    >
+      <div style={{ fontSize: "48px", marginBottom: "16px" }}>⚠️</div>
+      <h2 id="account-suspended-heading">Account Temporarily Suspended</h2>
+      <p className="muted" style={{ margin: "16px 0 24px" }}>
+        Your customer account has been suspended by store administration. Access to checkout, profile, and orders is disabled.
+      </p>
+      <p style={{ fontSize: "14px", color: "var(--color-primary, #b76e79)", marginBottom: "24px" }}>
+        For assistance, please contact support at <strong>{supportEmail}</strong>
+      </p>
+      <button
+        type="button"
+        className="btn btn-secondary"
+        onClick={onSignOut}
+      >
+        Sign Out & Return Home
+      </button>
+    </div>
+  );
+}
+
 const DEFAULT_SPINNER_STYLE = {
   display: "inline-block",
   width: "36px",
