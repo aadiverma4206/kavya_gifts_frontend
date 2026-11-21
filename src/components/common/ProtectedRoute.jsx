@@ -11,6 +11,10 @@ import { useAuth } from "../../context/AuthContext";
  */
 const SUPPORT_CONTACT_EMAIL = "care@kavyagifting.com";
 
+/**
+ * Target authentication entrypoints based on required authorization tier.
+ * @constant {Record<string, string>}
+ */
 const AUTH_REDIRECT_PATHS = {
   owner: "/owner/login",
   customer: "/login",
