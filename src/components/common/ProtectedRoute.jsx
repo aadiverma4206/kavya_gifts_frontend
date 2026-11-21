@@ -108,6 +108,11 @@ function AccountSuspendedBanner({ onSignOut, supportEmail = SUPPORT_CONTACT_EMAI
   );
 }
 
+/**
+ * Resolves the destination login route based on requested role tier.
+ * @param {string} [roleRequired] - Requested authorization role ('owner' | 'customer').
+ * @returns {string} Destination login URL path.
+ */
 function resolveAuthRedirect(roleRequired) {
   if (roleRequired === "owner") return AUTH_REDIRECT_PATHS.owner;
   return AUTH_REDIRECT_PATHS.customer;
