@@ -65,23 +65,7 @@ export default function ProtectedRoute({ children, roleRequired }) {
   const navigate = useNavigate();
 
   if (loading) {
-    return (
-      <div className="container section" style={{ textAlign: "center", padding: "100px 0" }}>
-        <div
-          style={{
-            display: "inline-block",
-            width: "36px",
-            height: "36px",
-            border: "3px solid #f3f3f3",
-            borderTop: "3px solid var(--color-primary, #b76e79)",
-            borderRadius: "50%",
-            animation: "spin 1s linear infinite",
-            marginBottom: "16px",
-          }}
-        />
-        <p className="muted">Verifying secure credentials...</p>
-      </div>
-    );
+    return <LoadingFallback />;
   }
 
   // 1. Not authenticated
